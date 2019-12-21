@@ -45,7 +45,7 @@
       // coverpage: true,
       // loadNavbar: true,
       loadSidebar: true,
-      // subMaxLevel: 2,
+      subMaxLevel: 3,
       // maxLevel: 2,
       // mergeNavbar: true,
       formatUpdated: '{MM}/{DD} {HH}:{mm}',
@@ -64,7 +64,7 @@
       //   errorText  : 'Error',
       //   successText: 'Copied'
       // },
-      // plugins: [
+      plugins: [
       //   function(hook, vm) {
       //     hook.beforeEach(function(html) {
       //       var url = 'https://github.com/luuman/Front-end-Web-Development-Interview-Question/blob/master/' + vm.route.file
@@ -85,7 +85,31 @@
       //       return html + footer
       //     })
       //   }
-      // ],
+      //   
+      //   
+      //   
+        function(hook, vm) {
+          hook.ready(function () {
+            mermaid.initialize({startOnLoad: false});
+          });
+          hook.doneEach(function () {
+            mermaid.init(undefined,'.mermaid');
+          });
+        }
+      ],
+      markdown: {
+        renderer: {
+          code: function(code, lang) {
+            console.log(lang)
+            var html = '';
+            if(code.match(/^sequenceDiagram/) || code.match(/^graph/) || code.match(/^gantt/)){
+              html = '<div class="mermaid">' + code + '</div>';
+            }
+            var hl = Prism.highlight(code, Prism.languages[lang] || Prism.languages.markup)
+            return html + '<pre v-pre data-lang="' + lang + '"><code class="lang-' + lang + '">' + hl + '</code></pre>'
+          }
+        }
+      },
       name: '',
       repo: 'https://github.com/luuman'
     }
@@ -101,5 +125,12 @@
   <script src="//unpkg.com/prismjs/components/prism-bash.js"></script>
   <script src="//unpkg.com/prismjs/components/prism-php.js"></script>
   <script src="//unpkg.com/docsify-pagination/dist/docsify-pagination.min.js"></script>
+
+  <script type="text/javascript" src="//unpkg.com/mermaid/dist/mermaid.min.js"></script>
+
+  <!-- CDN files for docsify-katex -->
+  <script src="//cdn.jsdelivr.net/npm/docsify-katex@latest/dist/docsify-katex.js"></script>
+  <!-- or <script src="//cdn.jsdelivr.net/gh/upupming/docsify-katex@latest/dist/docsify-katex.js"></script> -->
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css"/>
 </body>
 </html>

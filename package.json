@@ -1,0 +1,23 @@
+{
+  "name": "Knowledge",
+  "version": "1.0.0",
+  "description": "知识点",
+  "scripts": {
+    "start": "npm run open && npm run dev",
+    "dev": "docsify serve docs -p 6005",
+    "open": "node --max_old_space_size=32800 config/open.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/luuman/Knowledge.git"
+  },
+  "author": "luuman <luumans@qq.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/luuman/Knowledge/issues"
+  },
+  "homepage": "https://blog.luuman.club/Knowledge/#/",
+  "dependencies": {},
+  "devDependencies": {
+  }
+}
