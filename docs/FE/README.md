@@ -27,3 +27,65 @@
 |23.md|[最全前端面试问题及答案总结](https://github.com/allenGKC/Front-end-Interview-questions)|General|待添加 :smile: |
 |24.md|[阿里航旅前端开发校招面试题 ](https://github.com/jayli/jayli.github.com/issues/19)|General|待添加 :smile: |
 |25.md|[ElemeFE Node 面试题](https://github.com/ElemeFE/node-interview)|General|待添加 :smile: |
+
+
+## 动画
+
+### Bodymovin
+
+#### Demo
+[Welcome to the Project Editor! ](https://codepen.io/airnan/project/editor/ZeNONO)
+
+[lottie-web](https://github.com/airbnb/lottie-web)
+
+[bodymovin](https://codepen.io/collection/nVYWZR/?cursor=ZD0xJm89MCZwPTEmdj0zMDc2NjI1)
+animations exported from after effects to svg + js or canvas + js
+[]()
+
+[]()
+
+[]()
+
+[]()
+
+## Mock
+
+[让前端攻城师独立于后端进行开发: Mock.js](https://segmentfault.com/a/1190000013022560?utm_source=sf-related)
+
+[vue项目接入mock && axios 通用配置](https://segmentfault.com/a/1190000019964344?utm_source=sf-related)
+
+[手动编写mock服务（ma-mock）](https://juejin.im/post/6844903641694863367)
+
+[]()
+
+[]()
+
+[]()
+
+[]()
+
+## eslint
+
+[vue报错：Missing space before function parentheses](https://www.jianshu.com/p/9081a28c1ac9)
+
+Missing space before function parentheses 报错终极解决方案 多余空格
+
+## vue-cli 打包问题
+
+```javascript
+// 启动mode模式
+vue-cli-service electron:serve --mode testing
+// 文件
+.env.testing
+// 内容
+NODE_ENV = testing
+```
+
+## 打开应用的方法
+
+### Mac
+
+打开App Store
+
+	macappstore://itunes.apple.com/
+

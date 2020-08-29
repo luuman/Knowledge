@@ -32,11 +32,16 @@
   <meta name="theme-color" content="#ffffff"></head>
   <meta name="msapplication-TileColor" content="#ffffff">
   <link rel="stylesheet" href="//unpkg.com/docsify/lib/themes/vue.css">
+  <style type="text/css">
+    .markdown-section pre>code.lang-Mermaid{
+      display: none;
+    }
+  </style>
 </head>
 <body>
   <nav>
+    <a href="#/Tab/repository">库</a>
     <a href="#/">前端知识点</a>
-    <a href="#/interview/">面经</a>
     <a href="#/Tool/">简历</a>
   </nav>
   <div id="app"></div>
@@ -45,7 +50,7 @@
       // coverpage: true,
       // loadNavbar: true,
       loadSidebar: true,
-      subMaxLevel: 3,
+      subMaxLevel: 4,
       // maxLevel: 2,
       // mergeNavbar: true,
       formatUpdated: '{MM}/{DD} {HH}:{mm}',
@@ -115,6 +120,8 @@
     }
   </script>
   <script src="//unpkg.com/docsify/lib/docsify.min.js"></script>
+  <!-- 侧边栏折叠 -->
+  <script src="//unpkg.com/docsify-sidebar-collapse/dist/docsify-sidebar-collapse.min.js"></script>
   <!-- 全文搜索 -->
   <script src="//unpkg.com/docsify/lib/plugins/search.js"></script>
   <script src="//unpkg.com/docsify/lib/plugins/ga.js"></script>
