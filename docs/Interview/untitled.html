@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>vue生命周期</title>
+    <link rel="stylesheet" href="https://cdn.bootcss.com/element-ui/1.2.3/theme-default/index.css"></link>
+    <script src="https://cdn.bootcss.com/vue/2.2.1/vue.min.js"></script>
+    <script src="https://cdn.bootcss.com/element-ui/1.2.3/index.js"></script>
+</head>
+<body>
+	
+<div id="app">
+	<template>
+
+	    <div>
+	      <p @click="total = 1">{{ total }}</p>
+	      <button-counter :total="total" v-on:increment="incrementTotal"></button-counter>
+	      <!-- <button-counter v-on:increment="incrementTotal"></button-counter> -->
+	      <hr>
+	      <button onclick="vm.$destroy()">此按钮用来销毁实例</button>
+	    </div>
+	</template>
+</div>
+
+<script>
+  // alert('请在控制台查看')
+  Vue.component('button-counter', {
+    template: '<button v-on:click="increment">我是按钮{{ total }}</button>',
+    props: {
+      total: ''
+    },
+    data: function () {
+      return {
+        counter: 0
+      }
+    },
+    // 组件的生命周期
+    beforeCreate(){ //在实例创建之后，在数据初始化之前被调用
+      console.log('。1-beforeCreate');
+    },
+    created(){  // 在数据初始化之后被调用，如果你的页面进来的时候就调用接口,那么created是第一选择
+      console.log('。2-created');
+    },
+    beforeMount(){ //在组建渲染之前被调用，也就是说数据渲染之前，比如要色彩渲染可以在这里写
+      console.log('。3-beforeMount');
+    },
+    mounted(){//整个实例被创建完成后被调用,比如：实例创建完成、数据初始化、渲染页面数据后，才被调用，这个时候就可以在mounted这个生命周期里面写Dom操作了,注意：生命周期用的最多的就是mounted
+      console.log('。4-mounted'); 
+    },
+    beforeUpdate(){ //在数据改变时被调用，比如: total = 0 , 然后手动把num++; 就会执行此方法
+      console.log('。5-beforeUpdate'); 
+    },
+    updated(){ //数据被更新之后,  比如：total值改变之后，再被执行
+      console.log('。6-updated'); 
+    },
+    methods:{
+    	increment: function () {
+	      this.counter += 1
+	      this.$emit('increment')
+	    }
+    }
+  })
+
+var vm =  new Vue({
+ 	el:'#app',
+    data() {
+      return{
+        total: 0
+      }
+    },
+    methods: {
+      incrementTotal(){
+        this.total += 1
+      }
+    },
+    // 组件的生命周期
+    beforeCreate(){ //在实例创建之后，在数据初始化之前被调用
+      console.log('1-beforeCreate');
+    },
+    created(){  // 在数据初始化之后被调用，如果你的页面进来的时候就调用接口,那么created是第一选择
+      console.log('2-created');
+    },
+    beforeMount(){ //在组建渲染之前被调用，也就是说数据渲染之前，比如要色彩渲染可以在这里写
+      console.log('3-beforeMount');
+    },
+    mounted(){//整个实例被创建完成后被调用,比如：实例创建完成、数据初始化、渲染页面数据后，才被调用，这个时候就可以在mounted这个生命周期里面写Dom操作了,注意：生命周期用的最多的就是mounted
+      console.log('4-mounted'); 
+    },
+    beforeUpdate(){ //在数据改变时被调用，比如: total = 0 , 然后手动把num++; 就会执行此方法
+      console.log('5-beforeUpdate'); 
+    },
+    updated(){ //数据被更新之后,  比如：total值改变之后，再被执行
+      console.log('6-updated'); 
+    },
+    activated(){ //keep-alive 组件激活时调用，也就是说在路由切换时被调用，注意要配合keep-alive使用才会被调用
+      console.log('7-activated');
+    },
+    deactivated(){//keep-alive 组件停用时调用，也可以理解成在路由切换的会自动停用组件， 
+      console.log('8-deactivated');
+    },
+    beforeDestroy(){//实例销毁之前被调用，这个方法适用于 把new Vue({})赋值给一个变量时，如： var vm = new Vue({})，然后用vm.$destroy() 方法销毁这个实例
+      console.log('9-beforeDestroy');
+    },
+    destroyed(){//实例销毁之后被调用，一般情况下，在页面切换路由时，会自动销毁组件，
+      console.log('10-destroyed');
+    }
+
+  })
+</script>
+
+</body>
+</html>
