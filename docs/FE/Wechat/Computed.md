@@ -27,3 +27,4 @@ backImg (e) {
   let img = e.detail
 }
 ```
+

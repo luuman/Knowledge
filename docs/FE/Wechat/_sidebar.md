@@ -1,0 +1,3 @@
+- [前端](/FE/)
+  - [组件](/FE/WeChat/Computed)
+    - [身份证上传](/FE/WeChat/Computed/idCard)
