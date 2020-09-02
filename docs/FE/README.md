@@ -34,13 +34,14 @@
 ### Bodymovin
 
 #### Demo
-[Welcome to the Project Editor! ](https://codepen.io/airnan/project/editor/ZeNONO)
+[Welcome to the Project Editor! ](https://codepen.io/airnan/project/editor/ZeNONO "就东方京东方")
 
 [lottie-web](https://github.com/airbnb/lottie-web)
 
 [bodymovin](https://codepen.io/collection/nVYWZR/?cursor=ZD0xJm89MCZwPTEmdj0zMDc2NjI1)
 animations exported from after effects to svg + js or canvas + js
-[]()
+
+[lottie](http://airbnb.io/lottie/#/after-effects "Airbnb Lottie出品多终端动效文档")
 
 []()
 

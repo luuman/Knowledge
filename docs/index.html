@@ -36,6 +36,79 @@
     .markdown-section pre>code.lang-Mermaid{
       display: none;
     }
+    #TitleTipDiv {
+      font: 12px/1 Tahoma, Helvetica, Arial, "\5b8b\4f53", sans-serif; /* 用 ascii 字符表示，使得在任何编码下都无问题 */
+      font-family: "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif;
+      text-align: center;
+      color: #fff;
+      background: rgba(0,0,0,.8);
+      position: absolute;
+      z-index: 100;
+      padding: 5px 15px;
+      max-width: 200px;
+      font-size: 12px;
+      line-height: 20px;
+      transform: translate(-50%);
+      border-radius: 6px;
+    }
+    #TitleTipDiv:before {
+      width: 0;
+      height: 0;
+      border-left: 8px solid transparent;
+      border-right: 8px solid transparent;
+      border-bottom: 8px solid rgba(0,0,0,.8);
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: -8px;
+      margin-left: -8px
+    }
+    #anchortitlecontainer {
+    /*text-align: center;*/
+      color: #fff;
+      background: rgba(0,0,0,.8);
+      position: absolute;
+      z-index: 1000;
+      padding: 5px 15px;
+      font-size: 12px;
+      line-height: 20px;
+      -webkit-transform: translate(-50%, -50%);
+      -moz-transform: translate(-50%, -50%);
+      -ms-transform: translate(-50%, -50%);
+      transform: translate(-50%, -50%);
+      border-radius: 6px;
+      max-width: 200px;
+    /*font-family: Verdana,"Lantinghei SC","Hiragino Sans GB","Microsoft Yahei",Helvetica,arial,\5b8b\4f53,sans-serif;*/
+      font-family: "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif;
+      text-transform: capitalize;
+    }
+    #anchortitlecontainer:before {
+      width: 0;
+      height: 0;
+      border-left: 8px solid transparent;
+      border-right: 8px solid transparent;
+      border-top: 8px solid rgba(0,0,0,.8);
+      content: '';
+      position: absolute;
+      left: 50%;
+      bottom: -8px;
+      margin-left: -8px;
+    }
+    #anchortitlecontainer.top:after {
+      border-top-color: transparent;
+      border-bottom: 8px solid rgba(0,0,0,.8);
+      top: -16px;
+      bottom: auto;
+    }
+    #anchortitlecontainer.left:after {
+      left: 8px;
+      margin: 0;
+    }
+    #anchortitlecontainer.right:after {
+      right: 8px;
+      left: auto;
+      margin: 0;
+    }
   </style>
 </head>
 <body>
@@ -139,5 +212,125 @@
   <script src="//cdn.jsdelivr.net/npm/docsify-katex@latest/dist/docsify-katex.js"></script>
   <!-- or <script src="//cdn.jsdelivr.net/gh/upupming/docsify-katex@latest/dist/docsify-katex.js"></script> -->
   <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css"/>
+  <script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+  <script type="text/javascript">
+    var Common = {
+      getItself: function(id) {
+        return "string" == typeof id ? document.getElementById(id) : id;
+      },
+      getTextSize: function(text) {
+        var span = document.createElement("span");
+        var result = {};
+        result.width = span.offsetWidth;
+        result.height = span.offsetWidth;
+        span.style.visibility = "hidden";
+        document.body.appendChild(span);
+        if (typeof span.textContent != "undefined") span.textContent = text;
+        else span.innerText = text;
+        result.width = span.offsetWidth - result.width;
+        result.height = span.offsetHeight - result.height;
+        span.parentNode.removeChild(span);
+        return result;
+      }
+    }
+    var TitleTip = {
+      showTitleTip: function(param, linkObj, e) {
+        var div;
+        if (document.getElementById("TitleTipDiv")) {
+          document.body.removeChild(document.getElementById("TitleTipDiv"));
+        }
+        div = document.createElement("div");
+        div.id = "TitleTipDiv";
+        // div.style.cssText = "text-align: center; color: #fff; background: rgba(0,0,0,.8); position: absolute; z-index: 100; padding: 5px 15px; font-size: 12px; line-height: 20px; transform: translate(-50%); border-radius: 6px;";
+        div.innerHTML = linkObj.tip;
+        document.body.appendChild(div);
+
+        if (param && param.width) { //如未设置，默认一行显示
+          if (Common.getTextSize(div.innerHTML).width < param.width) {
+            div.style.maxWidth = param.width + "px";
+          } else {
+            div.style.width = param.width + "px";
+          }
+        }
+
+        //must before set opr to get offsetHeight...
+        div.style.display = ""; 
+
+        ///set TitleTip position
+        // console.log("a W"+linkObj.offsetWidth);
+        // console.log("a H"+linkObj.offsetHeight);
+        // console.log("a X"+linkObj.offsetTop);
+        // console.log("a Y"+linkObj.offsetLeft);
+        // console.log("Tip W"+div.offsetWidth);
+        // console.log("Tip H"+div.offsetHeight);
+
+        div.style.top = linkObj.offsetTop + linkObj.offsetHeight + 8 + "px";
+        div.style.left = linkObj.offsetLeft + linkObj.offsetWidth/2 + "px";
+
+        ///hide TitleTip after some time
+        if (param && param.time) {
+          setTimeout(this.hidTitleTip, param.time);
+        }
+      },
+      hidTitleTip: function() {
+        if (document.getElementById("TitleTipDiv")) {
+          document.getElementById("TitleTipDiv").style.display = "none";
+        }
+      },
+      addTips: function(param) {
+        var linkArr = document.getElementsByTagName("a");
+        if (!linkArr) {
+          return false;
+        }
+        for (i = 0; i < linkArr.length; i++) {
+          console.log(linkArr[i].rel == "noopener")
+          if (linkArr[i].rel == "noopener") {
+            linkArr[i].tip = linkArr[i].title;
+            var tipObj = this;
+            linkArr[i].onmouseover = function(e) {
+              tipObj.showTitleTip(param, this, e);
+            }
+            linkArr[i].onmouseout = tipObj.hidTitleTip;
+            if (param && param.moveable == true) { //默认不滚动
+              linkArr[i].onmousemove = function(e) {
+                tipObj.showTitleTip(param, this, e);
+              }
+            }
+            linkArr[i].title = "";
+          }
+        }
+      }
+    }
+    // window.onload = function() {
+    //   TitleTip.addTips({
+    //     width: 200, time:5000, moveable: true 
+    //   }); 
+    // }
+    window.onload = function() {
+      $(function() {
+        $("a[title]").each(function() {
+          var a = $(this);
+          var title = a.attr('title');
+          if (title == undefined || title == "") return;
+          a.data('title', title).removeAttr('title').hover(
+
+          function() {
+            var offset = a.offset();
+            $("<div id=\"anchortitlecontainer\"></div>").appendTo($("body")).html(title).css({
+              top: offset.top - a.outerHeight() - 15,
+              left: offset.left + a.outerWidth()/2 + 1
+            }).fadeIn(function() {
+              var pop = $(this);
+              setTimeout(function() {
+                pop.remove();
+              }, pop.text().length * 800);
+            });
+          }, function() {
+            $("#anchortitlecontainer").remove();
+          });
+        });
+      });
+    }
+  </script>
 </body>
 </html>

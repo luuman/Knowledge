@@ -1,28 +1,26 @@
-# 全流程VueCli解析
+# Electron 脚手架构建流程详解
 
 Electron是一个基于Chromium和 Node.js，可以使用 HTML、CSS和JavaScript构建跨平台应用的技术框架，兼容 Mac、Windows 和 Linux。虽然B/S是目前开发的主流，但是C/S仍然有很大的市场需求。受限于浏览器的沙盒限制，网页应用无法满足某些场景下的使用需求，而桌面应用可以读写本地文件、调用更多系统资源，再加上Web开发的低成本、高效率的优势，这种方式越来越受到开发者的喜爱。
 本文一步一步教你如何使用Electron5和vue-cli3，在完全保留vue开发web应用的习惯下，搭建桌面应用。
 涉及技术资料：[Electron](electronjs.org/)、[vue](cn.vuejs.org/)、[vue-cli](cli.vuejs.org/zh/)
 
-## 环境搭建
-node、vueCli
+## 概况
 
-### 注意
-1. `SimulatedGREG/electron-vue`已经很久没有更新了，而且其生成的工程结构并不是vue-cli3。所以放弃使用。
+> 搭建环境
+node 12、vueCli
 
-### 
-1.1 使用cnpm加速下载
-npm有时下载速度很慢，可以安装cnpm，从国内淘宝镜像下载，执行以下命令：
-```
+> 注意`SimulatedGREG/electron-vue`已经很久没有更新了，而且其生成的工程结构并不是vue-cli3。所以放弃使用。
+
+> 使用cnpm加速下载
+
+```JavaScript
+<!-- npm有时下载速度很慢，可以安装cnpm，从国内淘宝镜像下载，执行以下命令： -->
 npm install -g cnpm --registry=https://registry.npm.taobao.org
+<!-- 以后npm直接替换成cnpm使用。 -->
 ```
+> 安装/升级vue-cli3
 
-
-以后npm直接替换成cnpm使用。
-
-
-### vue-cli
-1.3 安装/升级vue-cli3
+```JavaScript
 先执行以下命令，确认下本地安装的vue-cli版本：
 
 vue -V
@@ -44,18 +42,22 @@ cnpm install @vue/cli -g
 （我这里使用cnpm并没有完成升级，所以使用了npm）
 
 npm update @vue/cli -g
+```
 
-## 安装
+## 搭建项目
 ### 创建vue项目
 
-```
+```JavaScript
+<!-- 创建electron-vue-demo -->
 vue create electron-vue-demo
 
+<!-- 安装流程 -->
 Vue CLI v3.8.4
 ? Please pick a preset: (Use arrow keys)
   default (babel, eslint) 
 > Manually select features （自定义安装）
 
+<!-- 这里选择了常用的模块，请根据实际需求进行选择。 -->
 ? Check the features needed for your project: (Press <space> to select, <a> to t
 oggle all, <i> to invert selection)
 ❯◉ Babel
@@ -68,238 +70,71 @@ oggle all, <i> to invert selection)
  ◯ Unit Testing
  ◯ E2E Testing
 
-// 这里选择了常用的模块，请根据实际需求进行选择。
-
+<!-- 如果选择了router，这里会询问是否使用history模式。 -->
 ? Use history mode for router? (Requires proper server setup for index fallback 
 in production) (Y/n)  n
-// 如果选择了router，这里会询问是否使用history模式。
 
+<!-- 选择CSS预处理模块，这里我们使用“Stylus”。 -->
 ? Pick a CSS pre-processor (PostCSS, Autoprefixer and CSS Modules are supported 
 by default): (Use arrow keys)
   Sass/SCSS (with dart-sass) 
-  Sass/SCSS (with node-sass) 
+❯ Sass/SCSS (with node-sass) 
   Less 
-❯ Stylus 
-
-// 选择CSS预处理模块，这里我们使用“Stylus”。
+  Stylus 
 
 ? Pick a linter / formatter config: (Use arrow keys)
   ESLint with error prevention only 
   ESLint + Airbnb config 
-❯ ESLint + Standard config 
+❯ ESLint + Standard config (代码格式检查工具的配置)
   ESLint + Prettier 
 
-// 选择ESLint代码格式检查工具的配置，选择“ESLint + Standard config”，标准配置。
-
+<!-- 这里只选择“Lint on save”。 -->
 ? Pick additional lint features: (Press <space> to select, <a> to toggle all, <i
 > to invert selection)
 ❯◉ Lint on save（保存代码的时候，进行格式检查）
  ◯ Lint and fix on commit（git commit的时候自动纠正格式）
 
-// 这里只选择“Lint on save”。
 
+<!-- 这里问把 babel, postcss, eslint 这些配置文件放哪？ -->
 ? Where do you prefer placing config for Babel, PostCSS, ESLint, etc.? 
-  In dedicated config files 
-❯ In package.json 
+  In dedicated config files （表示独立文件）
+❯ In package.json （放在package.json）
 
-// 这里问把 babel, postcss, eslint 这些配置文件放哪？
-// In dedicated config files 表示独立文件
-// In package.json 表示放在package.json，这里选择“In package.json”。
-
+<!-- 是否为以后的项目保留这些设置？选择“N”。 -->
 ? Save this as a preset for future projects? (y/N) N
 
-// 是否为以后的项目保留这些设置？选择“N”。
 ```
 
 ### 安装electron
-```
+
+```JavaScript
 vue add electron-builder
-```
 
-在安装过程中，很可能会卡在这一步不动了：没关系，我们先强制结束掉。再执行一次vue add electron-builder，然后就可以顺利通过了。
-
-```
-node ./download-chromedriver.js
-```
-
-```
 ? Choose Electron Version (Use arrow keys)
   ^7.0.0 
   ^8.0.0 
 ❯ ^9.0.0
 ```
 
+### 注意
 
-1.6 手动安装electron
-※注：如果已经通过1.5章节的操作，请直接跳过本小节。
+> win启动可能会等待很久
 
-修改package.json，添加以下7行：
-  ...
-  "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint",
-+   "electron:build": "vue-cli-service electron:build",
-+   "electron:serve": "vue-cli-service electron:serve",
-+   "postinstall": "electron-builder install-app-deps",
-+   "postuninstall": "electron-builder install-app-deps"
-  },
-+ "main": "background.js",
-  "dependencies": {
-    "core-js": "^2.6.5",
-    "vue": "^2.6.6",
-    "vue-router": "^3.0.1",
-    "vuex": "^3.0.1"
-  },
-  "devDependencies": {
-    "@vue/cli-plugin-babel": "^3.8.0",
-    "@vue/cli-plugin-eslint": "^3.8.0",
-    "@vue/cli-service": "^3.8.0",
-    "@vue/eslint-config-standard": "^4.0.0",
-    "babel-eslint": "^10.0.1",
-+   "electron": "^5.0.6",
-    "eslint": "^5.16.0",
-    "eslint-plugin-vue": "^5.0.0",
-    "stylus": "^0.54.5",
-    "stylus-loader": "^3.0.2",
-+   "vue-cli-plugin-electron-builder": "^1.3.5",
-    "vue-template-compiler": "^2.6.10"
-  },
-  ...    
-
-新建src/background.js
-在src目录下新建background.js，复制以下代码：
-
-'use strict'
-
-import { app, protocol, BrowserWindow } from 'electron'
-import {
-  createProtocol,
-  installVueDevtools
-} from 'vue-cli-plugin-electron-builder/lib'
-
-const isDevelopment = process.env.NODE_ENV !== 'production'
-
-// Keep a global reference of the window object, if you don't, the window will
-// be closed automatically when the JavaScript object is garbage collected.
-let win
-
-// Scheme must be registered before the app is ready
-protocol.registerSchemesAsPrivileged([{
-  scheme: 'app',
-  privileges: {
-    secure: true,
-    standard: true
-  }
-}])
-
-function createWindow () {
-  // Create the browser window.
-  win = new BrowserWindow({
-    width: 800,
-    height: 600,
-    webPreferences: {
-      nodeIntegration: true
-    }
-  })
-
-  if (process.env.WEBPACK_DEV_SERVER_URL) {
-    // Load the url of the dev server if in development mode
-    win.loadURL(process.env.WEBPACK_DEV_SERVER_URL)
-    if (!process.env.IS_TEST) win.webContents.openDevTools()
-  } else {
-    createProtocol('app')
-    // Load the index.html when not in development
-    win.loadURL('app://./index.html')
-  }
-
-  win.on('closed', () => {
-    win = null
-  })
-}
-
-// Quit when all windows are closed.
-app.on('window-all-closed', () => {
-  // On macOS it is common for applications and their menu bar
-  // to stay active until the user quits explicitly with Cmd + Q
-  if (process.platform !== 'darwin') {
-    app.quit()
-  }
-})
-
-app.on('activate', () => {
-  // On macOS it's common to re-create a window in the app when the
-  // dock icon is clicked and there are no other windows open.
-  if (win === null) {
-    createWindow()
-  }
-})
-
-// This method will be called when Electron has finished
-// initialization and is ready to create browser windows.
-// Some APIs can only be used after this event occurs.
-app.on('ready', async () => {
-  if (isDevelopment && !process.env.IS_TEST) {
-    // Install Vue Devtools
-    try {
-      await installVueDevtools()
-    } catch (e) {
-      console.error('Vue Devtools failed to install:', e.toString())
-    }
-  }
-  createWindow()
-})
-
-// Exit cleanly on request from parent process in development mode.
-if (isDevelopment) {
-  if (process.platform === 'win32') {
-    process.on('message', data => {
-      if (data === 'graceful-exit') {
-        app.quit()
-      }
-    })
-  } else {
-    process.on('SIGTERM', () => {
-      app.quit()
-    })
-  }
-}
-
-以上代码是1.5小节使用自动化方式安装后生成的。
-
-安装依赖包
-在项目根目录执行，安装全部依赖包：
-
-cnpm install
-
-如果安装过程中报错：Error: post install error, please remove node_modules before retry!可以忽略，不影响后续使用。
-
-1.7 编译并启动APP
-执行以下命令，开始编译APP，并启动开发环境APP：
-
-npm run electron:serve
-
-首次启动可能会等待很久，出现以下信息：
-
+```JavaScript
 INFO  Launching Electron...
 Failed to fetch extension, trying 4 more times
 Failed to fetch extension, trying 3 more times
 Failed to fetch extension, trying 2 more times
 ...
+```
 
-这是因为在请求安装vuejs devtools插件。需要科学上网才能安装成功。如果不能科学上网也没关系，耐心等待5次请求失败后会自动跳过。
+> 启动开发环境 npm run electron:serve
 
-编译成功后，就会出现开发环境的APP了。
-
-
-( ↑ windows启动界面 ↑ )
-
-( ↑ macOS启动界面 ↑ )
 ## 配置项目
 
 
 ### 配置electron
-```
+```JavaScript
 vue.config.js
 
 const path = require('path');
@@ -326,6 +161,117 @@ module.exports = {
   }
 };
 ```
+
+### Vue使用electron
+
+
+```JavaScript
+<!-- 报错：Uncaught ReferenceError: __dirname is not defined -->
+module.exports = {
+  pluginOptions: {
+    electronBuilder: {
+      nodeIntegration: true <!-- 是否启用node功能 -->
+    }
+  }
+}
+```
+
+### git忽略规则
+
+```
+.gitignore
+
+.DS_Store
+dist/electron/*
+dist/web/*
+build/*
+!build/icons
+!build/installer.nsh
+coverage
+node_modules/
+npm-debug.log
+npm-debug.log.*
+thumbs.db
+!.gitkeep
+yarn-error.log
+docs/dist/
+# local env files
+.env.local
+.env.*.local
+dist_electron/
+test.js
+```
+
+### webview与渲染进程renderer间通信
+
+```JavaScript
+与渲染进程之间的通信不同，渲染进程与webview之间的通信，在webview层通过调用sendToHost方法来向渲染进程通信；而在渲染进程测通过webview提供的ipc-message事件来向webview通信。具体如下面代码所示：
+
+// renderer环境，获取webview，然后注册事件
+webview.addEventListener('ipc-message', (event) => {
+  // 通过event.channel的值来判断webview发送的事件名
+  if (event.channel === 'webview_event_name') {
+    console.log(event.args[0]) // 123
+  }
+})
+webview.send('renderer_event_name', '456')
+
+// webview环境
+const {ipcRenderer} = require('electron')
+ipcRenderer.on('renderer_event_name', (e, message) => {
+  console.log(message); // 456
+  ipcRenderer.sendToHost('webview_event_name', '123')
+})
+```
+
+## 资料
+
+[手把手教你使用Electron5+vue-cli3开发跨平台桌面应用](https://juejin.im/post/6844903878429769742#heading-26)
+[vue-electron案例](https://github.com/Howie126313/vue-electron)
+
+
+## 通过协议唤起Electron应用
+采用协议通过浏览器访问，`myapp://startapp/here?a=1&b=2`，系统会去找到已经注册了 myapp 这个协议的应用，然后把 URL 当做参数传过去。
+
+```JavaScript
+const path = require('path');
+
+const gotTheLock = app.requestSingleInstanceLock();
+
+if (!gotTheLock) {
+  app.quit();
+}
+
+const args = [];
+if (!app.isPackaged) {
+  args.push(path.resolve(process.argv[1]));
+}
+args.push('--');
+const PROTOCOL = 'myapps';
+app.setAsDefaultProtocolClient(PROTOCOL, process.execPath, args);
+
+handleArgv(process.argv);
+
+app.on('second-instance', (event, argv) => {
+  if (process.platform === 'win32') {
+    // Windows
+    handleArgv(argv);
+  }
+});
+
+// macOS
+app.on('open-url', (event, urlStr) => {
+  handleUrl(urlStr);
+});
+
+function handleArgv(argv) {
+  const prefix = `${PROTOCOL}:`;
+  const offset = app.isPackaged ? 1 : 2;
+  const url = argv.find((arg, i) => i >= offset && arg.startsWith(prefix));
+  if (url) handleUrl(url);
+}
+```
+
 
 ## 通信原理
 
@@ -909,36 +855,6 @@ insert_final_newline = true
 
 [配置需求](https://cloud.tencent.com/developer/doc/1078)
 
-### git忽略规则
-
-```
-.gitignore
-
-.DS_Store
-dist/electron/*
-dist/web/*
-build/*
-!build/icons
-!build/installer.nsh
-coverage
-node_modules/
-npm-debug.log
-npm-debug.log.*
-thumbs.db
-!.gitkeep
-yarn-error.log
-docs/dist/
-# local env files
-.env.local
-.env.*.local
-dist_electron/
-test.js
-```
-
-## 资料
-
-[手把手教你使用Electron5+vue-cli3开发跨平台桌面应用](https://juejin.im/post/6844903878429769742#heading-26)
-[vue-electron案例](https://github.com/Howie126313/vue-electron)
 
 
 

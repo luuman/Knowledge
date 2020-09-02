@@ -1,5 +1,4 @@
-
-## Electron概况
+## Electron 概况
 
 ```Mermaid
 graph TB
@@ -25,9 +24,9 @@ graph TB
 
 > 主进程
 
-`app` 应用的声明周期、属性Dock等
+`app` 应用的声明周期、属性 Dock 等
 `Browserwindow` 管理窗口
-`Ipcmain` IPC通信
+`Ipcmain` IPC 通信
 `Menu` GUI
 `Tray` GUI
 `Menuitem`
@@ -66,37 +65,39 @@ graph TB
 `webframe`
 
 ## 进程
-Electron提供了IPC通讯模块
-主进程ipcMain 与 渲染进程ipcRenderer都是EventEmitter对象
+
+Electron 提供了 IPC 通讯模块
+主进程 ipcMain 与 渲染进程 ipcRenderer 都是 EventEmitter 对象
 
 ### 进程之间通讯
+
 场景：通知事件、数据传输、共享信息
 
 #### 渲染进程到主进程通信
 
-> Callback方法：
+> Callback 方法：
 
-发起ipcRenderer.send(channel, ...args) 主进程响应ipcMain.on(channel, handler)
+发起 ipcRenderer.send(channel, ...args) 主进程响应 ipcMain.on(channel, handler)
 
-> Promise方法（Electron7.0之后，处理请求 + 响应模式）：
+> Promise 方法（Electron7.0 之后，处理请求 + 响应模式）：
 
-ipcRenderer.invoke(channel, ...args) 主进程响应ipcMain.handle(channel, handler)
+ipcRenderer.invoke(channel, ...args) 主进程响应 ipcMain.handle(channel, handler)
 
 #### 主进程到渲染进程通信
 
 > webContent
 
-通过webContent.send(channel) 渲染进程响应ipcRenderer.on(channel, handler)
-`webContent`窗体内容`BrowserWindow`的API
+通过 webContent.send(channel) 渲染进程响应 ipcRenderer.on(channel, handler)
+`webContent`窗体内容`BrowserWindow`的 API
 
 #### 渲染进程与渲染进程之间通信
 
 - 通知事件
-  - webContent(Electron 5之前)
-  - ipcRenderer.sendTo（Electron 5之后）
+  - webContent(Electron 5 之前)
+  - ipcRenderer.sendTo（Electron 5 之后）
 - 数据共享
-  - Web技术（loaclStrage、sessionStorage、indexedDB等）
-  - 使用remote
+  - Web 技术（loaclStrage、sessionStorage、indexedDB 等）
+  - 使用 remote
 
 > ipcRenderer.sendTo
 
@@ -117,9 +118,10 @@ ipcRenderer.on(channel, handler)
 ```
 
 注意：
-- 使用remote，使用不好会造成卡顿。
-- 少用remote模块
-- 不要用sync模式
+
+- 使用 remote，使用不好会造成卡顿。
+- 少用 remote 模块
+- 不要用 sync 模式
 - 在请求 + 响应的通信模式下，需要自定义超时限制
 
 ## 软件更新
@@ -127,20 +129,22 @@ ipcRenderer.on(channel, handler)
 ### 难题
 
 > 权限问题：UAC&权限问题
-- windows计划任务
+
+- windows 计划任务
 - windows Services
 - 不操作管理权限文件、注册表
 
 > 更新体验
+
 - 增量更新
 - 自动更新
 
-| 更新方式 | 优点 | 缺点 | 使用场景 |
-| -----|:----:| ----:| ----:|
-| 手动更新    | 简单、稳定    | 繁琐、慢、影响使用、效率低    | 低频更新、降级方案、粘性高    |
-| 文件覆盖    | 下载过程块    | 更新慢、实现复杂、稳定性差、写文件失败    | 打补丁    |
-| 自动更新    |  稳定、快、打扰少   | 实现复杂    | 高频更新、体验要求    |
-| 应用商城    |  统一、稳定   | 受应用商店限制    | 操作系统应用软件    |
+| 更新方式 |       优点       |                                   缺点 |                   使用场景 |
+| -------- | :--------------: | -------------------------------------: | -------------------------: |
+| 手动更新 |    简单、稳定    |             繁琐、慢、影响使用、效率低 | 低频更新、降级方案、粘性高 |
+| 文件覆盖 |    下载过程块    | 更新慢、实现复杂、稳定性差、写文件失败 |                     打补丁 |
+| 自动更新 | 稳定、快、打扰少 |                               实现复杂 |         高频更新、体验要求 |
+| 应用商城 |    统一、稳定    |                         受应用商店限制 |           操作系统应用软件 |
 
 ### 手动更新
 
@@ -167,7 +171,6 @@ gantt
     打开安装包覆盖        :a1, 2016-06-30, 0d
 ```
 
-
 ```Mermaid
 gantt
   title 文件覆盖
@@ -192,9 +195,6 @@ gantt
     将补丁复制到应用目录        :a1, 2016-06-30, 0d
     重新启动        :a1, 2016-06-30, 0d
 ```
-
-
-
 
 ```Mermaid
 gantt
@@ -226,46 +226,50 @@ graph TB
 
 ### 更新
 
-> Web化
-- 将渲染进程（业务）放置在远程HTTPS
+> Web 化
+
+- 将渲染进程（业务）放置在远程 HTTPS
 - 优点：更新快、体验极好
 - 无法离线使用、主进程更新复杂、多版本兼容问题（壳子与业务之间的版本）
 - 场景：重业务、壳子更新少（后台管理系统）
 
 > 文件覆盖
 
-[如何实现electron的在线升级热更新功能](https://www.zhangxinxu.com/wordpress/2017/06/how-electron-online-update-hot-fix/)
+[如何实现 electron 的在线升级热更新功能](https://www.zhangxinxu.com/wordpress/2017/06/how-electron-online-update-hot-fix/)
 
 > 自动更新（官方）
 
-- 基于Squirrel框架完成自动更新
+- 基于 Squirrel 框架完成自动更新
 
 > Electron-builder
 
 [与官网对比](https://www.electron.build/auto-update.htmlhttps://www.electron.build/auto-update.html)
 
-优点：接入简单、windows支持签名验证、支持进度条、
+优点：接入简单、windows 支持签名验证、支持进度条、
 
-缺点： windows更新体验没有内置的好、存在权限问题
+缺点： windows 更新体验没有内置的好、存在权限问题
 
 ### 增量更新
 
 增量更新：只更新需要更新的地方，增量包（差分包、补丁包）：新旧包的差异包。
 
 增量技术：
+
 - bsdiff/bspatch：使用二进制文件、开源、免费、广泛使用（尤其移动端）
 - Xdelta3：适用二进制
-- Courgette：谷歌提出，bspatch优化版本
+- Courgette：谷歌提出，bspatch 优化版本
 - RTpatch：商业付费
 
 [对比参考](https://www.shangyexin.com/2018/09/28/delta_algorithm/)
 
 ### 灰度发布
+
 根据一定规则发布：用户特征、客户端特征、
 
 ## API
 
 ### 无边框窗口的拖动
+
 [Electron 无边框窗口的拖动](https://www.jianshu.com/p/96327b044e85)
 
 ### 去掉标题栏
@@ -279,17 +283,14 @@ new BrowserWindow({
 #### 拖拽问题
 
 > CssDrag
+
 ```
 style="-webkit-app-region: drag"
 ```
 
 注意：
+
 1. 不仅右键菜单，设置了这个样式的元素几乎无法响应所有的鼠标事件，包括点击、拖拽等。如果需要拖拽整个窗口，就相当尴尬了。
-
-
-
-
-
 
 ## app
 
@@ -318,6 +319,7 @@ if (isOsx) {
 ## app, BrowserWindow, Menu, Tray, globalShortcut, ipcMain, shell, powerMonitor
 
 ### 菜单
+
 创建原生应用菜单和上下文菜单。
 [学透 Electron 自定义菜单](https://segmentfault.com/a/1190000020521879)
 
@@ -327,7 +329,7 @@ dockMenu
 
 ### Menu
 
-#### Mac状态栏
+#### Mac 状态栏
 
 > Menu
 
@@ -363,19 +365,17 @@ Menu.setApplicationMenu(mainMenu)
 
 > type
 
-| type | 名称 |
-| -----|:----:|
-| checkbox    |   多选  |
-| radio       |  单选   |
-| separator   |  下拉框   |
-| 应用商城     |     |
-
-
+| type      |  名称  |
+| --------- | :----: |
+| checkbox  |  多选  |
+| radio     |  单选  |
+| separator | 下拉框 |
+| 应用商城  |        |
 
 ### Tray
 
 上下文菜单
-上下文菜单(context menu)就是我们通常说的右键菜单，文章开头有展示效果。需要注意的是：上下文菜单，需要在渲染进程中进行实现。在渲染进程中是需要通过remote模块调用主进程中的模块。
+上下文菜单(context menu)就是我们通常说的右键菜单，文章开头有展示效果。需要注意的是：上下文菜单，需要在渲染进程中进行实现。在渲染进程中是需要通过 remote 模块调用主进程中的模块。
 
 实现上下文菜单很简单，只需要监听到 contextmenu 事件，然后将菜单展示出来即可。
 
@@ -384,29 +384,29 @@ const { remote } = require('electron');
 const { Menu } = remote;
 
 const createContextMenu = () => {
-    const contextTemplate = [
-        {
-            label: 'Cut',
-            role: 'cut'
-        },
-        {
-            label: 'Copy',
-            role: 'copy'
-        }
-    ];
-    const contextMenu = Menu.buildFromTemplate(contextTemplate);
-    return contextMenu;
+const contextTemplate = [
+{
+label: 'Cut',
+role: 'cut'
+},
+{
+label: 'Copy',
+role: 'copy'
+}
+];
+const contextMenu = Menu.buildFromTemplate(contextTemplate);
+return contextMenu;
 }
 
 window.addEventListener('contextmenu', (event) => {
-    event.preventDefault();
-    const contextMenu = createContextMenu();
-    contextMenu.popup({
-        window: remote.getCurrentWindow()
-    });
+event.preventDefault();
+const contextMenu = createContextMenu();
+contextMenu.popup({
+window: remote.getCurrentWindow()
+});
 }, false);
 
-### Dock菜单
+### Dock 菜单
 
 ```
 // main.js
@@ -453,12 +453,12 @@ app.on('ready', () => {
 })
 ```
 
-Super键是指 Windows 和 Linux 系统上的 Windows 键，但在 macOS 里为 Cmd 键.
+Super 键是指 Windows 和 Linux 系统上的 Windows 键，但在 macOS 里为 Cmd 键.
 
 > 可用的功能键
 
-Command (缩写为Cmd)
-Control (缩写为Ctrl)
+Command (缩写为 Cmd)
+Control (缩写为 Ctrl)
 CommandOrControl (缩写为 CmdOrCtrl)
 Alt
 Option
@@ -471,7 +471,7 @@ Super
 0 to 9
 A to Z
 F1 to F24
-类似~, !, @, #, $的标点符号
+类似~, !, @, #, \$的标点符号
 Plus
 Space
 Tab
@@ -495,4 +495,5 @@ PrintScreen
 [网易云音乐 API](https://github.com/Binaryify/NeteaseCloudMusicApi)
 
 ### 调试
-[调试Electron程序](https://www.jianshu.com/p/98237341a08e)
+
+[调试 Electron 程序](https://www.jianshu.com/p/98237341a08e)
