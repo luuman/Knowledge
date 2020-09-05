@@ -3,6 +3,16 @@
 import { app, protocol, BrowserWindow, ipcMain, dialog, shell } from 'electron'
 ```
 
+
+### 程序地址
+
+```JavaScript
+var exePath = path.dirname(app.getPath('exe'))
+```
+
+### electron-log
+可视化日志log
+
 ### 启动下载
 ```JavaScript
 ipcMain.on('download', (event, fileUrl) => {
@@ -82,9 +92,10 @@ wmic process where caption=”XXXX.exe” get caption,commandline /value
 ```JavaScript
 taskkill /F /IM XXX.exe
 ```
-启动
-
+### 启动
+```JavaScript
 start 应用绝对路径
+```
 
 ## mac
 
@@ -128,13 +139,49 @@ killall 应用名字
 open -a 应用.app
 ```
 
-
 ### 打开应用
 ```JavaScript
 ipcMain.on('openApp', (event, appName) => {
   exec(`open -a "${appName}.app"`, (error, stdout, stderr) => {
     console.log(error, stdout, stderr)
   })
+})
+```
+## 唤起应用
+[两种方式的mac/win注册协议唤起Electron应用](https://juejin.im/post/6844904176246325255)
+
+### url scheme
+
+```JavaScript
+OmniFocus:///add?name=[prompt]&note=[prompt]
+```
+
+[URL Schemes 使用详解](https://sspai.com/post/31500)
+
+### open
+> 用法
+
+```JavaScript
+// 打开地址
+open /Applications/xxx(应用的名称).app
+
+open /Applications/Emacs.app --args ~/workspace/assignment.sh
+// 打开应用名称
+open -a “xxx(应用的名称).app” "文件地址"
+open -a Emacs ~/workspace/assignment.sh
+// url scheme + 参数
+open myapp://host/path?a=1&b=2
+```
+
+### Shell
+
+```JavaScript
+// shell启动浏览器
+shell.openExternal('http://www.google.com')
+// 地址打开A应用
+shell.openPath(filePath).then(res => {
+  console.log('解压完毕')
+  event.reply('download-finish', filePath)
 })
 ```
 
@@ -164,6 +211,7 @@ ipcMain.on('appIs', (event, appName) => {
 ```JavaScript
 
 process.noAsar = true
+// 设置它为 true 可以使 asar 文件在node的内置模块中实效
 
 ipcMain.on('extractFile', (event, filePath, desPath) => {
   const extract = require('extract-zip')
@@ -181,6 +229,7 @@ ipcMain.on('extractFile', (event, filePath, desPath) => {
   }
 })
 ```
+## 其他解压
 
 ### compressing
 
