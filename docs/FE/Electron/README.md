@@ -497,3 +497,9 @@ PrintScreen
 ### 调试
 
 [调试 Electron 程序](https://www.jianshu.com/p/98237341a08e)
+
+
+## i18next
+
+npm install --save @panter/vue-i18next
+npm install --save i18next

@@ -209,10 +209,8 @@ ipcMain.on('appIs', (event, appName) => {
 
 ### extractFile
 ```JavaScript
-
 process.noAsar = true
 // 设置它为 true 可以使 asar 文件在node的内置模块中实效
-
 ipcMain.on('extractFile', (event, filePath, desPath) => {
   const extract = require('extract-zip')
   // const fs = require('fs')
@@ -229,6 +227,55 @@ ipcMain.on('extractFile', (event, filePath, desPath) => {
   }
 })
 ```
+
+> 用法
+
+[extract源码](https://npmdoc.github.io/node-npmdoc-extract-zip/build/apidoc.html)
+
+```JavaScript
+const extract = require('extract-zip')
+async function main () {
+  try {
+    await extract(source, { dir: target })
+    console.log('Extraction complete')
+  } catch (err) {
+    // handle any errors
+  }
+}
+```
+dir - 默认为 process.cwd()
+defaultDirMode —— 整数 - 目录模式（权限）默认为493（八进制0755整数）
+defaultFileMode —— 整数 - 文件模式（权限）默认为420（八进制0644整数）
+onEntry —— 函数 - 如果存在，将使用（entry，zipfile）调用，entry 是从yauzl 的 entry 事件转发的zip文件中的每个条目。 zipfile 是 yauzl 实例
+仅当 zip 文件中未设置权限时才使用默认模式。
+
+> 乱码
+
+```JavaScript
+const iconv = require('iconv-lite')
+// 用于在node当中处理在各种操作系统出现的各种奇特编码，该模块不提供读写文件的操作，只提供文件编码转换的功能。
+const extract = require('extract-zip')
+async function fileZip () {
+  try {
+    await extract(source, {
+      dir: target,
+      onEntry: (entry，zipfile) => {
+        // entry 文件目录实例
+        // zipfile 压缩文件实例
+        item.fileName = iconv.decode(iconv.encode(item.fileName, 'CP437'), 'UTF-8')
+    }})
+    console.log('Extraction complete')
+  } catch (err) {
+    // handle any errors
+  }
+}
+// iconvLite.decode(data,'gbk') 默认为utf8编码格式的字符串
+// iconv.decode 解码
+// iconv.encode 编译
+// Buffer对象
+
+```
+
 ## 其他解压
 
 ### compressing
@@ -322,3 +369,35 @@ ipcMain.on('StreamZip', (event, filePath, desPath) => {
   })
 })
 ```
+
+Electron项目搭建需求点：
+1. electron项目搭建（2天）
+1. mock本地数据（0.5天）
+1. vuex模块化（0.5天）
+1. api封装（0.5天）
+1. 登录权限（router）（0.5天）
+1. 应用打包（win/Mac）（0.5天）
+1. 自动化测试（0.2天）
+1. 开发文档docsify（0.2天）
+1. 公共组件（0.2天）
+1. Tool（0.2天）
+
+底层功能封装：
+1. 解压（1天）
+1. 下载（可视化、下载进度、下载速度、剩余时间）（2天）
+1. 启动（win/Mac）（1天）
+1. 应用检测（win/Mac）（2天）
+1. 应用是否启动（win/Mac）（2天）
+1. 更新机制（全量更新、增量更新）（3天）
+1. 打包压缩DMG
+
+首屏优化方案：
+1. 滞后显示窗口（0.5天）
+1. 骨架图（loading.html）（1天）
+
+下载器：（待研究）
+
+
+## 打包问题
+[在vue-cli-plugin-electron-builder下用electron:build打包或生成应用程序的两种方法](https://www.jianshu.com/p/1dbb96bc8f37)
+vuecli 

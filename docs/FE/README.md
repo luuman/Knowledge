@@ -90,3 +90,13 @@ NODE_ENV = testing
 
 	macappstore://itunes.apple.com/
 
+
+
+
+
+# 面试题
+
+## Node创建子进程方式
+spawn()，fork()，exec()，execFile()
+
+## 

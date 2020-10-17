@@ -858,5 +858,112 @@ insert_final_newline = true
 
 
 
+## 扩展
+
+### 启动白屏优化
+
+> 白屏原因
+
+窗口显示到页面渲染完成的时间差
+```Mermaid
+graph TB
+    subgraph A1 [应用启动]
+    api1( app.on < will-finish-launching )
+    end
+    subgraph A2 [初始化完成]
+    api2(app.on < ready )
+    end
+    subgraph A3 [窗口建立]
+    api3(app.on < browser-window-created )
+    end
+    subgraph A4 [窗口显示]
+    api4(app.on < show )
+    end
+    subgraph A5 [页面渲染]
+    api5(app.on < web-contents-created )
+    end
+    api1 --> api2
+    api2 --> |创建窗口|api3
+    api3 --> |白屏问题所在|api4
+    api4 --> |白屏问题所在|api5
+```
+
+> 隐藏窗口
+
+在加载页面时，渲染进程第一次完成绘制时，会发出`ready-to-show`事件 。 在此事件后显示窗口将没有视觉闪烁
+
+```javascript
+mainWindow = new BrowserWindow({
+  ...
+  // 先隐藏
+  show: false
+})
+mainWindow.on('ready-to-show', function () {
+  // 初始化后再显示
+  mainWindow.show()
+})
+```
+
+> 初始化骨架图
+
+采用新建view去遮罩内容的显示，等待显示完成加载出来
+
+```Mermaid
+graph TB
+  subgraph A1[页面渲染]
+  api1(窗口创建)
+  api2(窗口显示)
+  api1 --> |白屏问题|B3(BrowserWindow) --> api2
+  api1 --> |静态页面 < 1s|show(B1加载完成) --> |窗口显示|B1(BrowserWindow) --> api2
+  api1 --> |vue渲染时间|show1(view加载完成) --> |优化|BrowserView --> B2(BrowserWindow) --> api2
+  end
+```
+
+```javascript
+function createWindow() {
+  win = new BrowserWindow({
+    // 隐藏窗口
+    show: false,
+    // 背景透明
+    transparent: true,
+    // mac标题栏
+    titleBarStyle: 'hiddenInset',
+    // 隐藏标题栏
+    frame: false,
+  })
+  // 创建View遮罩
+  const view = new BrowserView({})
+  win.setBrowserView(view)
+  view.setBounds({ x: 0, y: 0, width: 1050, height: 700 })
+  if (process.env.WEBPACK_DEV_SERVER_URL) {
+    win.loadURL(process.env.WEBPACK_DEV_SERVER_URL)
+    view.webContents.loadURL(process.env.WEBPACK_DEV_SERVER_URL + '/loading.html')
+    if (!process.env.IS_TEST) win.webContents.openDevTools()
+  } else {
+    createProtocol('app')
+    view.webContents.loadURL('app://./loading.html')
+    win.loadURL('app://./index.html')
+  }
+  // 显示窗口
+  view.webContents.on('dom-ready', () => {
+    console.log('dom-ready', new Date())
+    win.show()
+  })
+  // 关闭遮罩
+  ipcMain.on('stop-loading-main', () => {
+    win.removeBrowserView(view)
+  })
+}
+```
+
+view.webContents.on('dom-ready' > win.on('ready-to-show' 优先级大只会执行前者
 
 
+
+### 安装程序优化
+
+#### dmg背景图片设置
+#### dmg图标生成
+#### win图片设置
+#### win安装包流程
+#### win安装包优化
