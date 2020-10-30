@@ -40,6 +40,73 @@
 使用eventBus,这种情况下还是比较适合使用, 但是碰到多人合作开发时, 代码维护性较低, 可读性也低
 使用Vuex来进行数据管理, 但是如果仅仅是传递数据, 而不做中间处理,使用Vuex处理感觉有点大材小用了.
 
+```javascript
+// father组件
+<template>
+  <div id="father">
+    <child :temp="tempdata" @tempFn="fatherFn" prop='$attrs不会传递child组件中定义的props
+     值'>
+    </child>
+  </div>
+</template>
+<script>
+import Child from './child'
+export default {
+   component: { Child },
+  data() {
+    tempdata: 'i am father'
+  },
+  methods: {
+    fatherFn: function() {
+      console.log('father function!');
+    }
+  }
+}
+</script>
+
+// child组件
+<template>
+  <div id="child">
+    <son v-bind="$attrs" v-on="$listener"></son>
+  </div>
+</template>
+<script>
+import Son from './son'
+export default {
+  component: {Son},
+  props: { 'prop' },
+  data() {
+    return {}
+  },
+  mounted() {
+    // 结果显示为$attrs.temp，不包含prop
+    console.log(this.$attrs)
+    this.$emit('tempFn')
+  },
+  methods: {}
+}
+</script>
+
+// son组件
+<template>
+  <div id="son">
+    {{ $attrs.temp }}
+  </div>
+</template>
+<script>
+export default {
+  prop: {},
+  data() {
+    return {}
+  },
+  mounted() {
+    this.$emit('tempFn')
+  },
+  methods: {}
+}
+</script>
+```
+
 ## eventBus发布/订阅
 概念：eventBus 又称为事件总线，在vue中可以使用它来作为沟通桥梁的概念, 就像是所有组件共用相同的事件中心，可以向该中心注册发送事件或接收事件， 所以组件都可以通知其他组件。
 
