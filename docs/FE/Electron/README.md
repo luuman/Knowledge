@@ -503,3 +503,27 @@ PrintScreen
 
 npm install --save @panter/vue-i18next
 npm install --save i18next
+
+
+# 报错处理
+
+## vue-cli3环境变量
+
+```
+WebpackOptionsValidationError: Invalid configuration object. Webpack has been initialised using a configuration object that does not match the API schema.
+ - configuration.mode should be one of these:
+   "development" | "production" | "none"
+   -> Enable production optimizations or development hints.
+WebpackOptionsValidationError: Invalid configuration object. Webpack has been initialised using a configuration object that does not match the API schema.
+ - configuration.mode should be one of these:
+   "development" | "production" | "none"
+   -> Enable production optimizations or development hints.
+    at webpack (/Users/luuman/Code/IM/reword/node_modules/webpack/lib/webpack.js:31:9)
+    at bundleMain (/Users/luuman/Code/IM/reword/node_modules/vue-cli-plugin-electron-builder/index.js:682:17)
+    at startElectron (/Users/luuman/Code/IM/reword/node_modules/vue-cli-plugin-electron-builder/index.js:299:49)
+    at /Users/luuman/Code/IM/reword/node_modules/vue-cli-plugin-electron-builder/index.js:391:7
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:93:5)
+```
+
+问题分析："development" | "production" | "none"，可以自定义其他属性。

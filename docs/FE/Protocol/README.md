@@ -5,23 +5,24 @@
 
 ```Mermaid
 graph TB
-    subgraph OSI参考模型
-    b1(应用层 Application) --> b11(表示层) --> b12(会话层) --> b2(传输层 Transport) --> b3(网络层 Network) --> b4(数据链路层 Link) --> b5(物理层 Physical)
-    end
     subgraph TCP/IP五层模型
     a1(应用层 Application) --> a2(传输层 Transport) --> a3(网络层 Network) --> a4(数据链路层 Link) --> a5(物理层 Physical)
     end
-    b1 --> a1
-    b11 --> a1
-    b12 --> a1
-    b2 --> a2
-    b3 --> a3
-    b4 --> a4
-    b5 --> a5
+    IP --> a3
+    TCP --> a2
+    UDP --> a2
+    HTTP --> a1
+    MQTT --> a1
+    subgraph OSI功能
+    c1(应用层 Application) -->c11(表示层) -->c12(会话层) -->c2(传输层 Transport) -->c3(网络层 Network) -->c4(数据链路层 Link) -->c5(物理层 Physical)
+    end
+    subgraph OSI参考模型
+    b1(文件传输 邮件 虚拟终端) --> b11(数据转换与加密) --> b12(建立与解除联系) --> b2(端对端的接口) --> b3(路由选择) --> b4(错误检测 传输地址帧) --> b5(二进制数据传输)
+    end
 ```
 
 
-
+![](https://user-gold-cdn.xitu.io/2017/11/11/690219fae5b0587fa26e2dee545e6200?imageView2/0/w/1280/h/960/format/webp/ignore-error/1)
 
 
 

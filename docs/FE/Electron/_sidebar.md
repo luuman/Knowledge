@@ -1,5 +1,8 @@
 - [前端](/)
 	- [Electron](FE/Electron/)
 	- [Electron初探](FE/Electron/Study.md)
+	- [API Main](FE/Electron/ApiMain.md)
+	- [API Render](FE/Electron/ApiRender.md)
+	- [API Page](FE/Electron/ApiPage.md)
 	- [解压](FE/Electron/Zip.md)
 	- [脚手架测试](FE/Electron/VueCli.md)
