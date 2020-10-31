@@ -4,21 +4,20 @@
 
 ### 父子组件通信
 1. props
-1. $parent / $children
+1. $parent / $children（避免使用）
 1. provide / inject
-1. ref
-1. $attrs / $listeners
+1. ref（可以获取子实例）
+1. $attrs / $listeners（灵活）
 
 ### 兄弟组件通信
 1. eventBus
 1. vuex
 
 ### 跨级通信
-1. eventBus
-1. Vuex
-1. provide / inject
-1. $attrs / $listeners
-
+1. eventBus（使用主要、可以触发）
+1. Vuex（体积大）
+1. provide / inject（冗余、需要一级一级传递）
+1. $attrs / $listeners（更灵活、轻便）
 
 ## props
 概念：父组件通过props的方式向子组件传递数据，而通过`$emit`子组件可以向父组件通信。
@@ -31,50 +30,80 @@
 ## provide / inject
 概念：provide/ inject 是vue2.2.0新增的api, 简单来说就是父组件中通过provide来提供变量, 然后再子组件中通过inject来注入变量。
 
+```javascript
+provide(){
+  return{
+    test:this
+  }
+},
+
+// 子集
+inject:['test'],
+mounted(){
+  console.log('---')
+  console.log(this.test)
+},
+computed:{
+  myzz(){ //使用计算属性动态监听上(n)级组件的某个属性变化
+    return this.test.zz
+  }
+},
+methods:{  //更改属性，同时我们的计算属性也会得到更新
+  changeProvide(){
+    this.test.zz = 'changed'
+  }
+},
+```
 ## ref
 概念：ref：如果在普通的 DOM 元素上使用，引用指向的就是 DOM 元素；如果用在子组件上，引用就指向组件实例，可以通过实例直接调用组件的方法或访问数据
 
 ## attrs
-概念：是vue2.4.0引入的该方法，为了解决跨级的组件
+概念：是vue2.4.0引入的该方法，为了解决跨多级的组件
 使用props绑定来进行一级一级的信息传递, 如果D组件中状态改变需要传递数据给A, 使用事件系统一级级往上传递
 使用eventBus,这种情况下还是比较适合使用, 但是碰到多人合作开发时, 代码维护性较低, 可读性也低
 使用Vuex来进行数据管理, 但是如果仅仅是传递数据, 而不做中间处理,使用Vuex处理感觉有点大材小用了.
 
-```javascript
+1. 多级传递props，
+1. 
+1. 
+
+```vue
 // father组件
 <template>
   <div id="father">
-    <child :temp="tempdata" @tempFn="fatherFn" prop='$attrs不会传递child组件中定义的props
-     值'>
-    </child>
+    <Child :temp="tempdata" @tempFn="fatherFn" prop="$attrs 不会传递child 组件中定义的props值"></Child>
   </div>
 </template>
 <script>
-import Child from './child'
-export default {
-   component: { Child },
-  data() {
-    tempdata: 'i am father'
-  },
-  methods: {
-    fatherFn: function() {
-      console.log('father function!');
+  import Child from './child.vue'
+  export default {
+    components: { Child },
+    data() {
+      return {
+        tempdata: 'i am father'
+      }
+    },
+    methods: {
+      fatherFn () {
+        console.log('father function!')
+      }
     }
   }
-}
 </script>
 
 // child组件
 <template>
   <div id="child">
-    <son v-bind="$attrs" v-on="$listener"></son>
+    <Son v-bind="$attrs" v-on="$listener"></Son>
   </div>
 </template>
 <script>
-import Son from './son'
+import Son from './son.vue'
 export default {
-  component: {Son},
-  props: { 'prop' },
+  components: { Son },
+  props: {
+    prop: String
+  },
   data() {
     return {}
   },
@@ -100,6 +129,7 @@ export default {
     return {}
   },
   mounted() {
+    console.log(this.$attrs)
     this.$emit('tempFn')
   },
   methods: {}
