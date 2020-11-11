@@ -1,2 +1,3 @@
 - [前端](/)
-	- [协议](FE/JavaScript/)
+	- [JavaScript](FE/JavaScript/)
+	- [正则表达式](FE/JavaScript/regular/)

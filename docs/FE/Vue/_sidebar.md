@@ -2,3 +2,5 @@
 	- [Vue](FE/Vue/)
 	- [Router](FE/Vue/Router.md)
 	- [通信方式](FE/Vue/Props.md)
+	- [diff算法](FE/Vue/diff.md)
+	- [Vue SSR](FE/Vue/vueSSR.md)

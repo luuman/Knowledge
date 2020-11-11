@@ -1,22 +1,4 @@
-正则匹配
-title: JavaScript RegExpObjects 正则表达式
-date: 2018-02-27 18:29:00
-description:
-categories:
-- JavaScript
-tags:
-- JavaScript
-toc: true
-author:
-comments:
-original:
-permalink:
-image: https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=3672488672,3997296997&fm=26&gp=0.jpg
----
-一个个音符杂乱无章的组合在一起，弹奏出的或许就是噪音，同样的音符经过作曲家的手，就可以谱出非常动听的乐曲，一个演奏者同样可以照着乐谱奏出动听的乐曲，但他/她或许不知道该如何去改变音符的组合，使得乐曲更动听。
-作为正则的使用者也一样，不懂正则引擎原理的情况下，同样可以写出满足需求的正则，但是不知道原理，却很难写出高效且没有隐患的正则。所以对于经常使用正则，或是有兴趣深入学习正则的人，还是有必要了解一下正则引擎的匹配原理的。
-<!-- more -->
-
+## 正则表达式
 # 定义
 正则表达式（regular expression）是一个描述字符模式的对象，使用正则表达式可以进行强大的模式匹配和文本检索与替换功能。
 

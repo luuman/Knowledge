@@ -206,3 +206,52 @@ graph TB
 []()
 
 ## MQTT.js源码分析
+
+```javascript
+var MqttClient = require('./lib/client')
+var connect = require('./lib/connect')
+var Store = require('./lib/store')
+
+module.exports.connect = connect
+
+// Expose MqttClient
+module.exports.MqttClient = MqttClient
+module.exports.Client = MqttClient
+// 存储
+module.exports.Store = Store
+```
+```javascript
+```
+
+> client.js
+
+```javascript
+// work
+if (packet) {
+  debug('work :: packet pulled from queue')
+  that._handlePacket(packet, nextTickWork, buf)
+}
+
+// _handlePacket
+case 'unsuback':
+  this._handleAck(packet, buf)
+
+// _handleAck
+// 清除缓存并且回调
+this.outgoingStore.del(packet, cb, buf)
+```
+
+> store.js
+
+```javascript
+Store.prototype.del = function (packet, cb, buf) {
+  packet = this._inflights.get(packet.messageId)
+  if (packet) {
+    this._inflights.delete(packet.messageId)
+    cb(null, packet, buf)
+  } else if (cb) {
+    cb(new Error('missing packet'))
+  }
+  return this
+}
+```
