@@ -1,10 +1,15 @@
-## Page API
-# 窗口开启
+## 页面API
+# window.open
 创建并开启新窗口，多次调用仅有一个同一`frameName`窗口。
 
 ## 创建
+
 ```JavaScript
 window.open(url[, frameName][, features])
+```
+
+```JavaScript
+// winOpen
 url: 网址
 frameName: 命名
 features: 字符串参数，逗号分隔
@@ -15,39 +20,19 @@ transparent： 空：false，有值：true
 nodeIntegration
 ```
 
-```JavaScript
-```
-当在界面中使用  来创建一个新的窗口时候，将会创建一个 BrowserWindow 的实例，并且将返回一个标识，这个界面通过标识来对这个新的窗口进行有限的控制.
+## 实例
 
-这个标识对传统的web界面来说，通过它能对子窗口进行有限的功能性兼容控制. 想要完全的控制这个窗口，可以直接创建一个 BrowserWindow .
+> winOpen.blur() 子窗口的失去焦点
 
-新创建的 BrowserWindow 默认为继承父窗口的属性参数，想重写属性的话可以在 features 中设置他们.
+> winOpen.close() 强行关闭子窗口，忽略卸载事件
 
-url String
-frameName String (可选)
-features String (可选)
-创建一个新的window并且返回一个 .
+> winOpen.closed 在子窗口关闭之后恢复正常
 
-features 遵循标准浏览器的格式，但是每个feature 应该作为 BrowserWindow 参数的一个字段.
+> winOpen.eval(code) code String评估子窗口的代码
 
-window.opener.postMessage(message, targetOrigin)
-message String
-targetOrigin String
-通过指定位置或用 * 来代替没有明确位置来向父窗口发送信息.
+> winOpen.focus() 子窗口获得焦点(让其显示在最前)
 
-## BrowserWindowProxy
-
-> blur() 子窗口的失去焦点
-
-> close() 强行关闭子窗口，忽略卸载事件
-
-> closed 在子窗口关闭之后恢复正常
-
-> eval(code) code String评估子窗口的代码
-
-> focus() 子窗口获得焦点(让其显示在最前)
-
-> postMessage(message, targetOrigin)
+> winOpen.postMessage(message, targetOrigin)
 
 ## 通信
 
@@ -82,6 +67,7 @@ winOpen.eval (`window.opener.postMessage('dsdfasdf', 'http://localhost:8081')`);
 
 ## 监听开启新窗口
 ```JavaScript
+// 主窗口 -> 创建窗口
 mainWindow.webContents.on('new-window', (event, url, frameName, disposition, options, additionalFeatures) => {
   if (frameName === 'oauth') {
     // open window as modal
@@ -105,6 +91,122 @@ mainWindow.webContents.on('new-window', (event, url, frameName, disposition, opt
   }
 })
 ```
+
+### 模态窗口
+
+```JavaScript
+// 主窗口
+const mainWindow = new BrowserWindow({
+  width: 800,
+  height: 600,
+  webPreferences: {
+    nativeWindowOpen: true
+  }
+})
+mainWindow.webContents.on('new-window', (event, url, frameName, disposition, options, additionalFeatures) => {
+  if (frameName === 'modal') {
+    // open window as modal
+    event.preventDefault()
+    Object.assign(options, {
+      modal: true,
+      parent: mainWindow,
+      width: 100,
+      height: 100
+    })
+    event.newGuest = new BrowserWindow(options)
+    event.newGuest.webContents.on('close', () => {
+      console.log('newGuest closed!')
+      // 关闭 childId
+      if (childId) childId.close()
+    })
+  }
+})
+```
+### 自定义模态窗口
+
+```JavaScript
+// 主窗口
+const win = appManager.windowManager.mainWindow.win
+win.webContents.on('new-window', (event, url, frameName, disposition, options, additionalFeatures) => {
+  let childId = ''
+  if (frameName === 'login') {
+    childId = new BrowserWindow({
+      modal: true,
+      parent: win,
+      width: 1,
+      height: 1
+    })
+  }
+  if (frameName === 'oauth') {
+    // open window as modal
+    event.preventDefault()
+    Object.assign(options, {
+      modal: true,
+      width: 1000,
+      height: 1000
+    })
+    event.newGuest = new BrowserWindow(options)
+    event.newGuest.loadURL(url)
+    event.newGuest.webContents.openDevTools({ mode: 'detach' })
+    event.newGuest.webContents.on('will-navigate', (event, url) => {
+      setTimeout(() => {
+        win.webContents.send('winoauth')
+      }, 1000)
+    })
+    event.newGuest.webContents.on('close', () => {
+      console.log('newGuest closed!')
+      if (childId) childId.close()
+    })
+  }
+})
+```
+
+### 自定义模态窗口
+控制显示，启动窗口需要时间
+通过这种方式添加本地页面页面显示 但是效果不好 启动时间过长
+[electron程序，如何设置模态窗口（父子窗口）？](https://newsn.net/say/electron-modal.html)
+
+```JavaScript
+newWindow (appManager) {
+  const win = appManager.windowManager.mainWindow.win
+  let winOpen = ''
+  ipcMain.on('close', () => {
+    console.log(winOpen.hide())
+  })
+  win.webContents.on('new-window', (event, url, frameName, disposition, options, additionalFeatures) => {
+    event.preventDefault()
+    Object.assign(options, {
+      modal: true,
+      webPreferences: {
+        nodeIntegration: frameName === 'Info'
+      },
+      resizable: false,
+      show: false,
+      // x: '100',
+      // y: '100',
+      // maxwidth: options.maxwidth,
+      // maxheight: options.maxheight,
+      parent: frameName === 'Info' ? win : ''
+    })
+    event.newGuest = new BrowserWindow(options)
+    winOpen = event.newGuest
+    console.log(url)
+    // if (frameName === 'Info') url = process.env.WEBPACK_DEV_SERVER_URL + url
+    event.newGuest.loadURL(url)
+    event.newGuest.webContents.openDevTools({ mode: 'detach' })
+    event.newGuest.on('ready-to-show', () => {
+      event.newGuest.show()
+    })
+    // event.newGuest.webContents.on('will-navigate', (event, url) => {
+    //   // console.log('event', event.sender.history, url)
+    //   setTimeout(() => {
+    //     win.webContents.send('winoauth')
+    //   }, 1000)
+    // })
+  })
+}
+```
+
 > event
 
 ```JavaScript
