@@ -374,6 +374,31 @@ webview.addEventListener('dom-ready', () => {
 
 > .insertCSS(css) 插入css
 
+```JavaScript
+webview.insertCSS(`
+  body {
+    background: red !important;
+    width: 100%;
+    overflow-x: hidden;
+  }
+  ::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+  }
+  ::-webkit-scrollbar-button {
+    width: 0;
+    height: 0;
+  }
+  ::-webkit-scrollbar-button:start:increment,
+  ::-webkit-scrollbar-button:end:decrement {
+    display: none;
+  }
+  ::-webkit-scrollbar-corner {
+    display: block;
+  }
+`)
+```
+
 > .undo() 在page中编辑执行 undo 命令
 
 > .redo() 在page中编辑执行 redo 命令
@@ -443,6 +468,12 @@ code String
 userGesture Boolean - 默认 false.
 callback Function (可选) - 回调函数.
 result
+
+webview.executeJavaScript(`
+  setTimeout(()=>{
+      console.log('粉丝数：');
+  }, 2000);
+`)
 ```
 
 ### findInPage
@@ -472,17 +503,20 @@ activateSelection - 聚焦并点击 selection node.
 ## 事件监听
 webview 可用下面的 DOM 事件
 
-> load-commit 加载完成触发
+### 加载完成触发
+> load-commit
 
 这个包含当前文档的导航和副框架的文档加载，但是不包含异步资源加载.
 
 url String
 isMainFrame Boolean
 
-> did-finish-load 导航加载完成时触发
+### 导航加载完成时触发
+> did-finish-load
 在导航加载完成时触发，也就是tab 的 spinner停止spinning，并且加载事件处理
 
-> did-fail-load 在加载失败或取消是触发
+### 在加载失败或取消是触发
+> did-fail-load
 Returns
 
 errorCode Integer
@@ -496,11 +530,14 @@ validatedURL String
 isMainFrame Boolean
 当一个 frame 完成 加载时触发.
 
-> did-start-loading 开始加载时触发
+### 开始加载时触发
+> did-start-loading
 
-> did-stop-loading 停止家在时触发
+### 停止家在时触发
+> did-stop-loading
 
-> did-get-response-details 当获得返回详情的时候触发
+### 当获得返回详情的时候触发
+> did-get-response-details
 
 status Boolean
 newURL String
@@ -512,30 +549,37 @@ headers Object
 
 status 指示 socket 连接来下载资源.
 
-> did-get-redirect-request 当重定向请求资源被接收的时候触发
+### 当重定向请求资源被接收的时候触发
+> did-get-redirect-request
 
 oldURL String
 newURL String
 isMainFrame Boolean
 
-> dom-ready 当指定的frame文档加载完毕时触发
+### 当指定的frame文档加载完毕时触发
+> dom-ready
 
-> page-title-updated 当导航中的页面title被设置时触发
+### 当导航中的页面title被设置时触发
+> page-title-updated
 
 title String
 explicitSet Boolean
 . 在title通过文档路径异步加载时explicitSet为false.
 
-> page-favicon-updated 当page收到了图标url时触发
+### 当page收到了图标url时触发
+> page-favicon-updated
 
 favicons Array - Array of URLs.
 
-> enter-html-full-screen 当通过HTML API使界面进入全屏时触发
+### 当通过HTML API使界面进入全屏时触发
+> enter-html-full-screen
 
 
-> leave-html-full-screen 当通过HTML API使界面退出全屏时触发
+### 当通过HTML API使界面退出全屏时触发
+> leave-html-full-screen
 
-> console-message 当客户端输出控制台信息的时候触发
+### 当客户端输出控制台信息的时候触发
+> console-message
 
 level Integer
 message String
@@ -549,7 +593,8 @@ webview.addEventListener('console-message', function(e) {
 });
 ```
 
-> found-in-page 在请求webview.findInPage结果有效时触发
+### 在请求webview.findInPage结果有效时触发
+> found-in-page
 
 result Object
 requestId Integer
@@ -567,7 +612,8 @@ webview.addEventListener('found-in-page', function(e) {
 const rquestId = webview.findInPage("test");
 ```
 
-> new-window 打开一个新的浏览器窗口时触发
+### 打开一个新的浏览器窗口时触发
+> new-window
 
 url String
 frameName String
@@ -581,7 +627,8 @@ webview.addEventListener('new-window', function(e) {
 });
 ```
 
-> will-navigate 开始导航时触发
+### 开始导航时触发
+> will-navigate
 
 url String
 当用户或page尝试开始导航时触发. 它能在 window.location 变化或者用户点击连接的时候触发.
@@ -639,12 +686,13 @@ ipcRenderer.on('ping', function() {
 });
 ```
 
+### 在渲染进程崩溃的时候触发
 > crashed
-在渲染进程崩溃的时候触发
 
+### 在GPU进程崩溃的时候触发
 > gpu-crashed
-在GPU进程崩溃的时候触发
 
+### dfd
 > plugin-crashed
 当在界面中使用  来创建一个新的窗口时候，将会创建一个 BrowserWindow 的实例，并且将返回一个标识，这个界面通过标识来对这个新的窗口进行有限的控制.
 
@@ -652,28 +700,28 @@ name String
 version String
 在插件进程崩溃的时候触发.
 
+### 在界面内容销毁的时候触发
 > destroyed
-在界面内容销毁的时候触发
 
+### 在媒体准备播放的时候触发
 > media-started-playing
-在媒体准备播放的时候触发
 
+### 在媒体暂停播放或播放放毕的时候触发
 > media-paused
-在媒体暂停播放或播放放毕的时候触发
 
+### 在页面的主体色改变的时候触发. 在使用 meta 标签的时候这就很常见了
 > did-change-theme-color
-在页面的主体色改变的时候触发. 在使用 meta 标签的时候这就很常见了
 
 <meta name='theme-color' content='#ff0000'>
 
+### 在开发者工具打开的时候触发
 > devtools-opened
-在开发者工具打开的时候触发
 
+### 在开发者工具关闭的时候触发
 > devtools-closed
-在开发者工具关闭的时候触发
 
+### 在开发者工具获取焦点的时候触发
 > devtools-focused
-在开发者工具获取焦点的时候触发
 
 ## 案例
 
