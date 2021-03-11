@@ -1,3 +1,51 @@
+# app
+
+## 协议唤起
+![](https://raw.githubusercontent.com/oikonomopo/electron-deep-linking-mac-win/master/electron-deeplinking-osx-example.gif)
+```JavaScript
+// 窗口管理器
+const windowManager = appManager.windowManager
+// 是否启动
+const gotTheLock = app.requestSingleInstanceLock()
+// 协议地址
+let deeplinkingUrl
+// 设置协议
+if (!app.isDefaultProtocolClient('reworld')) {
+  // Define custom protocol handler. Deep linking works on packaged versions of the application!
+  app.setAsDefaultProtocolClient('reworld')
+}
+if (!gotTheLock) {
+  app.quit()
+} else {
+  app.on('second-instance', (event, commandLine, workingDirectory) => {
+    if (mainWindow) {
+      if (mainWindow.isMinimized()) mainWindow.restore()
+      mainWindow.focus()
+      mainWindow.show()
+    }
+    if (process.platform === 'win32') {
+      deeplinkingUrl = process.argv.slice(1)
+    }
+    winProtocol(deeplinkingUrl, mainWindow)
+  })
+}
+function winProtocol(s, mainWindow) {
+  if (mainWindow && mainWindow.webContents) {
+    // 发送JavaScript
+    mainWindow.webContents.executeJavaScript(`console.log("${s}")`)
+    // 发送
+    mainWindow.webContents.send('winProtocol', s)
+    mainWindow.webContents.on('did-finish-load', () => {
+      mainWindow.webContents.send('winProtocol', s)
+    })
+  }
+}
+```
+
+
+
+
+
 electron创建无边框窗体的几种特殊方式
 
 ## 

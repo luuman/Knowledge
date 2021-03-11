@@ -3,13 +3,6 @@
 <head>
   <meta charset="UTF-8">
   <title>前端知识点</title>
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-  <meta name="description" content="Description">
-  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-  <link rel="stylesheet" href="//unpkg.com/docsify/lib/themes/vue.css">
-
-  <meta charset="UTF-8">
-  <title>前端知识点</title>
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
   <meta name="keywords" content="">
   <meta name="description" content="">
@@ -32,6 +25,9 @@
   <meta name="theme-color" content="#ffffff"></head>
   <meta name="msapplication-TileColor" content="#ffffff">
   <link rel="stylesheet" href="//unpkg.com/docsify/lib/themes/vue.css">
+  <!-- theme-simple-dark -->
+  <!-- https://jhildenbiddle.github.io/docsify-themeable/#/themes?id=simple-dark -->
+  <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify-themeable@0/dist/css/theme-simple-dark.css"> -->
   <style type="text/css">
     .markdown-section pre>code.lang-Mermaid{
       display: none;
@@ -109,13 +105,22 @@
       left: auto;
       margin: 0;
     }
+    a{
+      font-size: 0.9em;
+      color: #cbcbcb;
+    }
   </style>
 </head>
 <body>
+  <!-- markmap is based on d3, so must load those files first. -->
+  <!-- https://github.com/up9cloud/docsify-mindmap -->
+  <script src="//unpkg.com/d3@3/d3.min.js"></script>
+  <script src="//unpkg.com/markmap@0.6.0/lib/d3-flextree.js"></script>
+  <script src="//unpkg.com/markmap@0.6.0/lib/view.mindmap.js"></script>
   <nav>
-    <a href="#/Tab/repository">库</a>
-    <a href="#/">前端知识点</a>
-    <a href="#/Tool/">简历</a>
+    <a class="section-link" href="#/Tab/repository">库</a>
+    <a class="section-link" href="#/">前端知识点</a>
+    <a class="section-link" href="#/Tool/">简历</a>
   </nav>
   <div id="app"></div>
   <script>
@@ -136,6 +141,18 @@
         noData: '找不到结果!',
         // 搜索标题的最大程级, 1 - 6
         // depth: 3
+      },
+      count: {
+        countable: true,
+        fontsize: '0.9em',
+        color: 'rgb(90,90,90)',
+        language: 'chinese'
+      },
+      mindmap: {
+        // or default
+        preset: 'colorful',
+        // or bracket
+        linkShape: 'diagonal'
       },
       // copyCode: {
       //   buttonText : 'Copy',
@@ -193,6 +210,8 @@
     }
   </script>
   <script src="//unpkg.com/docsify/lib/docsify.min.js"></script>
+  <!-- 字数统计 -->
+  <script src="//unpkg.com/docsify-count/dist/countable.js"></script>
   <!-- 侧边栏折叠 -->
   <script src="//unpkg.com/docsify-sidebar-collapse/dist/docsify-sidebar-collapse.min.js"></script>
   <!-- 全文搜索 -->
@@ -205,6 +224,8 @@
   <script src="//unpkg.com/prismjs/components/prism-bash.js"></script>
   <script src="//unpkg.com/prismjs/components/prism-php.js"></script>
   <script src="//unpkg.com/docsify-pagination/dist/docsify-pagination.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.22.0/components/prism-java.min.js"></script>
+
 
   <script type="text/javascript" src="//unpkg.com/mermaid/dist/mermaid.min.js"></script>
 
@@ -213,6 +234,7 @@
   <!-- or <script src="//cdn.jsdelivr.net/gh/upupming/docsify-katex@latest/dist/docsify-katex.js"></script> -->
   <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css"/>
   <script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+  <script src="//unpkg.com/docsify-mindmap/dist/docsify-mindmap.min.js"></script>
   <script type="text/javascript">
     var Common = {
       getItself: function(id) {

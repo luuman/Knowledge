@@ -30,7 +30,7 @@
 
 
 ## 动画
-
+[AlloyStick](http://alloyteam.github.io/AlloyStick/ "拖动骨骼组合角色，设置简单的动画关键帧，依靠强大的自动补间和骨骼关系，就可以制作出逼真生动的canvas骨骼动画。可以畅快的运行在你的PC、手机、平板等设备里")
 ### Bodymovin
 
 #### Demo
@@ -42,6 +42,8 @@
 animations exported from after effects to svg + js or canvas + js
 
 [lottie](http://airbnb.io/lottie/#/after-effects "Airbnb Lottie出品多终端动效文档")
+
+<iframe src="https://9f8y7.csb.app/" height="400" allowfullscreen></iframe>
 
 []()
 

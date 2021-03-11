@@ -4,6 +4,7 @@
   - [性能优化](/FE/Property/)
   - [协议](/FE/Protocol/)
   - [原理](/FE/Principle/)
+  - [本地存储](/FE/Storage/)
   - [小程序](/FE/WeChat/)
 	  - [WeChat](/FE/WeChat/WeChat)
 	  - [框架](/FE/WeChat/Frame)

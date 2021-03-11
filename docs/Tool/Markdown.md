@@ -685,6 +685,34 @@ Andrew->>China: I am good thanks!
 
 ----
 
+### mind
+
+#### Plain text
+ 
+```mindmap
+root
+  topic1
+    subtopic
+  topic2
+    subtopic
+```
+
+```mindmap-json
+{
+  "name": "root",
+  "children": [
+    {
+      "name": "topic1",
+      "children": [{ "name": "subtopic" }]
+    },
+    {
+      "name": "topic2",
+      "children": [{ "name": "subtopic" }]
+    }
+  ]
+}
+```
+
 ### 参考资料：
 在线编辑
 1. [gitbook](https://www.gitbook.com/)
@@ -738,3 +766,10 @@ Mac 平台
 1. [MarkdownEditing](http://ttscoff.github.com/MarkdownEditing/)
 1. [教程](http://lucifr.com/2012/07/12/markdownediting-for-sublime-text-2/)
 1. [Cmd Markdown 简明语法手册](https://www.zybuluo.com/mdeditor?url=https://www.zybuluo.com/static/editor/md-help.markdown)
+
+[NPM version](https://shields.io/)
+
+[![NPM version][npm-image]][npm-url]
+
+[npm-image]: http://img.shields.io/npm/v/antd.svg?style=flat-square
+[npm-url]: http://npmjs.org/package/antd

@@ -1,4 +1,9 @@
 ## 页面API
+
+# 内部命令
+## alert
+win样式丑陋可以拖拽、mac内嵌页面不可拖拽
+
 # window.open
 创建并开启新窗口，多次调用仅有一个同一`frameName`窗口。
 
