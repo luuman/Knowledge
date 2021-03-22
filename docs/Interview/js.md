@@ -445,14 +445,14 @@ async/await是在Promise之后产生的，它和Promise诞生的目的都是为�
 ### 说说箭头函数的特点
 [少年，不要滥用箭头函数啊](http://jingsam.github.io/2016/12/08/things-you-should-know-about-arrow-functions.html)
 1. 箭头函数是匿名函数，不能作为构造函数，不能使用new
-```javascript
+```js
 let foo=()=>{
 }
 var newFoo=new foo()//foo is not a construcotr
 ```
 
 1. 不能使用argumetns,取而代之用rest参数...解决
-```javascript
+```js
 let C = (...c) => {
   console.log(c);
 }
@@ -473,7 +473,7 @@ Object.prototype.toString.call(xx)
 对象可以通过 __proto__ 来寻找不属于该对象的属性，`__proto__`将对象连接起来组成了原型链。
 
 ### 如何实现一个 apply 函数？
-```javascript
+```js
 // 思路：根据 this 的查找策略，我们将要执行的函数挂载到 context 上执行
 //函数内的 this 就是当前的调用者context 了
 Function.prototype.myapply = function (context) {
@@ -494,7 +494,7 @@ Function.prototype.myapply = function (context) {
 ```
 
 ### 请实现一个 call 函数
-```javascript
+```js
 // 思路：根据 this 查找策略，我们将方法挂在到context 上，然后调用此方法即可。
 Function.prototype.mycall = function (context) {
   if (typeof this !== 'function') {
@@ -510,7 +510,7 @@ Function.prototype.mycall = function (context) {
 ```
 
 ### 如何实现一个 bind 函数？
-```javascript
+```js
 Function.prototype.myBind = function (context) {
   if (typeof this !== 'function') {
     throw new TypeError('Error')
@@ -640,7 +640,7 @@ TLS: 客户端证书解析，TLS是对SSL的扩展和优化，他可以提供数
 网络层
 数据链路层
 物理层
-```javascript
+```js
 ```
 
 

@@ -1,4 +1,4 @@
-```JavaScript
+```js
 'use strict'
 import { app, protocol, BrowserWindow, ipcMain, dialog, shell } from 'electron'
 ```
@@ -6,7 +6,7 @@ import { app, protocol, BrowserWindow, ipcMain, dialog, shell } from 'electron'
 
 ### 程序地址
 
-```JavaScript
+```js
 var exePath = path.dirname(app.getPath('exe'))
 ```
 
@@ -14,7 +14,7 @@ var exePath = path.dirname(app.getPath('exe'))
 可视化日志log
 
 ### 启动下载
-```JavaScript
+```js
 ipcMain.on('download', (event, fileUrl) => {
   try {
     console.log('download fly')
@@ -78,29 +78,29 @@ const { spawn, exec } = require('child_process')
 借助node的child_process模块
 
 ### 检测用户是否安装
-```JavaScript
+```js
 reg query HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\|find /i "应用(可能会是一个hash)"
 // 如果有就会返回路径，没有就什么都不返回
 ```
 
 ### 检测用户是否启动
-```JavaScript
+```js
 wmic process where caption=”XXXX.exe” get caption,commandline /value
 ```
 
 ### 杀死某个进程
-```JavaScript
+```js
 taskkill /F /IM XXX.exe
 ```
 ### 启动
-```JavaScript
+```js
 start 应用绝对路径
 ```
 
 ## mac
 
 ### 检测用户是否安装
-```JavaScript
+```js
 // 没有的话就会报错
 const log = spawn('osascript', ['-e', 'id of application \"应用名字\"']);
 const log = spawn('osascript', ['-e', 'id of application \"应用名字\"']);
@@ -112,7 +112,7 @@ log.stderr.on('end', () => {});
 ```
 
 ### mac检测是否在运行
-```JavaScript
+```js
 const log = exec('ps -e | grep -v grep | grep "应用名字"');
 let is_running = false;
 log.stdout.on('data', () => {
@@ -130,17 +130,17 @@ log.stderr.on('end', () => {});
 ```
 
 ### mac 杀死进程
-```JavaScript
+```js
 killall 应用名字
 ```
 
 ### 启动应用
-```JavaScript
+```js
 open -a 应用.app
 ```
 
 ### 打开应用
-```JavaScript
+```js
 ipcMain.on('openApp', (event, appName) => {
   exec(`open -a "${appName}.app"`, (error, stdout, stderr) => {
     console.log(error, stdout, stderr)
@@ -152,7 +152,7 @@ ipcMain.on('openApp', (event, appName) => {
 
 ### url scheme
 
-```JavaScript
+```js
 OmniFocus:///add?name=[prompt]&note=[prompt]
 ```
 
@@ -161,7 +161,7 @@ OmniFocus:///add?name=[prompt]&note=[prompt]
 ### open
 > 用法
 
-```JavaScript
+```js
 // 打开地址
 open /Applications/xxx(应用的名称).app
 
@@ -175,7 +175,7 @@ open myapp://host/path?a=1&b=2
 
 ### Shell
 
-```JavaScript
+```js
 // shell启动浏览器
 shell.openExternal('http://www.google.com')
 // 地址打开A应用
@@ -186,7 +186,7 @@ shell.openPath(filePath).then(res => {
 ```
 
 ### 是否安装
-```JavaScript
+```js
 ipcMain.on('appIs', (event, appName) => {
   const log = spawn('osascript', ['-e', `id of application \"${appName}\"`])
   // const log = spawn('osascript', ['-e', 'id of application \"应用名字\"'])
@@ -208,7 +208,7 @@ ipcMain.on('appIs', (event, appName) => {
 ## 解压
 
 ### extractFile
-```JavaScript
+```js
 process.noAsar = true
 // 设置它为 true 可以使 asar 文件在node的内置模块中实效
 ipcMain.on('extractFile', (event, filePath, desPath) => {
@@ -232,7 +232,7 @@ ipcMain.on('extractFile', (event, filePath, desPath) => {
 
 [extract源码](https://npmdoc.github.io/node-npmdoc-extract-zip/build/apidoc.html)
 
-```JavaScript
+```js
 const extract = require('extract-zip')
 async function main () {
   try {
@@ -251,7 +251,7 @@ onEntry —— 函数 - 如果存在，将使用（entry，zipfile）调用，en
 
 > 乱码
 
-```JavaScript
+```js
 const iconv = require('iconv-lite')
 // 用于在node当中处理在各种操作系统出现的各种奇特编码，该模块不提供读写文件的操作，只提供文件编码转换的功能。
 const extract = require('extract-zip')
@@ -280,7 +280,7 @@ async function fileZip () {
 
 ### compressing
 
-```JavaScript
+```js
 ipcMain.on('compressing', (event, filePath, desPath) => {
   console.log('compressing')
   const compressing = require('compressing')
@@ -296,7 +296,7 @@ ipcMain.on('compressing', (event, filePath, desPath) => {
 ```
 
 ### DecompressZip
-```JavaScript
+```js
 ipcMain.on('DecompressZip', (event, filePath, desPath) => {
   console.log('DecompressZip')
   var DecompressZip = require('decompress-zip')
@@ -327,14 +327,14 @@ ipcMain.on('DecompressZip', (event, filePath, desPath) => {
 ```
 
 ### unzip
-```JavaScript
+```js
 ipcMain.on('unzip', (event, filePath, desPath) => {
   console.log('unzip')
 })
 ```
 
 ### AdmZip
-```JavaScript
+```js
 ipcMain.on('AdmZip', (event, filePath, desPath) => {
   console.log('AdmZip')
   var AdmZip = require('adm-zip')
@@ -346,7 +346,7 @@ ipcMain.on('AdmZip', (event, filePath, desPath) => {
 ```
 
 ### StreamZip
-```JavaScript
+```js
 ipcMain.on('StreamZip', (event, filePath, desPath) => {
   // invalid or unsupported zip format 不支持的格式
   console.log('StreamZip')

@@ -23,7 +23,7 @@ web-view 组件是一个可以用来承载网页的容器，会自动铺满整�
 
 ### view.js
 
-```javascript
+```js
 wx.navigateTo({
   url:`/pages/view/view?url=${encodeURIComponent(`personal/vips`)}`
 })
@@ -45,7 +45,7 @@ Page({
 
 ### 动态设置顶栏
 
-```javascript
+```js
 // url 通常为转码后的地址
 setBarTitle (url) {
   let weChatSet = {
@@ -61,7 +61,7 @@ setBarTitle (url) {
 
 ### 地址过滤
 地址参数必须encodeURIComponent加密才可以传输
-```javascript
+```js
 _getViewSrc (url) {
   let src = `${this.data.baseUrl}/${decodeURIComponent(url)}`
   src += decodeURIComponent(url).includes("?") ? `&isMiniProgram=true` : `?isMiniProgram=true`
@@ -74,7 +74,7 @@ _getViewSrc (url) {
 ### 分享页面配置
 onShareAppMessage
 
-```javascript
+```js
 onShareAppMessage (e) {
   let url = e.webViewUrl.split(this.data.baseUrl + '/')[1].split('&').filter(item => !item.includes('token')).join('&');
   let url = e.webViewUrl.split(this.data.baseUrl + '/')[1].replace(/$/g, '&').replace(/token=[^]+?[$|&]/g, '').replace(/&$/g, '')
@@ -87,7 +87,7 @@ onShareAppMessage (e) {
 
 ### 页面消息透传
 
-```javascript
+```js
 viewMessage (e) {}
 ```
 
@@ -114,7 +114,7 @@ viewMessage (e) {}
 
 ### 如何从H5回到小程序
 wx.miniProgram.navigateTo
-```javascript
+```js
 import wx from '~/utils/sdk-wechat.js'
 
 wx.miniProgram.navigateTo({
@@ -136,7 +136,7 @@ wx.miniProgram.redirectTo({
 
 ### 环境检测
 
-```javascript
+```js
 wx.miniProgram.getEnv(res => {
   if (res.miniprogram) console.log('miniProgram')
 })
@@ -144,7 +144,7 @@ wx.miniProgram.getEnv(res => {
 
 ### 向小程序发送消息
 对消息组件进行封装，添加支付，弹窗，提示，分享等原生接口。
-```javascript
+```js
 share () {
   // 向小程序发送消息
   let postData = {
@@ -159,5 +159,5 @@ share () {
 
 ### 信息传递Token
 
-```javascript
+```js
 ```

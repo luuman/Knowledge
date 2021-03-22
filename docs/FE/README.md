@@ -75,7 +75,7 @@ Missing space before function parentheses 报错终极解决方案 多余空格
 
 ## vue-cli 打包问题
 
-```javascript
+```js
 // 启动mode模式
 vue-cli-service electron:serve --mode testing
 // 文件

@@ -30,7 +30,7 @@
 ## provide / inject
 概念：provide/ inject 是vue2.2.0新增的api, 简单来说就是父组件中通过provide来提供变量, 然后再子组件中通过inject来注入变量。
 
-```javascript
+```js
 provide(){
   return{
     test:this
@@ -144,7 +144,7 @@ export default {
 
 > 引用方式
 
-```javascript
+```js
 // event-bus.js
 import Vue from 'vue'
 export const EventBus = new Vue()
@@ -154,7 +154,7 @@ export const EventBus = new Vue()
 
 它的工作原理是发布/订阅方法，通常称为 Pub/Sub 。
 
-```javascript
+```js
 // main.js
 Vue.prototype.$bus = new Vue()
 
@@ -170,7 +170,7 @@ Object.defineProperties(Vue.prototype, {
 
 ### 发送接收事件
 
-```javascript
+```js
 import { EventBus } from '../event-bus.js'
 EventBus.$emit('aMsg', '来自A页面的消息')
 
@@ -187,7 +187,7 @@ EventBus.$on("aMsg", (msg) => {
 
 > 移除事件
 
-```javascript
+```js
 // 移除应用内所有对此某个事件的监听
 EventBus.$off('aMsg', {})
 // 移除所有事件
@@ -207,5 +207,5 @@ EventBus.$off()
 
 ### 属性
 State , Getter , Mutation , Action , Module
-```javascript
+```js
 ```

@@ -1,6 +1,7 @@
-# Dexie
-[dexie](https://dexie.org/docs/)
-[缓存 - 数据缓存 - IndexedDB - Dexie.js](https://www.cnblogs.com/qq3279338858/p/10980944.html)
+# Dexie资料
+1. [DEMO](https://codesandbox.io/s/dexiejs-me2d9)
+1. [dexie](https://dexie.org/docs/)
+1. [缓存 - 数据缓存 - IndexedDB - Dexie.js](https://www.cnblogs.com/qq3279338858/p/10980944.html)
 
 # 库
 ```html

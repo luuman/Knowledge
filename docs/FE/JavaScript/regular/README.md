@@ -9,7 +9,7 @@ JavaScript中的正则表达式用RegExp对象表示，可以使用RegExp()构�
 
 ## 创建
 ### 构造函数
-```javascript
+```js
 // 不推荐写法
 var patt = new RegExp(pattern模式,modifiers修饰符)
 
@@ -19,7 +19,7 @@ var reg = new RegExp("a","gi")
 注意：当使用构造函数创造正则对象时，需要常规的字符转义规则（在前面加反斜杠 \）。
 
 ### 字面量
-```javascript
+```js
 // 推荐写法
 var patt = /pattern/modifiers
 
@@ -27,7 +27,7 @@ var patt = /pattern/modifiers
 var reg = /a/gi
 ```
 
-```javascript
+```js
 var reg = new RegExp("\\w+")
 var reg = /\w+/
 ```
@@ -63,7 +63,7 @@ i      | 执行对大小写不敏感的匹配
 g      | 执行全局匹配模式（查找所有匹配而非在找到第一个匹配后停止）
 m      | 执行多行匹配模式
 
-```javascript
+```js
 var str='HwwwwLwello orllld lLll!'
 console.log(str.match(/l/))
 // ["l", index: 8, input: "HwwwwLwello orllld lLll!"]
@@ -85,13 +85,13 @@ console.log(str.match(/l$/m))
 ## 元字符
 与其他语言中的正则表达式类似，模式中使用的所有元字符都必须转义。正则表达式中的元字符包括：
 
-```javascript
+```js
 ( [ { \ ^ $ | ) ? * + . ] }
 ```
 这些元字符在正则表达式中都有一或多种特殊用途，因此如果想要匹配字符串中包含的这些字符，就必须对它们进行转义。
 下面给出几个例子。
 
-```javascript
+```js
 var pattern1 = /[bc]at/i
 // 匹配第一个"bat"或"cat"，不区分大小写
 
@@ -114,7 +114,7 @@ var pattern2 = /\[bc\]at/i
 \uxxxx | 查找以十六进制数 xxxx 规定的 Unicode 字符（\u0009 => \t）
 \cX    | 控制字符^X （\cJ => \n）
 
-```javascript
+```js
 var str='null \t \n \f \r '
 console.log(str.match(/\n/))
 // ["↵", index: 7, input: "null 	 ↵   "]
@@ -146,7 +146,7 @@ console.log(str.test(/\0/))
 
 如果要匹配任意字符怎么办?可以使用 [\d\D]、[\w\W]、[\s\S] 和 [^] 中任何的一个。
 
-```javascript
+```js
 var str='3 o !_..'
 console.log(str.match(/\w/g))
 // ["3", "o", "_"]
@@ -202,7 +202,7 @@ X?       | (有吗?)匹配任何包含零个或一个 X 的字符串 {0,1}
 X+       | (加号是追加的意思)匹配任何包含至少一个 X 的字符串 {1,}
 X*       | (任意次)匹配任何包含零个或多个 X 的字符串 {0,}
 
-```javascript
+```js
 var str='Hwwwwlllll orlllld lll!'
 console.log(str.match(/l{3,5}/))
 // ["lllll", index: 5, input: "Hwwwwlllll orlllld lll!"]
@@ -252,7 +252,7 @@ console.log(str.match(/1+/));
 ## 非贪婪重复
 尽可能少的匹配：??、+?、*?、{1,4}?
 
-```javascript
+```js
 var str='0111'
 console.log(str.match(/00?/))
 <!-- ["0", index: 0, input: "011"] -->
@@ -298,7 +298,7 @@ $        | 匹配字符串结尾(处理多行时匹配行尾)
 (?=p)    | 零宽正向先行断言，要求接下来的字符都与p匹配，但不能包括匹配p的那些字符 (?=p) => p
 (?!p)    | 零宽正向先行断言，要求接下来的字符不与p匹配 (?!p) => [^p]
 
-```javascript
+```js
 var str='orllld'
 console.log(str.match(/^o/))
 // ["o", index: 0, input: "orllld"]
@@ -336,7 +336,7 @@ console.log(str.match(/Java(Script)([A-Z]\w*)/))
 // null
 ```
 
-```javascript
+```js
 var str='JavaScriptS'
 console.log(str.replace(/Java(?!Script)([A-Z]\w*)/, function($0, $1, $2) {
 		return $0 + ',' + $1 + ',' + $2
@@ -367,7 +367,7 @@ red|blue|green     查找任何指定red、blue、green的选项。
 
 用()表示的就是要提取的分组（Group）^(\d{3})-(\d{3,8})$分别定义了两个组，可以直接从匹配的字符串中提取出区号和本地号码
 
-```javascript
+```js
 <!-- 识别合法的时间 -->
 var re = /^(0[0-9]|1[0-9]|2[0-3]|[0-9])\:(0[0-9]|1[0-9]|2[0-9]|3[0-9]|4[0-9]|5[0-9]|[0-9])\:(0[0-9]|1[0-9]|2[0-9]|3[0-9]|4[0-9]|5[0-9]|[0-9])$/;
 console.log(re.exec('19:05:30'))
@@ -390,7 +390,7 @@ console.log(regex.test(string3)); // true
 console.log(regex.test(string4)); // false
 ```
 
-```javascript
+```js
 var str='JavaScriptS'
 console.log(str.replace(/Java(?:Script)([A-Z]\w*)/, function($0, $1) {
 		return $0 + ',' + $1
@@ -403,7 +403,7 @@ console.log(str.match(/'a/))
 ```
 
 ### 非捕获性分组
-```javascript
+```js
 reg = /abc{2}/
 // 将匹配abcc  
 reg = /(abc){2}/
@@ -433,7 +433,7 @@ console.log(str.match(/^(?:can|candy)$/))
 ## 实例方法
 ### exec
 检索字符串中指定的值。返回找到的值，并确定其位置。
-```javascript
+```js
 var date = 'Ubuntu 8'
 reg = /^[a-z]+\s+\d+$/i
 console.log(reg.exec(date))
@@ -449,7 +449,7 @@ console.log(reg.exec(date))
 ```
 
 
-```javascript
+```js
 var text = "mom and dad baby"
 var pattern = /mom( and dad( and baby)?)?/gi
 
@@ -477,7 +477,7 @@ console.log(text.replace(pattern, function($0, $1, $2, $3) {
 对于 `exec()` 方法而言，即使在模式中设置了全局标志 `g`，它每次也只会返回一个匹配项。在不设置全局标志的情况下，在同一个字符串上多次调用 `exec()` 将始终返回第一个匹配项的信息。
 而在设置全局标志的情况下，每次调用 `exec()` 则都会在字符串中继续查找新匹配项，如下面的例子所示。
 
-```javascript
+```js
 var text = "cat, bat, sat, fat"
 
 var pattern1 = /.at/
@@ -535,7 +535,7 @@ console.log(pattern2.exec(text))
 
 正则表达式的第二个方法是 `test()`，它接受一个字符串参数。在模式与该参数匹配的情况下返回 `true`；否则，返回 `false`。在只想知道目标字符串与某个模式是否匹配，但不需要知道其文本内容的情况下，使用这个方法非常方便。因此，`test()` 方法经常被用在 `if` 语句中，如下面的例子所示。
 
-```javascript
+```js
 var text = "000-00-0000"
 var pattern = /\d{3}-\d{2}-\d{4}/
 
@@ -548,7 +548,7 @@ if (pattern.test(text)){
 
 `RegExp` 实例继承的 `toLocaleString()` 和 `toString()` 方法都会返回正则表达式的字面量，与创建正则表达式的方式无关。例如：
 
-```javascript
+```js
 var pattern = new RegExp("\\[bc\\]at", "gi")
 console.log(pattern.toString())
 // /\[bc\]at/gi
@@ -560,7 +560,7 @@ console.log(pattern.toLocaleString())
 
 ### test
 检索字符串中指定的值。返回 true 或 false。可以修改lastIndex从指定位置开始匹配。
-```javascript
+```js
 var date = 'Ubuntu 8'
 var reg = /^[a-z]+\s+\d+$/i
 console.log(reg.test(date))
@@ -590,7 +590,7 @@ console.log(RegExp.$4);
 ## 字符串方法
 ### search
 可在字符串内检索指定的值，或找到一个正则表达式的匹配，得到第一个位置，没有则返回-1
-```javascript
+```js
 var str='Hello world!'
 console.log(str.search(/l/))
 // 2
@@ -611,7 +611,7 @@ console.log(str.search(/g/i))
 ### split
 方法用于把一个字符串分割成字符串数组。
 
-```javascript
+```js
 stringObject.split(separator,howmany)
 ```
 
@@ -624,7 +624,7 @@ separator: 该参数可指定返回的数组的最大长度
 1. 如果把空字符串 ("") 用作 separator，那么 stringObject 中的每个字符之间都会被分割。
 1. String.split() 执行的操作与 Array.join 执行的操作是相反的。
 
-```javascript
+```js
 str ="some some             \tsome\t\f"
 console.log(str.split(/\s+/i))
 // ["some", "some", "some", ""]
@@ -661,12 +661,12 @@ console.log(str.split(/\./, 3))
 方法可在字符串内检索指定的值，或找到一个或多个正则表达式的匹配。
 该方法类似 indexOf() 和 lastIndexOf()，但是它返回指定的值，而不是字符串的位置。
 
-```javascript
+```js
 stringObject.match(searchvalue)
 stringObject.match(regexp)
 ```
 
-```javascript
+```js
 检索字母l：
 index位数
 input字符串
@@ -716,7 +716,7 @@ $` | 匹配子串左边的文本
 $' | 匹配子串右边的文本
 $$ | 匹配美元符号
 
-```javascript
+```js
 var date = ' Ubuntu 8 '
 var reg = /(^\s+)|(\s+$)/g
 <!-- [" ", " "] -->
@@ -792,7 +792,7 @@ var newstr=str.replace(reg,test)
 document.write(newstr + '<br>')
 ```
 
-```javascript
+```js
 str ='some some             \tsome\t\f'
 res = /\s+/
 console.log(str.match(res))
@@ -816,7 +816,7 @@ console.log(str.replace(res,"@"))
 1. `multiline`：布尔值，表示是否设置了 `m` 标志。
 1. `source`：正则表达式的字符串表示，按照字面量形式而非传入构造函数中的字符串模式返回。
 
-```javascript
+```js
 var pattern1 = /\[bc\]at/i
 console.log(pattern1.global)
 // false
@@ -844,7 +844,7 @@ console.log(pattern2.source)
 
 ### source
 正则表达式文本
-```javascript
+```js
 var reg = /[a-z]/i
 reg.source
 // "[a-z]"
@@ -852,7 +852,7 @@ reg.source
 
 ### global
 只读布尔值，是否有修饰符g
-```javascript
+```js
 var reg = /[a-z]/i
 reg.global
 // false
@@ -860,7 +860,7 @@ reg.global
 
 ### ignoreCase
 只读布尔值，是否有修饰符i
-```javascript
+```js
 var reg = /[a-z]/i
 reg.ignoreCase
 // true
@@ -868,7 +868,7 @@ reg.ignoreCase
 
 ### multiline
 只读布尔值，是否有修饰符m
-```javascript
+```js
 var reg = /[a-z]/i
 reg.multiline
 // false
@@ -876,7 +876,7 @@ reg.multiline
 
 ### lastIndex
 下一次检索开始的位置，用于exec() 和 test()
-```javascript
+```js
 var text = "cat, bat, sat, fat"
 var pattern1 = /.at/g
 var matches = pattern1.exec(text)
@@ -906,7 +906,7 @@ console.log(pattern1.lastIndex)
 
 使用这些属性可以从 `exec()` 或 `test()` 执行的操作中提取出更具体的信息。请看下面的例子。
 
-```javascript
+```js
 var text = "this has been a short summer"
 var pattern = /(.)hort/g
 
@@ -932,7 +932,7 @@ if (pattern.test(text)){
 
 如前所述，例子使用的长属性名都可以用相应的短属性名来代替。只不过，由于这些短属性名大都不是有效的 JavaScript 标识符，因此必须通过方括号语法来访问它们，如下所示。
 
-```javascript
+```js
 var text = "this has been a short summer"
 var pattern = /(.)hort/g
 
@@ -958,7 +958,7 @@ if (pattern.test(text)){
 
 除了上面介绍的几个属性之外，还有多达9个用于存储捕获组的构造函数属性。访问这些属性的语法是 `RegExp.$1`、`RegExp.$2`...`RegExp.$9`，分别用于存储第一、第二...第九个匹配的捕获组。在调用 `exec()` 或 `test()` 方法时，这些属性会被自动填充。然后，我们就可以像下面这样来使用它们。
 
-```javascript
+```js
 var text = "this has been a short summer"
 var pattern = /(..)or(.)/g
 
@@ -998,7 +998,7 @@ if (pattern.test(text)){
 (?<=Expression) | 逆序肯定环视，表示所在位置左侧能够匹配Expression
 (?<!Expression) | 逆序否定环视，表示所在位置左侧不能匹配Expression
 
-```javascript
+```js
 var str = 'aa<p>one</ps>bb<div>two</div>cc'
 console.log(str.replace(/<(?!\/?p\b)([^>]+)>/g, function($0, $1) {
 		return '(' + $1 + ')'
@@ -1011,7 +1011,7 @@ console.log(str.replace(/<(?!\/?p\b)([^>]+)>/g, function($0, $1) {
 ## 回溯法原理
 正则表达式匹配字符串的这种方式，有个学名，叫回溯法也称试探法
 
-```javascript
+```js
 没有回溯
 str = "abbbc"
 console.log(str.match(/ab{1,3}c/))
@@ -1023,7 +1023,7 @@ console.log(str.match(/ab{1,3}c/))
 // ["abbc", index: 0, input: "abbc"]
 ```
 
-```javascript
+```js
 分支结构
 str = "abbbc"
 console.log(str.match(/ab{1,3}c/))
@@ -1040,7 +1040,7 @@ console.log(str.match(/ab{1,3}c/))
 要认识到正则的局限，不要去研究根本无法完成的任务。同时，也不能走入另一个极端：无所不用正则。能用字符串 API 解决的简单问题，就不该正则出马。
 
 ### 日期选取
-```javascript
+```js
 var string = "2017-07-01";
 var regex = /^(\d{4})-(\d{2})-(\d{2})/;
 console.log(string.match(regex));
@@ -1054,7 +1054,7 @@ console.log(result);
 
 ### 字符串判断
 
-```javascript
+```js
 var string = "?id=xx&act=search";
 console.log(string.search(/\?/));
 // => 0
@@ -1066,7 +1066,7 @@ console.log(string.indexOf("?"));
 
 ### 获取子串
 
-```javascript
+```js
 var string = "JavaScript";
 console.log(string.match(/.{4}(.+)/)[1]);
 // => Script
@@ -1079,7 +1079,7 @@ console.log(string.substring(4));
 ### 提取数据
 提取出年、月、日，可以这么做:
 
-```javascript
+```js
 var regex = /(\d{4})-(\d{2})-(\d{2})/;
 var string = "2017-06-12";
 console.log(string.match(regex));
@@ -1105,7 +1105,7 @@ console.log(RegExp.$3);
 ### 替换
 想把 yyyy-mm-dd 格式，替换成 mm/dd/yyyy 怎么做
 
-```javascript
+```js
 var regex = /(\d{4})-(\d{2})-(\d{2})/;
 var string = "2017-06-12";
 var result = string.replace(regex, "$2/$3/$1");
@@ -1134,7 +1134,7 @@ console.log(result);
 
 ## 正则表达式
 
-```javascript
+```js
 // 挑战一：数字
 var pattern1 = null
 // 补全该正则表达式
@@ -1144,7 +1144,7 @@ console.log(pattern1.test('abc'))
 // false
 ```
 
-```javascript
+```js
 // 挑战二：3位的数字
 var pattern2 = null
 // 补全该正则表达式
@@ -1154,7 +1154,7 @@ console.log(pattern2.test('1234'))
 // false
 ```
 
-```javascript
+```js
 // 挑战三：至少3位的数字
 var pattern3 = null
 // 补全该正则表达式
@@ -1164,7 +1164,7 @@ console.log(pattern3.test('12'))
 // false
 ```
 
-```javascript
+```js
 // 挑战四：3-5位的数字
 var pattern4 = null
 // 补全该正则表达式
@@ -1174,7 +1174,7 @@ console.log(pattern4.test('1'))
 // false
 ```
 
-```javascript
+```js
 // 挑战五：由26个英文字母组成的字符串
 var pattern5 = null
 // 补全该正则表达式
@@ -1184,7 +1184,7 @@ console.log(pattern5.test('1abc'))
 // false
 ```
 
-```javascript
+```js
 // 挑战六：由数字和26个英文字母组成的字符串
 var pattern6 = null
 // 补全该正则表达式
@@ -1194,7 +1194,7 @@ console.log(pattern6.test('_abc'))
 // false
 ```
 
-```javascript
+```js
 // 挑战七：日期格式：年-月-日
 var pattern7 = null
 // 补全该正则表达式
@@ -1204,7 +1204,7 @@ console.log(pattern7.test('2016/08/20'))
 // false
 ```
 
-```javascript
+```js
 // 挑战八：时间格式：小时:分钟, 24小时制
 var pattern8 = null
 // 补全该正则表达式
@@ -1214,7 +1214,7 @@ console.log(pattern8.test('13点45'))
 // false
 ```
 
-```javascript
+```js
 // 挑战九：中国大陆身份证号，15位或18位
 var pattern9 = null
 // 补全该正则表达式
@@ -1231,7 +1231,7 @@ console.log(pattern9.test('asdfasdfasfasdf1234'))
 [1-9]: 0-
 [0-9]: 1
 
-```javascript
+```js
 var reg = /^-?[1-9]*\d$/
 
 var date = 'Ubuntu 8'
@@ -1256,7 +1256,7 @@ console.log(reg.test(date))
 
 ### 匹配负浮点数
 注：必须负数，第一位1-9，点后面位随机数字，第一位为0，点后面要有个不为零的数字。
-```javascript
+```js
 var reg = /^-([1-9]\d*\.\d*|0\.\d*[1-9]\d*)$/
 
 var date = '-0.00000'
@@ -1277,7 +1277,7 @@ console.log(reg.test(date))
 
 ### 匹配浮点数
 注：为了表示更大范围的数据，数学上通常采用科学计数法，把数据表示成一个小数乘以一个以10为底的指数。
-```javascript
+```js
 var reg = /^-?([1-9]\d*\.\d*|0\.\d*[1-9]\d*|0?\.0+|0)$/
 
 var date = '0'
@@ -1288,7 +1288,7 @@ console.log(reg.test(date))
 <!-- true -->
 ```
 
-```javascript
+```js
 var reg = /\<(.*?)\>/
 
 var date = '<ps>jdfjdsl</ps>'
@@ -1300,7 +1300,7 @@ console.log(date.replace(reg, function($0, $1) {
 ### 匹配非负浮点数
 注：正浮点数 + 0
 (0.0是浮点数吗？浮点数是什么)
-```javascript
+```js
 var reg = /^[1-9]\d*\.\d*|0\.\d*[1-9]\d*|0?\.0+|0$/
 
 var date = '0'
@@ -1316,7 +1316,7 @@ console.log(reg.test(date))
 
 ### 匹配非正浮点数
 注：负浮点数 + 0
-```javascript
+```js
 var reg = /^(-([1-9]\d*\.\d*|0\.\d*[1-9]\d*))|0?\.0+|0$/
 
 var date = '0'
@@ -1377,7 +1377,7 @@ console.log(regex.test("abcdEF234") ) // true 三者都有
 ```
 
 ### 判断PDF后缀
-```javascript
+```js
 var reg = /^.+\.pdf$/i
 
 var date = 'Ubuntu.pdf'
@@ -1386,7 +1386,7 @@ console.log(reg.test(date))
 ```
 
 ### 匹配中文字符
-```javascript
+```js
 var reg = /^[\u4e00-\u9fa5]+$/
 
 var date = '京东方s'
@@ -1401,7 +1401,7 @@ console.log(reg.test(date))
 ```
 
 ### 两位小数
-```javascript
+```js
 <!-- var reg = /^((?:-?0)|(?:-?[1-9]\d*))(?:\.\d{1,2})?$/ -->
 var reg = /^-?([1-9]\d*\.\d{2}|0\.[1-9]\d)$/
 var date = '8.12'
@@ -1425,7 +1425,7 @@ console.log(reg.test(date))
 ```
 
 ### 至少3位的数字
-```javascript
+```js
 var reg = /^\d{3,}$/
 var date = '888'
 console.log(reg.test(date))
@@ -1438,7 +1438,7 @@ console.log(reg.test(date))
 
 ### 中国邮政编码
 注：中国邮政编码为6位数字，前两位数字表示省（直辖市，自治区）；前三位数字表示邮区；前四位数字表示县（市）；最后两位数字表示投递局（所）。
-```javascript
+```js
 var reg = /^[1-9]\d{5}$/
 var date = '223805'
 console.log(reg.test(date))
@@ -1447,7 +1447,7 @@ console.log(reg.test(date))
 
 ### 验证帐号是否合法
 注：字母、数字、下划线组成，字母开头，4-16位。
-```javascript
+```js
 var reg = /^[a-zA-z]\w{3,15}$/
 var date = 'Ubuntu8'
 console.log(reg.test(date))
@@ -1456,7 +1456,7 @@ console.log(reg.test(date))
 
 ## 匹配
 ### JSON
-```javascript
+```js
 var str='3 o !_..{sdfdasf}{dsfdsf{}}'
 console.log(str.match(/{[^()]+}/g))
 // ["{sdfdasf}{dsfdsf{}}"]
@@ -1464,7 +1464,7 @@ console.log(str.match(/{[^()]+}/g))
 
 ## 常用正则表达式
 ### 更复杂的用法,使用子匹配 
-```javascript
+```js
 // exec返回的数组第1到n元素中包含的是匹配中出现的任意一个子匹配  
 re=/^[a-z]+\s+(\d+)$/i
 // 用()来创建子匹配  
@@ -1498,7 +1498,7 @@ console.log(arr[2])
 
 ### 匹配空行
 注：匹配空白字符
-```javascript
+```js
 var 空格 = /[ ]+/g
 
 var reg = /[\s| ]+/g
@@ -1510,7 +1510,7 @@ console.log(date.replace(reg, ','))
 
 ### 匹配首尾空格
 注：匹配首空格和尾空格，空格有一个以上，肯能同时存在
-```javascript
+```js
 var reg = /(^\s+)|(\s+$)/g
 
 var date = ' Ubuntu 8 '
@@ -1527,7 +1527,7 @@ console.log(date.replace(reg, ','))
 ```
 
 ### m~n位的数字
-```javascript
+```js
 var date = '8888'
 var reg = /^\d{3,5}$/
 console.log(reg.test(date))
@@ -1536,7 +1536,7 @@ console.log(reg.test(date))
 
 ### 匹配非负整数
 注：正确格式为：0 1 9 100
-```javascript
+```js
 var date = '011'
 var reg = /^(0|[1-9][0-9]*)$/
 console.log(reg.test(date))
@@ -1545,7 +1545,7 @@ console.log(reg.test(date))
 
 ### 验证一年的12个月
 注：正确格式为："01"～"09"和"1"～"12"
-```javascript
+```js
 var date = '01'
 var reg = /^(0?[1-9]|1[0-2])$/
 console.log(reg.test(date))
@@ -1553,7 +1553,7 @@ console.log(reg.test(date))
 
 ### IPV4 地址
 注：提取ip地址时有用
-```javascript
+```js
 var date = '192.168.0.1'
 var reg = /^([1-9]|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])(\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])){3}$/
 console.log(reg.test(date))
@@ -1561,7 +1561,7 @@ console.log(reg.test(date))
 
 ### Email
 注：
-```javascript
+```js
 Email : /^\w+([-+.]\w+)*@\w+([-.]\\w+)*\.\w+([-.]\w+)*$/
 isEmail1 : /^\w+([\.\-]\w+)*\@\w+([\.\-]\w+)*\.\w+$/
 isEmail2 : /^.*@[^_]*$/
@@ -1578,7 +1578,7 @@ console.log(reg.test(date))
 [第二代身份证号码编排规则](https://jingyan.baidu.com/article/72ee561abd962fe16038df48.html "")
 注：15位或18位数字（第二代身份证最后一位可能为X）
 
-```javascript
+```js
 var reg = /^(\d{15}|\d{17}[\dxX])$/
 var date = '32082519640706573X'
 console.log(reg.test(date))
@@ -1587,7 +1587,7 @@ console.log(reg.test(date))
 
 ### Phone手机号码
 注：只有13、15和18开头的11位手机号码
-```javascript
+```js
 var date = '18961856168'
 var reg = /^((13|18)(\d{9}))$|^(14[57]\d{8})$|^(17[07]\d{8})$|(^15[0-35-9]\d{8}$)/
 // var reg = /^[1][358]\d{9}$/;
@@ -1598,7 +1598,7 @@ console.log(reg.test(date))
 
 ### 网址
 注：https、http
-```javascript
+```js
 var date = 'https://zhidao.baidu.com/'
 var reg = /^(http|https):\/\/[A-Za-z0-9]+\.[A-Za-z0-9]+[\/=\?%\-&_~`@[\]\':+!]*([^<>\"\"])*$/
 var reg = /^http:// ([\w-]+\.)+[\w-]+(/[\w-./?%&=]*)?$/
@@ -1606,14 +1606,14 @@ console.log(reg.test(date))
 ```
 ### 顶级域名
 
-```javascript
+```js
 var date = 'http://zhidao.baidu.com/jdslfjdsf'
 var reg = /https?:\/\/[^\/]+\/?/
 console.log(date.match(reg))
 ```
 
 ### 驼峰化
-```javascript
+```js
 function camelize (str) {
   return str.replace(/[-_\s]+(.)?/g, function ($0, $1) {
   	console.log($0)
@@ -1631,7 +1631,7 @@ console.log(camelize('font-'))
 ```
 
 ### 中划线化
-```javascript
+```js
 function dasherize (str) {
   return str.replace(/([A-Z])/g, '-$1').replace(/[-_\s]+/g, '-').toLowerCase();
 }
@@ -1685,7 +1685,7 @@ function unescapeHTML (str) {
 --> 
 
 ### 匹配成对标签
-```javascript
+```js
 var regex = /<([^>]+)>[\d\D]*<\/\1>/;
 var string1 = "<title>regular expression</title>";
 var string2 = "<p>laoyao bye bye</p>";
@@ -1699,7 +1699,7 @@ console.log( regex.test(string3) ); // false
 
 ### 方法一
 匹配内容进行替换
-```javascript
+```js
 function thousandBitSeparator(num) {
   return num && Number(num)
     .toString()
@@ -1725,7 +1725,7 @@ console.log(thousandBitSeparator('...'))
 ### 方法二
 
 通过匹配位置来判断
-```javascript
+```js
 <!-- 弄出最后一个逗号 -->
 /(?=\d{3}$)/g
 // => 12345,678
@@ -1752,7 +1752,7 @@ console.log(format(1888))
 ## 支持2-10位的汉字或数字的正则表达式（还包含汉字和数字混合哦）
 数字 0-9
 汉子 \u4e00-\u9fa5：这两个unicode值正好是Unicode表中的汉字的头和尾。
-```javascript
+```js
 var regex = /^([0-9\u4e00-\u9fa5]{2,10})$/;
 var string1 = "210位的汉字";
 var string2 = "210";

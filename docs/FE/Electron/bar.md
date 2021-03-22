@@ -3,7 +3,7 @@
 electron默认的顶栏边框设计，如果想要去掉很简单`frame:false`
 
 ## frame
-```JavaScript
+```js
 mainWindow = new BrowserWindow({frame:false})
 ```
 
@@ -13,7 +13,7 @@ mainWindow = new BrowserWindow({frame:false})
 
 ## 拖拽问题
 
-```JavaScript
+```js
 .titlebar {
   -webkit-app-region: drag;
   -webkit-user-select: none;
@@ -26,7 +26,7 @@ mainWindow = new BrowserWindow({frame:false})
 
 > hidden
 
-```JavaScript
+```js
 mainWindow = new BrowserWindow({titleBarStyle: 'hidden'})
 ```
 位置偏上 不使用是置灰
@@ -34,7 +34,7 @@ mainWindow = new BrowserWindow({titleBarStyle: 'hidden'})
 
 > hiddenInset
 
-```JavaScript
+```js
 mainWindow = new BrowserWindow({titleBarStyle: 'hiddenInset'})
 ```
 位置偏下 不使用是置灰
@@ -43,7 +43,7 @@ mainWindow = new BrowserWindow({titleBarStyle: 'hiddenInset'})
 
 > customButtonsOnHover
 
-```JavaScript
+```js
 mainWindow = new BrowserWindow({titleBarStyle: 'customButtonsOnHover'})
 ```
 鼠标移动上去之后，才会出现的
@@ -56,7 +56,7 @@ mainWindow = new BrowserWindow({titleBarStyle: 'customButtonsOnHover'})
 
 > 渲染进程
 
-```JavaScript
+```js
 let ipcRenderer = require('electron').ipcRenderer;
 var max = document.getElementById('max');
 if (max) {
@@ -91,7 +91,7 @@ if (close) {
 > 主进程
 
 
-```JavaScript
+```js
 let ipcMain = require('electron').ipcMain;
 //接收最小化命令
 ipcMain.on('window-min', function() {

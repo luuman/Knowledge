@@ -4,6 +4,7 @@
 `IndexedDB`不属于关系型数据库（不支持`SQL`查询语句），更接近`NoSQL`数据库，可以简单认为是一个基于事务操作的 key-value 型前端数据库。它的`API`大部分都是异步。
 
 [关系型数据库 VS 非关系型数据库](https://zhuanlan.zhihu.com/p/78619241)
+
 [使用 indexedDB [译]](https://juejin.cn/post/6844904111008137229)
 
 

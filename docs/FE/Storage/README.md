@@ -61,7 +61,7 @@ Safari 允许使用 1GB，当达到 1GB 的时候会提示用户（该数据可�
 现代浏览器大多数已经不会再提示用户以授权更多的储存空间了。
 如何检测储存空间是否可用？
 在大多数浏览器中，可以通过 StorageManager API 检测储存空间总量与正在使用的量
-```JavaScript
+```js
 if (navigator.storage && navigator.storage.estimate) {
   const quota = await navigator.storage.estimate();
   // quota.usage -> Number of bytes used.
@@ -73,7 +73,7 @@ if (navigator.storage && navigator.storage.estimate) {
 }
 ```
 
-```JavaScript
+```js
 // quota data
 {
   "quota": 299977904946,
@@ -92,7 +92,7 @@ if (navigator.storage && navigator.storage.estimate) {
 
 IndexedDB 超限处理
 indexedDB 超限将会执行 onabort 回调，并抛出一个 DOMException 错误，需要处理它的 QuotaExceededError 异常。
-```JavaScript
+```js
 const transaction = idb.transaction(['entries'], 'readwrite');
 transaction.onabort = function(event) {
   const error = event.target.error; // DOMException
@@ -103,7 +103,7 @@ transaction.onabort = function(event) {
 ```
 Cache API 超限处理
 抛出一个 Promise Rejection，QuotaExceededError 错误对象，需要处理它的 QuotaExceededError 异常。
-```JavaScript
+```js
 try {
   const cache = await caches.open('my-cache');
   await cache.add(new Request('/sample1.jpg'));
@@ -125,7 +125,7 @@ Firefox 当磁盘空间充满时，会优先清除最近最少使用的数据，
 Safari（iOS、iPadOS、MacOS） 会自动清除超过 7 天以上的数据，但不会清除“已添加至主屏幕”的网站和“PWA”网站
 
 申请和查看持久存储 Persistent Storage
-```JavaScript
+```js
 // 申请持久存储 Persistent Storage：
 // Request persistent storage for site
 if (navigator.storage && navigator.storage.persist) {
@@ -134,7 +134,7 @@ if (navigator.storage && navigator.storage.persist) {
 }
 ```
 查看持久存储 Persistent Storage 授权状态：
-```JavaScript
+```js
 // Check if site's storage has been marked as persistent
 if (navigator.storage && navigator.storage.persist) {
   const isPersisted = await navigator.storage.persisted();

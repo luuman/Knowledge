@@ -8,11 +8,11 @@
 
 ### typeof
 返回右侧一元表达式的数据类型：number、boolean、symbol、string、object、undefined、function
-```javascript
+```js
 function typeof () {}
 ```
 
-```javascript
+```js
 const toString = Object.prototype.toString;
 
 export function type(x, strict = false) {
@@ -73,7 +73,7 @@ export function type(x, strict = false) {
 ### instanceof
 返回 A 是否为 B 的实例
 
-```javascript
+```js
 function instanceofs (A, B) {
 	var L = A.__proto__
 	var R = B.prototype
@@ -95,7 +95,7 @@ function Dog(name, breed, color) {
 ### toString
 利用toString方法基本上可以解决所有内置对象类型的判断, 但是这种方法对于自定义的构造函数仍然无效。
 
-```javascript
+```js
 function typeName (obj) {
   return Reflect.apply(Object.prototype.toString, obj, []).replace(/^\[object\s(\w+)\]$/, '$1').toLowerCase()
 }
@@ -103,7 +103,7 @@ function typeName (obj) {
 
 > 注意：
 
-```javascript
+```js
 因为{}被解析为代码语句了，所以跟{}不构成关系，而.toString()不是完整的一行代码语句了。
 括号里不能包含语句，所以被解释成表达式。
 只要能让{}不产生歧义地认为是表达式，就不会报错了，例如：
@@ -135,7 +135,7 @@ function(){}(); // function(){}被解析为语句，()内不能为空，所以�
 
 使用setTimeout 实现 setInterval
 
-```javascript
+```js
 function say(fn, time){
 	let i = 3
 	function A () {

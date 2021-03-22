@@ -2,7 +2,7 @@
 使用`window.URL.createObjectURL` 和`window.URL.revokeObjectURL method`和`blob`对象实现文件下载
 
 精简版封装
-```javascript
+```js
 /**
  * 创建并下载文件
  * @param  {String} fileName 文件名
@@ -20,7 +20,7 @@ function saveAs(content, filename) {
 
 更好的封装
 
-```javascript
+```js
 var URL = window.URL || window.webkitURL;
 function saveAs(blob, filename) {
 	var type = blob.type;
@@ -46,7 +46,7 @@ function saveAs(blob, filename) {
 ## 最佳方案
 直接使用[FileSaver](https://github.com/eligrey/FileSaver.js/)库。也许在某些浏览器需要实现Blob对象可以使用Blob.js。（ps:IE10以下不支持注意兼容性）
 
-```javascript
+```js
 var oReq = new XMLHttpRequest();
 // The Endpoint of your server 
 var URLToPDF = "https://mozilla.github.io/pdf.js/web/compressed.tracemonkey-pldi-09.pdf";
@@ -69,7 +69,7 @@ oReq.onload = function() {
 oReq.send();
 ```
 
-```javascript
+```js
 var URL = window.URL || window.webkitURL;
 function saveAs(blob, filename) {
 	var type = blob.type;

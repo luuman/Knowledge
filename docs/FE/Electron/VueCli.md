@@ -13,14 +13,14 @@ node 12、vueCli
 
 > 使用cnpm加速下载
 
-```JavaScript
+```js
 <!-- npm有时下载速度很慢，可以安装cnpm，从国内淘宝镜像下载，执行以下命令： -->
 npm install -g cnpm --registry=https://registry.npm.taobao.org
 <!-- 以后npm直接替换成cnpm使用。 -->
 ```
 > 安装/升级vue-cli3
 
-```JavaScript
+```js
 先执行以下命令，确认下本地安装的vue-cli版本：
 
 vue -V
@@ -47,7 +47,7 @@ npm update @vue/cli -g
 ## 搭建项目
 ### 创建vue项目
 
-```JavaScript
+```js
 <!-- 创建electron-vue-demo -->
 vue create electron-vue-demo
 
@@ -107,7 +107,7 @@ by default): (Use arrow keys)
 
 ### 安装electron
 
-```JavaScript
+```js
 vue add electron-builder
 
 ? Choose Electron Version (Use arrow keys)
@@ -120,7 +120,7 @@ vue add electron-builder
 
 > win启动可能会等待很久
 
-```JavaScript
+```js
 INFO  Launching Electron...
 Failed to fetch extension, trying 4 more times
 Failed to fetch extension, trying 3 more times
@@ -134,7 +134,7 @@ Failed to fetch extension, trying 2 more times
 
 
 ### 配置electron
-```JavaScript
+```js
 vue.config.js
 
 const path = require('path');
@@ -165,7 +165,7 @@ module.exports = {
 ### Vue使用electron
 
 
-```JavaScript
+```js
 <!-- 报错：Uncaught ReferenceError: __dirname is not defined -->
 module.exports = {
   pluginOptions: {
@@ -204,7 +204,7 @@ test.js
 
 ### webview与渲染进程renderer间通信
 
-```JavaScript
+```js
 与渲染进程之间的通信不同，渲染进程与webview之间的通信，在webview层通过调用sendToHost方法来向渲染进程通信；而在渲染进程测通过webview提供的ipc-message事件来向webview通信。具体如下面代码所示：
 
 // renderer环境，获取webview，然后注册事件
@@ -233,7 +233,7 @@ ipcRenderer.on('renderer_event_name', (e, message) => {
 ## 通过协议唤起Electron应用
 采用协议通过浏览器访问，`myapp://startapp/here?a=1&b=2`，系统会去找到已经注册了 myapp 这个协议的应用，然后把 URL 当做参数传过去。
 
-```JavaScript
+```js
 const path = require('path');
 
 const gotTheLock = app.requestSingleInstanceLock();
@@ -892,7 +892,7 @@ graph TB
 
 在加载页面时，渲染进程第一次完成绘制时，会发出`ready-to-show`事件 。 在此事件后显示窗口将没有视觉闪烁
 
-```javascript
+```js
 mainWindow = new BrowserWindow({
   ...
   // 先隐藏
@@ -919,7 +919,7 @@ graph TB
   end
 ```
 
-```javascript
+```js
 function createWindow() {
   win = new BrowserWindow({
     // 隐藏窗口

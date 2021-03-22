@@ -601,7 +601,7 @@ url为可选参数，如果有url打开圈子后跳转相应url
 >window.wst.getDeviceInfo();
 ### 2.关闭当前webview
 >window.wst.closeView();
-```javascript
+```js
 function closeView() {
 try {
 window.wst.closeView();
@@ -612,7 +612,7 @@ window.location.href = location.href.indexOf('#closeview') > 0 ? location.href :
 ```
 ### 3.改变webview导航条颜色
 >window.wst.modifyNavbgColor("ff0000");
-```javascript
+```js
 try{
 window.wst.modifyNavbgColor("ff0000");
 }catch(e){
@@ -632,7 +632,7 @@ window.wst.modifyNavbgColor("ff0000");
 |shareUrl|分享点击url|
 |subtype||
 |p||
-```javascript
+```js
 window.getShareMessage=function(){
 var shareMessage = {};
 shareMessage['wxShareTitle'] = _self.wxShareTitle
@@ -671,7 +671,7 @@ function onShareComplete(type) {}
 |-----|-----|------|
 |ios|#refreshSafeStatus|>=V5.46|
 |android|window.wst.refreshSafeStatus()|>=V5.46|
-```javascript
+```js
 function refreshSafeStatus(opt){
 try {
 window.wst.refreshSafeStatus()
@@ -688,7 +688,7 @@ window.location.href = location.href.indexOf('#refreshSafeStatus')>0?location.hr
 |配套方法|ios回调前端sharepic() return json 值给ios|--|
 |android|`<a href="?#sharePic">`|>v1.0|
 |配套方法|android回调sharePic() 前端把值传入startSharePic()传值给android|--|
-```javascript
+```js
 var sharepicJson = {
 shid: 'medal'
 };
@@ -713,7 +713,7 @@ return result;
 |ios|window.wst.locationJudge()|>=V5.49|
 |ios|#locationJudge|<=V5.48|
 |android|window.wst.locationJudge()|>=V5.47|
-```javascript
+```js
 function locationJudge(cb) {
 var u = navigator.userAgent,
 isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1,
@@ -731,7 +731,7 @@ window.location.href = location.href.indexOf('#locationJudge') > 0 ? location.hr
 |-----|------|------|
 |ios|window.wst.getCurrentPosition()|>=V5.49|
 |android|window.wst.getCurrentPosition()|>=V5.49|
-```javascript
+```js
 try {
 window.wst.getCurrentPosition();
 }catch() { }
@@ -742,7 +742,7 @@ window.wst.getCurrentPosition();
 |------|------|-----|
 |ios|currentPositionInfo(longitude, latitude)|>=V5.49|
 |android|currentPositionInfo(longitude, latitude)|>=V5.49|
-```javascript
+```js
 window.currentPositionInfo = function(longitude, latitude) {
 console.log(longitude, latitude);
 }
@@ -765,7 +765,7 @@ console.log(longitude, latitude);
 |android|`<a href="?cropscale=0.7&maxscale=100_100&album=0&pri=1#cropphoto">`|>=v5.51|
 
 ### 12.uploadPhoto[上传图片]
-```javascript
+```js
 try{
 window.wst.uploadPhoto(0,640,640,1,0,'')
 }catch(e){
@@ -774,7 +774,7 @@ window.location.href = '?cropscale=0&maxscale=520_320&source=certify&album=1#cro
 ```
 
 ### 13.是否安装支付宝
-```javascript
+```js
 try {
 result = window.wst.getIsAliPayInstall()
 } catch(e) {
@@ -782,7 +782,7 @@ console.log(e);
 }
 ```
 ### 14.获取摄像头授权
-```javascript
+```js
 try {
 window.wst.requestPermission(JSON.stringify(permType), reason);
 } catch (err){
@@ -805,7 +805,7 @@ console.log('客户端版本小于6.20,可以先获取客服后请求语音摄�
 |配套方法|ios回调前端downloadPhoto() return json 值给ios|--|
 |android|`<a href="?#download">`|>v1.0|
 |配套方法|android回调downloadPhoto() 前端把值传入startDownload()传值给android|--|
-```javascript
+```js
 function downloadPhoto(downloadPhotoJson) {
 var result = JSON.stringify(downloadPhotoJson);
 try{
@@ -836,7 +836,7 @@ return result;
 |系统|调用方式|支持版本
 |--|--|--|
 |ios|window.wst.startBzbEvent(data.rechargeid);|>=608|
-```javascript
+```js
 try {
 window.wst.startBzbEvent(data.rechargeid);
 }catch (err){
@@ -848,7 +848,7 @@ console.log(err);
 |系统|调用方式|支持版本
 |--|--|--|
 |ios|window.wst.startInAppPurchase(data.rechargeid);|>=549|
-```javascript
+```js
 try {
 window.wst.startInAppPurchase(data.rechargeid);
 }catch (err){
@@ -871,7 +871,7 @@ console.log(err);
 |ios|window.wst.uploadPhoto(cropscale,minwidth,minheight,album,pri,source) |>=v6.10|
 |android|window.wst.uploadPhoto(cropscale,minwidth,minheight,album,pri,source)|>=v6.10|
 |上传完成后回调uploadPhotoComplete(json)|json.url 大图url,json.tinyUrl 小图url|--|
-```javascript
+```js
 try{
 window.wst.uploadPhoto(0,500,500,0,0,'');//客户端version>=6.10
 }catch(e){
@@ -885,14 +885,14 @@ console.log(json);
 ```
 
 ### 22.getIsConnectInfo[获取网络状态]
-```javascript
+```js
 try {
 window.wst.getIsConnectInfo(url)
 } catch (ex) {}
 ```
 
 ### 23.share[分享]
-```javascript
+```js
 function callShare(share) {
 var href = "http://pre-www.zhipin.com";
 if (href.indexOf("?") == -1) {
@@ -929,7 +929,7 @@ window.location.href = href;
 |系统|调用方式|支持版本
 |--|--|--|
 |android|window.wst.requestPermission(JSON.stringify(permType), reason)|>=620|
-```javascript
+```js
 function requestPermission(type, reason) {
 type = type || 3;
 let permType = [];
@@ -961,7 +961,7 @@ console.log('客户端版本小于6.20,可以先获取客服后请求语音摄�
 ```
 
 ### 27.退出登陆
-```javascript
+```js
 function logout() {
 try {
 window.wst.logout();
@@ -972,7 +972,7 @@ window.location.href = window.location.href.indexOf('#logout') > 0 ? window.loca
 ```
 
 ### 28.分享小程序
-```javascript
+```js
 function shareMicroApp(type, data) {
 try {
 const str = JSON.stringify(data);

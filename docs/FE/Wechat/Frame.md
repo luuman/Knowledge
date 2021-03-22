@@ -1,7 +1,7 @@
 # 框架优化
 
 ## 引用绝对路径
-```javascript
+```js
 App({
   // 绝对路径
   require (url) {
@@ -10,7 +10,7 @@ App({
 })
 ```
 
-```javascript
+```js
 const {require} = getApp()
 const $API = require('utils/api')
 ```

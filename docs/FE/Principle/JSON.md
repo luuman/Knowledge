@@ -21,7 +21,7 @@ JSON 比 XML 更小、更快，更易解析。
 ## 原理
 
 1.使用eval
-```JavaScript
+```js
 var parse_json_by_eval = function(str){
   return eval('('+str+')')
 }
@@ -47,7 +47,7 @@ console.log(value)
 
 ### parse
 
-```JavaScript
+```js
 JSON.parse = function (text, reviver) {
   var j;
 
@@ -88,7 +88,7 @@ JSON.parse = function (text, reviver) {
 ```
 
 ### stringify
-```JavaScript
+```js
 JSON.stringify = function (value, replacer, space) {
   var i;
   gap = '';

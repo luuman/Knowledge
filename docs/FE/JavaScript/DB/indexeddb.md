@@ -28,7 +28,7 @@ executeSql是执行具体的sql，参数是1.sql语句（大写？），2.语句
 
 示例：
 
-```JavaScript
+```js
  1 var db = openDatabase('mydb', '1.0', 'Test DB', 2 * 1024 * 1024);
  2 db.transaction(function (tx) {
  3   tx.executeSql('CREATE TABLE IF NOT EXISTS LOGS (id unique, log)');
@@ -124,7 +124,7 @@ indexedDB.open()方法返回一个 IDBRequest 对象。这个对象通过三种�
 eg：
 
 
-```JavaScript
+```js
 var db;
 var objectStore;
 var request = window.indexedDB.open(databaseName, version);
@@ -157,7 +157,7 @@ request.onupgradeneeded = function (event) {
 eg：
 
 
-```JavaScript
+```js
 function add() {
   var request = db.transaction(['person'], 'readwrite')
     .objectStore('person')
@@ -182,7 +182,7 @@ objectStore.get()方法用于读取数据，参数是主键的值。
 eg：
 
 
-```JavaScript
+```js
 function read() {
   var transaction = db.transaction(['person']);
   var objectStore = transaction.objectStore('person');
@@ -211,7 +211,7 @@ read();
 遍历数据表格的所有记录，要使用指针对象 IDBCursor。openCursor()方法是一个异步操作，所以要监听success事件。
 
 
-```JavaScript
+```js
 function readAll() {
   var objectStore = db.transaction('person').objectStore('person')
   objectStore.openCursor().onsuccess = function (event) {
@@ -234,7 +234,7 @@ readAll()
 
 IDBObject.put()方法。
 
-```JavaScript
+```js
 function update() {
   var request = db.transaction(['person'], 'readwrite')
     .objectStore('person')
@@ -257,7 +257,7 @@ update();
 IDBObjectStore.delete()方法用于删除记录。
 
 
-```JavaScript
+```js
 function remove() {
   var request = db.transaction(['person'], 'readwrite')
     .objectStore('person')
@@ -275,7 +275,7 @@ remove();
 添加索引后可以使用索引查询数据
 
 
-```JavaScript
+```js
 var transaction = db.transaction(['person'], 'readonly');
 var store = transaction.objectStore('person');
 var index = store.index('name');

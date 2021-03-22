@@ -4,255 +4,6 @@
 ## alert
 win样式丑陋可以拖拽、mac内嵌页面不可拖拽
 
-# window.open
-创建并开启新窗口，多次调用仅有一个同一`frameName`窗口。
-
-## 创建
-
-```JavaScript
-window.open(url[, frameName][, features])
-```
-
-```JavaScript
-// winOpen
-url: 网址
-frameName: 命名
-features: 字符串参数，逗号分隔
-return BrowserWindowProxy 类的实例
-
-window.open('http://www.baidu.com', 'oauth', 'frame=true, width=700, transparent=')
-transparent： 空：false，有值：true
-nodeIntegration
-```
-
-## 实例
-
-> winOpen.blur() 子窗口的失去焦点
-
-> winOpen.close() 强行关闭子窗口，忽略卸载事件
-
-> winOpen.closed 在子窗口关闭之后恢复正常
-
-> winOpen.eval(code) code String评估子窗口的代码
-
-> winOpen.focus() 子窗口获得焦点(让其显示在最前)
-
-> winOpen.postMessage(message, targetOrigin)
-
-## 通信
-
-> 父到子
-
-```JavaScript
-postMessage(message, targetOrigin)
-message: 消息
-targetOrigin: 地址
-
-winOpen.postMessage("The user is 'bob' and the password is 'secret'", 'https://open.weixin.qq.com/')
-
-// 接收
-window.addEventListener('message', (event) => {
-  alert(event.data)
-}, false)
-```
-
-1. event.data表示接收到的消息
-1. event.origin表示postMessage的发送来源，包括协议，域名和端口
-1. event.source表示发送消息的窗口对象的引用; 我们可以用这个引用来建立两个不同来源的窗口之间的双向通信。
-
-> 子到父
-
-```JavaScript
-window.addEventListener('message', (event) => {
-  alert(event.data)
-}, false)
-
-winOpen.eval (`window.opener.postMessage('dsdfasdf', 'http://localhost:8081')`);
-```
-
-## 监听开启新窗口
-```JavaScript
-// 主窗口 -> 创建窗口
-mainWindow.webContents.on('new-window', (event, url, frameName, disposition, options, additionalFeatures) => {
-  if (frameName === 'oauth') {
-    // open window as modal
-    event.preventDefault()
-    // 将所有可枚举属性的值从一个或多个源对象分配到目标对象
-    Object.assign(options, {
-      modal: true,
-      // parent: this.win,
-      width: 100,
-      height: 100
-    })
-    event.newGuest = new BrowserWindow(options)
-    event.newGuest.loadURL(url)
-    event.newGuest.webContents.openDevTools({ mode: 'detach' })
-    // 监听路由跳转
-    event.newGuest.webContents.on('will-navigate', (event, url) => {
-      setTimeout(() => {
-        win.webContents.send('winoauth')
-      }, 1000)
-    })
-  }
-})
-```
-
-### 模态窗口
-
-```JavaScript
-// 主窗口
-const mainWindow = new BrowserWindow({
-  width: 800,
-  height: 600,
-  webPreferences: {
-    nativeWindowOpen: true
-  }
-})
-mainWindow.webContents.on('new-window', (event, url, frameName, disposition, options, additionalFeatures) => {
-  if (frameName === 'modal') {
-    // open window as modal
-    event.preventDefault()
-    Object.assign(options, {
-      modal: true,
-      parent: mainWindow,
-      width: 100,
-      height: 100
-    })
-    event.newGuest = new BrowserWindow(options)
-    event.newGuest.webContents.on('close', () => {
-      console.log('newGuest closed!')
-      // 关闭 childId
-      if (childId) childId.close()
-    })
-  }
-})
-```
-### 自定义模态窗口
-
-```JavaScript
-// 主窗口
-const win = appManager.windowManager.mainWindow.win
-win.webContents.on('new-window', (event, url, frameName, disposition, options, additionalFeatures) => {
-  let childId = ''
-  if (frameName === 'login') {
-    childId = new BrowserWindow({
-      modal: true,
-      parent: win,
-      width: 1,
-      height: 1
-    })
-  }
-  if (frameName === 'oauth') {
-    // open window as modal
-    event.preventDefault()
-    Object.assign(options, {
-      modal: true,
-      width: 1000,
-      height: 1000
-    })
-    event.newGuest = new BrowserWindow(options)
-    event.newGuest.loadURL(url)
-    event.newGuest.webContents.openDevTools({ mode: 'detach' })
-    event.newGuest.webContents.on('will-navigate', (event, url) => {
-      setTimeout(() => {
-        win.webContents.send('winoauth')
-      }, 1000)
-    })
-    event.newGuest.webContents.on('close', () => {
-      console.log('newGuest closed!')
-      if (childId) childId.close()
-    })
-  }
-})
-```
-
-### 自定义模态窗口
-控制显示，启动窗口需要时间
-通过这种方式添加本地页面页面显示 但是效果不好 启动时间过长
-[electron程序，如何设置模态窗口（父子窗口）？](https://newsn.net/say/electron-modal.html)
-
-```JavaScript
-newWindow (appManager) {
-  const win = appManager.windowManager.mainWindow.win
-  let winOpen = ''
-  ipcMain.on('close', () => {
-    console.log(winOpen.hide())
-  })
-  win.webContents.on('new-window', (event, url, frameName, disposition, options, additionalFeatures) => {
-    event.preventDefault()
-    Object.assign(options, {
-      modal: true,
-      webPreferences: {
-        nodeIntegration: frameName === 'Info'
-      },
-      resizable: false,
-      show: false,
-      // x: '100',
-      // y: '100',
-      // maxwidth: options.maxwidth,
-      // maxheight: options.maxheight,
-      parent: frameName === 'Info' ? win : ''
-    })
-    event.newGuest = new BrowserWindow(options)
-    winOpen = event.newGuest
-    console.log(url)
-    // if (frameName === 'Info') url = process.env.WEBPACK_DEV_SERVER_URL + url
-    event.newGuest.loadURL(url)
-    event.newGuest.webContents.openDevTools({ mode: 'detach' })
-    event.newGuest.on('ready-to-show', () => {
-      event.newGuest.show()
-    })
-    // event.newGuest.webContents.on('will-navigate', (event, url) => {
-    //   // console.log('event', event.sender.history, url)
-    //   setTimeout(() => {
-    //     win.webContents.send('winoauth')
-    //   }, 1000)
-    // })
-  })
-}
-```
-
-> event
-
-```JavaScript
-{
-  preventDefault
-  sendReply
-  sender
-  webContents
-}
-```
-> url
-
-> frameName 框架名
-
-> disposition
-
-new-window
-> options参数
-
-```JavaScript
-{
-  frame: 'true',
-  width: 1000,
-  height: 500,
-  webPreferences: {
-    nodeIntegration: false,
-    webSecurity: false,
-    webviewTag: true,
-    transparent: true,
-    nodeIntegrationInSubFrames: false,
-    openerId: 1
-  },
-  transparent: '',
-  title: 'oauth',
-  show: true
-}
-```
-> additionalFeatures补充特性
-[]
-
-
 # webview
 
 特点：
@@ -263,57 +14,57 @@ new-window
 ## 属性
 
 ### src地址
-```JavaScript
+```js
 <webview src="https://www.github.com/"></webview>
 ```
 
 ### autosize自适应
 开启自适应，设置大小区间minwidth, minheight, maxwidth, 和 maxheight
-```JavaScript
+```js
 <webview src="https://www.github.com/" autosize="on" minwidth="576" minheight="432"></webview>
 ```
 
 ### nodeintegration集成node
 将整合node，并且拥有可以使用系统底层的资源，例如`require`和`process`
-```JavaScript
+```js
 <webview src="http://www.google.com/" nodeintegration></webview>
 ```
 
 ### plugins插件
 可以使用浏览器插件
-```JavaScript
+```js
 <webview src="https://www.github.com/" plugins></webview>
 ```
 
 ### preload脚本
 在 guest page 中的其他脚本执行之前预加载一个指定的脚本。规定预加载脚本的url须如 file: 或者 asar:，因为它在是 guest page 中通过通过 require 命令加载的。
 如果 guest page 没有整合 node ，这个脚本将试图使用真个 Node APIs ，但是在这个脚本执行完毕时，之前由node插入的全局对象会被删除。
-```JavaScript
+```js
 <webview src="https://www.github.com/" preload="./test.js"></webview>
 ```
 
 ### httpreferrer
 为 guest page 设置 referrer URL。
-```JavaScript
+```js
 <webview src="https://www.github.com/" httpreferrer="http://cheng.guru"></webview>
 ```
 
 ### useragent用户代理
 在 guest page 加载之前为其设置用户代理。如果页面已经加载了，可以使用 setUserAgent 方法来改变用户代理。
-```JavaScript
+```js
 <webview src="https://www.github.com/" useragent="Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; AS; rv:11.0) like Gecko"></webview>
 ```
 
 ### disablewebsecurity禁用web安全控制
 如果这个属性的值为 "on" ， guest page会禁用web安全控制.
-```JavaScript
+```js
 <webview src="https://www.github.com/" disablewebsecurity></webview>
 ```
 
 ### partition
 为page设置session。如果初始值为 partition ,这个 page 将会为app中的所有 page 应用同一个持续有效的 session。如果没有 persist: 前缀, 这个 page 将会使用一个历史 session 。通过分配使用相同的 partition, 所有的page都可以分享相同的session。如果 partition 没有设置，那app将使用默认的session.
 这个值只能在在第一个渲染进程之前设置修改，之后修改的话会无效并且抛出一个DOM异常.
-```JavaScript
+```js
 <webview src="https://github.com" partition="persist:github"></webview>
 
 <webview src="http://electron.atom.io" partition="electron"></webview>
@@ -321,20 +72,20 @@ new-window
 
 ### allowpopups新窗口
 如果这个属性的值为 "on" ，将允许 guest page 打开一个新窗口。
-```JavaScript
+```js
 <webview src="https://www.github.com/" allowpopups></webview>
 ```
 
 ### blinkfeatures特性被启用
 这个属性的值为一个用逗号分隔的列表，它的值指定特性被启用。你可以从setFeatureEnabledFromString函数找到完整的支持特性。
-```JavaScript
+```js
 <webview src="https://www.github.com/" blinkfeatures="PreciseMemoryInfo, CSSVariables"></webview>
 ```
 
 ## 方法
 元素必须在使用这些方法之前加载完毕
 
-```JavaScript
+```js
 var webview = document.getElementById('webview')
 webview.addEventListener('dom-ready', () => {
   webview.openDevTools()
@@ -379,7 +130,7 @@ webview.addEventListener('dom-ready', () => {
 
 > .insertCSS(css) 插入css
 
-```JavaScript
+```js
 webview.insertCSS(`
   body {
     background: red !important;
@@ -456,7 +207,7 @@ webview.insertCSS(`
 
 ### loadURL
 加载 webview 中的 url，url 必须包含协议前缀，例如 http:// 或 file://.
-```JavaScript
+```js
 <webview>.loadURL(url[, options])
 url URL
 options Object (可选)
@@ -467,7 +218,7 @@ extraHeaders String - 额外的headers,用 "\n"分隔.
 
 ### executeJavaScript
 评估 code ，如果 userGesture 值为 true ，它将在这个page里面创建用户手势. HTML APIs ，如 requestFullScreen,它需要用户响应，那么将自动通过这个参数优化.
-```JavaScript
+```js
 <webview>.executeJavaScript(code, userGesture, callback)
 code String
 userGesture Boolean - 默认 false.
@@ -483,7 +234,7 @@ webview.executeJavaScript(`
 
 ### findInPage
 发起一个请求来寻找页面中的所有匹配 text 的地方并且返回一个 Integer来表示这个请求用的请求Id. 这个请求结果可以通过订阅found-in-page 事件来取得.
-```JavaScript
+```js
 <webview>.findInPage(text[, options])
 text String - 搜索内容,不能为空.
 options Object (可选)
@@ -495,7 +246,7 @@ medialCapitalAsWordStart Boolean - 当配合 wordStart的时候,接受一个文�
 ```
 ### stopFindInPage
 使用 action 停止 findInPage 请求.
-```JavaScript
+```js
 <webview>.stopFindInPage(action)
 action String - 指定一个行为来接替停止 <webview>.findInPage 请求.
 clearSelection - 转变为一个普通的 selection.
@@ -592,7 +343,7 @@ line Integer
 sourceId String
 
 下面示例代码将所有信息输出到内置控制台，没有考虑到输出等级和其他属性。
-```JavaScript
+```js
 webview.addEventListener('console-message', function(e) {
   console.log('Guest page logged a message:', e.message);
 });
@@ -608,7 +359,7 @@ activeMatchOrdinal Integer (可选) - 活动匹配位置
 matches Integer (optional) - 匹配数量.
 selectionArea Object (optional) - 整合第一个匹配域.
 
-```JavaScript
+```js
 webview.addEventListener('found-in-page', function(e) {
   if (e.result.finalUpdate)
     webview.stopFindInPage("keepSelection");
@@ -626,7 +377,7 @@ disposition String - 可以为 default, foreground-tab, background-tab, new-wind
 options Object - 参数应该被用作创建新的 BrowserWindow.
 
 下面示例代码在系统默认浏览器中打开了一个新的url.
-```JavaScript
+```js
 webview.addEventListener('new-window', function(e) {
   require('electron').shell.openExternal(e.url);
 });
@@ -663,7 +414,7 @@ url String
 
 下面的示例代码指示了在客户端试图关闭自己的时候将改变导航连接为about:blank.
 
-```JavaScript
+```js
 webview.addEventListener('close', function() {
   webview.src = 'about:blank';
 });
@@ -677,7 +428,7 @@ args Array
 在 guest page 向嵌入页发送一个异步消息的时候触发.
 
 你可以很简单的使用 sendToHost 方法和 ipc-message 事件在 guest page 和 嵌入页(embedder page)之间通信:
-```JavaScript
+```js
 // In embedder page.
 webview.addEventListener('ipc-message', function(event) {
   console.log(event.channel);
@@ -732,7 +483,7 @@ version String
 
 ### Loading
 
-```JavaScript
+```js
 <webview id="foo" src="https://www.github.com/" style="display:inline-block; width:640px; height:480px"></webview>
 <div class="indicator"></div>
 
@@ -752,7 +503,7 @@ webview.addEventListener('did-stop-loading', loadstop)
 ### 缓存
 默认memory cache
 
-```JavaScript
+```js
 // 已禁用
 webview.getWebContents().session.clearCache(() => {
   webview.reload()
@@ -765,7 +516,7 @@ webview.reloadIgnoringCache()
 
 ### 代码注入
 
-```JavaScript
+```js
 // openWeb
 const webview = this.$refs.webview
 let preloadFile
@@ -799,7 +550,7 @@ ipcRenderer.on('ping', (event, msg) => {
 
 通过区分开发环境，直接获取本地文件，打包环境使用fs本地缓存来实现file资源获取。
 
-```JavaScript
+```js
 ipcMain.on('webviewFile', (event, callback) => {
   console.log('webviewFile is open')
   const updaterCacheDirName = Pkg.name
@@ -827,7 +578,7 @@ ipcMain.on('webviewFile', (event, callback) => {
 
 > 加载远程preload方法
 
-```JavaScript
+```js
 const {remote} = require('electron');
 const path = require('path');
 const fs = require('fs');
@@ -858,7 +609,7 @@ fetchPreload().then(init)
 ```
 > 通过execute
 
-```JavaScript
+```js
 通过executeJavaScript()方法，在webview页面中执行js代码，并且向electron渲染进程返回Promise
 <webview>.executeJavaScript(code[, userGesture])
 -code String
@@ -880,7 +631,7 @@ this.$refs.webview.executeJavaScript(`__webViewFunction.getPhoneNumberList()`).t
 
 ### 注入css
 
-```JavaScript
+```js
 mounted() {
   const webview = this.$refs.webview
   webview.addEventListener('dom-ready', (e) => {
@@ -896,7 +647,7 @@ mInsertCSS() {
 },
 ```
 
-```JavaScript
+```js
 ```
 
 [Electron webview完全指南](http://www.ayqy.net/blog/electron-webview%E5%AE%8C%E5%85%A8%E6%8C%87%E5%8D%97/)
@@ -906,7 +657,7 @@ mInsertCSS() {
 
 ## 获取拖动到APP中文件的真实路径的例子：
 
-```JavaScript
+```js
 <div id="holder">
   Drag your file here
 </div>
@@ -930,7 +681,7 @@ mInsertCSS() {
 
 # 截图
 
-```JavaScript
+```js
 remote
   .getCurrentWindow()
   .capturePage({ x: 0, y: 0, width: window.innerWidth, height: window.innerHeight })
@@ -953,9 +704,9 @@ remote
 ```
 
 ####
-```JavaScript
+```js
 ```
 
 ### Loading
-```JavaScript
+```js
 ```

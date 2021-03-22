@@ -1,5 +1,77 @@
 ## Electron 概况
 
+| API                                                                          | Name               | Processes | Description                                                                                        |
+| :--------------------------------------------------------------------------- | ------------------ | :-------: | :------------------------------------------------------------------------------------------------- |
+| [process](/FE/Electron/ApiMain?id=process)                                   | 进程               |   Main    | 处理对象的扩展                                                                                     |
+| [app](/FE/Electron/ApiMain?id=app)                                           | app                |   Main    | 控制应用程序的事件生命周期                                                                         |
+| [getLocale](/FE/Electron/ApiMain?id=getLocale)                               | 本地化             |   Main    | 通过 app.getLocale()来获取本地语言值                                                               |
+| [globalShortcut](/FE/Electron/ApiMain?id=globalShortcut)                     | 快捷键             |   Main    | 定义键盘快捷键                                                                                     |
+| [globalShortcut](/FE/Electron/ApiMain?id=globalShortcut)                     | 系统快捷键         |   Main    | 在应用程序没有键盘焦点时，监听键盘事件                                                             |
+| [autoUpdater](/FE/Electron/ApiMain?id=autoUpdater)                           | 自动更新           |   Main    | 使应用程序能够自动更新                                                                             |
+| [inAppPurchase](/FE/Electron/ApiMain?id=inAppPurchase)                       | 应用购买           |   Main    | Mac App Store 中的应用内购买                                                                       |
+| [BrowserWindow](/FE/Electron/ApiMain?id=BrowserWindow)                       | 浏览器窗口         |   Main    | 创建和控制浏览器窗口                                                                               |
+| [BrowserView](/FE/Electron/ApiMain?id=BrowserView)                           | 类: 视图           |   Main    | BrowserView 被用来让 BrowserWindow 嵌入更多的 web 内容                                             |
+| [sandbox](/FE/Electron/ApiMain?id=sandbox)                                   | 沙盒选项           |   Main    | 在该模式可用情况下，渲染器为了使用 node APIs 必须通过 IPC 与主进程通 讯                            |
+| [ClientRequest](/FE/Electron/ApiMain?id=ClientRequest)                       | 类: 请求           |   Main    | 发起 HTTP/HTTPS 请求.                                                                              |
+| [IncomingMessage](/FE/Electron/ApiMain?id=IncomingMessage)                   | 类: 请求的响应     |   Main    | 处理 HTTP/HTTPS 请求的响应                                                                         |
+| [CommandLine](/FE/Electron/ApiMain?id=CommandLine)                           | 命令行参数         |   Main    | 操作 Chromium 读取的应用程序的命令行参数                                                           |
+| [appendSwitch](/FE/Electron/ApiMain?id=appendSwitch)                         | 支持的命令行开关   |   Main    | Electron 支持的命令行开关.                                                                         |
+| [Cookies](/FE/Electron/ApiMain?id=Cookies)                                   | 类: Cookies        |   Main    | 查询和修改一个会话的 cookies                                                                       |
+| [Debugger](/FE/Electron/ApiMain?id=Debugger)                                 | 类: 调试           |   Main    | 远程调试协议的备用传输                                                                             |
+| [dialog](/FE/Electron/ApiMain?id=dialog)                                     | 对话框             |   Main    | 显示用于打开和保存文件、警报等的本机系统对话框                                                     |
+| [Dock](/FE/Electron/ApiMain?id=Dock)                                         | Dock               |   Main    | Control your app in the macOS dock                                                                 |
+| [downloadItem](/FE/Electron/ApiMain?id=downloadItem)                         | 类: 文件下载       |   Main    | 控制来自于远程资源的文件下载                                                                       |
+| [ipcMain](/FE/Electron/ApiMain?id=ipcMain)                                   | 异步通信           |   Main    | 从主进程到渲染进程的异步通信                                                                       |
+| [ipcRenderer](/FE/Electron/ApiRender?id=ipcRenderer)                         | 异步通信           | Renderer  | 从渲染器进程到主进程的异步通信                                                                     |
+| [menu](/FE/Electron/ApiMain?id=menu)                                         | 菜单               |   Main    | 创建原生应用菜单和上下文菜单                                                                       |
+| [MenuItem](/FE/Electron/ApiMain?id=MenuItem)                                 | 菜单项             |   Main    | 添加菜单项到应用程序菜单和上下文菜单中                                                             |
+| [MessageChannelMain](/FE/Electron/ApiMain?id=MessageChannelMain)             | MessageChannelMain |   Main    |                                                                                                    |
+| [MessagePortMain](/FE/Electron/ApiMain?id=MessagePortMain)                   | MessageChannelMain |   Main    |                                                                                                    |
+| [nativeTheme](/FE/Electron/ApiMain?id=nativeTheme)                           | 本地色彩主题       |   Main    | 读取并响应 Chromium 本地色彩主题中的变化                                                           |
+| [request](/FE/Electron/ApiMain?id=request)                                   | 网络               |   Main    | 使用 Chromium 的原生网络库发出 HTTP / HTTPS 请求                                                   |
+| [netLog](/FE/Electron/ApiMain?id=netLog)                                     | 记录会话           |   Main    | 记录应用生命周期的网络事件                                                                         |
+| [Notification](/FE/Electron/ApiMain?id=Notification)                         | 类: 通知           |   Main    | 创建 OS(操作系统)桌面通知                                                                          |
+| [powerMonitor](/FE/Electron/ApiMain?id=powerMonitor)                         | 电源监视器         |   Main    | 监视电源状态的改变                                                                                 |
+| [powerSaveBlocker](/FE/Electron/ApiMain?id=powerSaveBlocker)                 | 省电拦截器         |   Main    | 阻止系统进入低功耗 (休眠) 模式                                                                     |
+| [protocol](/FE/Electron/ApiMain?id=protocol)                                 | 协议的请求         |   Main    | 注册自定义协议并拦截基于现有协议的请求                                                             |
+| [screen](/FE/Electron/ApiMain?id=screen)                                     | 屏幕               |   Main    | 检索有关屏幕大小、显示器、光标位置等的信息                                                         |
+| [session](/FE/Electron/ApiMain?id=session)                                   | session            |   Main    | 管理浏览器会话、cookie、缓存、代理设置等                                                           |
+| [ServiceWorkers](/FE/Electron/ApiMain?id=ServiceWorkers)                     | ServiceWorkers     |   Main    | 查询和接收来自活动服务工作进程的事件                                                               |
+| [ShareMenu](/FE/Electron/ApiMain?id=ShareMenu)                               | ShareMenu          |   Main    | 在 macOS 上创建共享菜单                                                                            |
+| [systemPreferences](/FE/Electron/ApiMain?id=systemPreferences)               | 快捷键             |   Main    | 获取 system preferences.                                                                           |
+| [TouchBar](/FE/Electron/ApiMain?id=TouchBar)                                 | 类: 快捷键         |   Main    | 为原生 macOS 应用创建 TouchBar 布局                                                                |
+| [TouchBarButton](/FE/Electron/ApiMain?id=TouchBarButton)                     | 类: 快捷键         |   Main    | 为 mac os 应用在 touch bar 中创建一个按钮组件                                                      |
+| [TouchBarColorPicker](/FE/Electron/ApiMain?id=TouchBarColorPicker)           | 类: 快捷键         |   Main    | 在 macOS 应用程序中，为触控栏创建拾色器                                                            |
+| [TouchBarGroup](/FE/Electron/ApiMain?id=TouchBarGroup)                       | 类: 快捷键         |   Main    | 为本地 mac os 创建一个触控条组                                                                     |
+| [TouchBarLabel](/FE/Electron/ApiMain?id=TouchBarLabel)                       | 类: 快捷键         |   Main    | 在原生 macOS 应用程序的触摸栏中创建一个标签                                                        |
+| [TouchBarPopover](/FE/Electron/ApiMain?id=TouchBarPopover)                   | 类: 快捷键         |   Main    | 为 macOS 原生应用在触摸栏中创建一个弹出控件                                                        |
+| [TouchBarScrubber](/FE/Electron/ApiMain?id=TouchBarScrubber)                 | 类: 快捷键         |   Main    | 创建一个 scrubber (可滚动的选择程序)                                                               |
+| [TouchBarSegmentedControl](/FE/Electron/ApiMain?id=TouchBarSegmentedControl) | 类: 快捷键         |   Main    | 创建一个分段控件（按钮组），其中一个按钮具有选定状态                                               |
+| [TouchBarSlider](/FE/Electron/ApiMain?id=TouchBarSlider)                     | 类: 快捷键         |   Main    | 为本机 macOS 应用程序在触摸栏中创建滑块                                                            |
+| [TouchBarSpacer](/FE/Electron/ApiMain?id=TouchBarSpacer)                     | 类: 快捷键         |   Main    | 在 mac os 应用中，为 touch bar 中的相邻项之间留白                                                  |
+| [TouchBarOtherItemsProxy](/FE/Electron/ApiMain?id=TouchBarOtherItemsProxy)   | 快捷键             |   Main    | 在一个独立的                                                                                       |
+| [Tray](/FE/Electron/ApiMain?id=Tray)                                         | 系统托盘           |   Main    | 添加图标和上下文菜单到系统通知区                                                                   |
+| [webContents](/FE/Electron/ApiMain?id=webContents)                           | 快捷键             |   Main    | 渲染以及控制 web 页面                                                                              |
+| [webFrame](/FE/Electron/ApiRender?id=webFrame)                               | 快捷键             | Renderer  | 自定义渲染当前网页                                                                                 |
+| [desktopCapturer](/FE/Electron/ApiRender?id=desktopCapturer)                 | 媒体源信息         | Renderer  | 通过[navigator.mediaDevices.getUserMedia] API ，可以访问那些用于从桌面上捕获音频和视频的媒体源信息 |
+| [webFrameMain](/FE/Electron/ApiMain?id=webFrameMain)                         | 快捷键             |   Main    | Control web pages and iframes.                                                                     |
+| [WebRequest](/FE/Electron/ApiMain?id=WebRequest)                             | 类: 请求生命周期   |   Main    | 在一个请求生命周期的不同阶段，截取和修改其内容                                                     |
+| [clipboard](/FE/Electron/ApiMain?id=clipboard)                               | 剪贴板             |    And    | 在系统剪贴板上执行复制和粘贴操作                                                                   |
+| [crashReporter](/FE/Electron/ApiMain?id=crashReporter)                       | 崩溃日志报告       |    And    | 将崩溃日志提交给远程服务器                                                                         |
+| [nativeImage](/FE/Electron/ApiMain?id=nativeImage)                           | nativeImage        |    And    | 使用 PNG 或 JPG 文件创建托盘、dock 和应用程序图标                                                  |
+| [shell](/FE/Electron/ApiMain?id=shell)                                       | shell              |    And    | 使用默认应用程序管理文件和 url                                                                     |
+| [window.open](/FE/Electron/ApiRender?id=windowopen)                          | 新建子窗口         | Renderer  |                                                                                                    |
+| [remote](/FE/Electron/ApiRender?id=remote)                                   | 主进程模块         | Renderer  | 在渲染进程中使用主进程模块                                                                         |
+| [BrowserWindowProxy](/FE/Electron/ApiRender?id=BrowserWindowProxy)           | 类: 子浏览器窗口   | Renderer  | 使用 window.open 返回的对象，用来操纵子浏览器窗口                                                  |
+| [contextBridge](/FE/Electron/ApiRender?id=contextBridge)                     | 快捷键             | Renderer  | 上下文中创建一个安全的、双向的、同步的桥                                                           |
+| [File](/FE/Electron/ApiPage?id=File)                                         | File 对象          |           | 在文件系统中，使用 HTML5 File 原生 API 操作文件                                                    |
+| [webview](/FE/Electron/ApiPage?id=webview)                                   | 快捷键             |           | 在一个独立的 frame 和进程里显示外部 web 内容                                                       |
+| [APIs](/FE/Electron/ApiPage?id=APIs)                                         | 简介               |           | 如何使用 Node.js 和 Electron APIs                                                                  |
+| [process](/FE/Electron/ApiPage?id=process)                                   | 环境变量           |           | 在不更改代码的情况下控制应用程序配置和行为                                                         |
+| [frame](/FE/Electron/ApiPage?id=frame)                                       | 无边框窗口         |           | 打开一个无工具栏、边框、和其它图形化外壳的窗口                                                     |
+| Chrome Extension Support                                                     | 快捷键             |           | 注意：Electron 不支持商店中的任意 Chrome 扩展，Electron 项目的目标不是与 Chrome 的扩展实现完全兼容 |
+
+
 ```Mermaid
 graph TB
     api2 --> |IPC|api
@@ -527,3 +599,5 @@ WebpackOptionsValidationError: Invalid configuration object. Webpack has been in
 ```
 
 问题分析："development" | "production" | "none"，可以自定义其他属性。
+
+

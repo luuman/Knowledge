@@ -89,14 +89,14 @@ this指向分为：
 
 [少年，不要滥用箭头函数啊](http://jingsam.github.io/2016/12/08/things-you-should-know-about-arrow-functions.html)
 1. 箭头函数是匿名函数，不能作为构造函数，不能使用new
-```javascript
+```js
 let foo=()=>{
 }
 var newFoo=new foo()//foo is not a construcotr
 ```
 
 1. 不能使用argumetns,取而代之用rest参数...解决
-```javascript
+```js
 let C = (...c) => {
   console.log(c);
 }
@@ -108,7 +108,7 @@ C(1,2,3,3)
 1. 箭头函数没有原型对象
 
 ### 如何实现一个 apply 函数？
-```javascript
+```js
 // 思路：根据 this 的查找策略，我们将要执行的函数挂载到 context 上执行
 //函数内的 this 就是当前的调用者context 了
 Function.prototype.myapply = function (context) {
@@ -131,7 +131,7 @@ Function.prototype.myapply = function (context) {
 ### 请实现一个 call 函数
 // 思路：根据 this 查找策略，我们将方法挂在到context 上，然后调用此方法即可。
 
-```javascript
+```js
 Function.prototype.mycall = function (context) {
   if (typeof this !== 'function') {
     throw new TypeError('not funciton')
@@ -148,7 +148,7 @@ Function.prototype.mycall = function (context) {
 ### 如何实现一个 bind 函数？
 // 思路：根据 this 查找策略，我们将方法挂在到context 上，然后调用此方法即可。
 
-```javascript
+```js
 Function.prototype.myBind = function (context) {
   if (typeof this !== 'function') {
     throw new TypeError('Error')
@@ -294,7 +294,7 @@ map 的返回不等于原数组
 
 
 ### js数组中filter、map、reduce、find等方法实现的原理
-```javascript
+```js
 Array.prototype.filter1 = function (fn) {
   if (typeof fn !== "function") {
   throw new TypeError(`${fn} is not a function`);
@@ -372,7 +372,7 @@ a.push(...b)
 
 ### URL中提取参数
 decodeURIComponent
-```JavaScript
+```js
 /* 获取URL中的数据*/
 const getURLParameters = url =>
   url.match(/([^?=&]+)(=([^&]*))/g)
@@ -393,7 +393,7 @@ const parseQueryString = url=>{
 ### 节流与防抖
 节流 如果一个函数持续的，频繁地触发，那么让它在一定的时间间隔后再触发。由于执行速度过快，并携带相邻数据相差不大，节流可以高效的优化执行效果。
 
-```JavaScript
+```js
 function throttles(fn, wait = 100){
   let last = 0;
   console.log('节流函数 启动')
@@ -434,7 +434,7 @@ window.addEventListener('scroll', throttle(handle, 1000));
 
 防抖 如果一个函数在一段时间间隔中，持续地触发，那么只在它结束后过一段时间只执行一次。
 
-```JavaScript
+```js
 function debounce(fn, wait) {
     var timeout = null;      //定义一个定时器
     return function() {
@@ -453,7 +453,7 @@ window.addEventListener('scroll', debounce(handle, 1000));
 ### 深拷贝 浅拷贝
 浅拷贝只复制指向某个对象的指针，而不复制对象本身，新旧对象还是共享同一块内存。但深拷贝会另外创造一个一模一样的对象，新对象跟原对象不共享内存，修改新对象不会改到原对象。
 
-```JavaScript
+```js
 JSON.parse(JSON.stringify(obj))
 
 arrb = [...arrA]
@@ -463,7 +463,7 @@ let obj2 = Object.assign({b:11},obj1);
 
 ### 递归拷贝
 
-```JavaScript
+```js
 function getType(obj) {
   //tostring会返回对应不同的标签的构造函数
   let toString = Object.prototype.toString
@@ -1157,7 +1157,7 @@ https://cn.vuejs.org/v2/guide
 一般来说，对于子组件想要更改父组件状态的场景，可以有两种方案：
 在子组件的 data 中拷贝一份 prop，data 是可以修改的，但 prop 不能：
 
-```javascript
+```js
 export default {
   props: {
     value: String
@@ -1250,7 +1250,7 @@ Watcher：某个属性数据的监听者/订阅者，一旦数据有变化，它
 劫持的，以及发布者-订阅模式来实现的
 1. 3.0采用ES6代理Proxy实现
 
-```javascript
+```js
 Object.defineProperty(obj, prop, descriptor)
 let p = new Proxy(target, handler);
 
@@ -1288,7 +1288,7 @@ proxy劣势就是兼容性问题,而且无法用polyfill磨平,因此Vue的作�
 [实现双向绑定Proxy比defineproperty优劣如何](https://www.jianshu.com/p/2df6dcddb0d7)
 
 ### 如何实现双向绑定原理 Proxy 函数？
-```javascript
+```js
 let onWatch = (obj, setBind, getLogger) => {
   let handler = {
     get(target, property, receiver) {
@@ -1919,7 +1919,7 @@ TLS: 客户端证书解析，TLS是对SSL的扩展和优化，他可以提供数
 
 
 ### 从输入 URL 到显示页面发生了什么
-```javascript
+```js
 注：这题胜在区分度高，知识点覆盖广，再不懂的人，也能答出几句，
 而高手可以根据自己擅长的领域自由发挥，从URL规范、HTTP协议、DNS、CDN、数据库查询、
 到浏览器流式解析、CSS规则构建、layout、paint、onload/domready、JS执行、JS API绑定等等；
@@ -2179,7 +2179,7 @@ var permute = (nums) => {
 
 
 ### 走台阶问题，一次可以走两步也可以走一步，求出走 N 步时的方法总数；
-```javascript
+```js
 斐波那契数列的应用
 function fibonacci(n) {
     if (n <= 2) {
@@ -2190,7 +2190,7 @@ function fibonacci(n) {
 ```
 
 ### 实现一个 bind 方法。
-```javascript
+```js
 
 Function.prototype.mybind = function (context) {
   if (typeof this !== "function") {
@@ -2212,7 +2212,7 @@ Function.prototype.mybind = function (context) {
 ```
 
 
-```javascript
+```js
 setTimeout(()=>console.log(0),0)
 
 new Promise(res=>{

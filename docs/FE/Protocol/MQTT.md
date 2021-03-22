@@ -207,7 +207,7 @@ graph TB
 
 ## MQTT.js源码分析
 
-```javascript
+```js
 var MqttClient = require('./lib/client')
 var connect = require('./lib/connect')
 var Store = require('./lib/store')
@@ -220,12 +220,12 @@ module.exports.Client = MqttClient
 // 存储
 module.exports.Store = Store
 ```
-```javascript
+```js
 ```
 
 > client.js
 
-```javascript
+```js
 // work
 if (packet) {
   debug('work :: packet pulled from queue')
@@ -243,7 +243,7 @@ this.outgoingStore.del(packet, cb, buf)
 
 > store.js
 
-```javascript
+```js
 Store.prototype.del = function (packet, cb, buf) {
   packet = this._inflights.get(packet.messageId)
   if (packet) {
