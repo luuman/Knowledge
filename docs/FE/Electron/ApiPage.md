@@ -1,6 +1,6 @@
-## 页面API
+# 网页API
 
-# 内部命令
+> 与Web端区别
 ## alert
 win样式丑陋可以拖拽、mac内嵌页面不可拖拽
 
@@ -43,7 +43,7 @@ win样式丑陋可以拖拽、mac内嵌页面不可拖拽
 <webview src="https://www.github.com/" preload="./test.js"></webview>
 ```
 
-### httpreferrer
+### httpreferrer防外链代码
 为 guest page 设置 referrer URL。
 ```js
 <webview src="https://www.github.com/" httpreferrer="http://cheng.guru"></webview>
@@ -61,16 +61,17 @@ win样式丑陋可以拖拽、mac内嵌页面不可拖拽
 <webview src="https://www.github.com/" disablewebsecurity></webview>
 ```
 
-### partition
+### partition设置session
 为page设置session。如果初始值为 partition ,这个 page 将会为app中的所有 page 应用同一个持续有效的 session。如果没有 persist: 前缀, 这个 page 将会使用一个历史 session 。通过分配使用相同的 partition, 所有的page都可以分享相同的session。如果 partition 没有设置，那app将使用默认的session.
 这个值只能在在第一个渲染进程之前设置修改，之后修改的话会无效并且抛出一个DOM异常.
+
 ```js
 <webview src="https://github.com" partition="persist:github"></webview>
 
 <webview src="http://electron.atom.io" partition="electron"></webview>
 ```
 
-### allowpopups新窗口
+### allowpopups打开新窗口
 如果这个属性的值为 "on" ，将允许 guest page 打开一个新窗口。
 ```js
 <webview src="https://www.github.com/" allowpopups></webview>
@@ -92,43 +93,51 @@ webview.addEventListener('dom-ready', () => {
 })
 ```
 
-> .getURL() 地址
+### getURL 地址
 
-> .getTitle() 标题
+### getTitle 标题
 
-> .isLoading() 是否仍在加载资源的布尔值
+### isLoading 是否仍在加载资源的布尔值
 
-> .isWaitingForResponse() 是否正在等待page的主要资源做出回应的布尔值
+### isWaitingForResponse 是否正在等待page的主要资源做出回应的布尔值
 
-> .stop() 停止渲染
+### stop 停止渲染
 
-> .reload() 重新加载
+### reload 重新加载
 
-> .reloadIgnoringCache() 忽视缓存，重新加载
+### reloadIgnoringCache 忽视缓存，重新加载
 
-> .canGoBack() 是否能够回退的布尔值
+### canGoBack 是否能够回退的布尔值
 
-> .canGoForward() 是否能够前进的布尔值
+### canGoForward 是否能够前进的布尔值
 
-> .canGoToOffset(offset) 是否能够前进到 offset 的布尔值
+### canGoToOffset(offset) 是否能够前进到 offset 的布尔值
 
-> .clearHistory() 清除导航历史
+### clearHistory 清除导航历史
 
-> .goBack() 回退
+### goBack 回退
 
-> .goForward() 前进
+### goForward 前进
 
-> .goToIndex(index) 导航到指定的绝对位置
+### goToIndex(index) 导航到指定的绝对位置
 
-> .goToOffset(offset) 导航到指定的相对位置
+### goToOffset(offset) 导航到指定的相对位置
 
-> .isCrashed() 返回一个 渲染进程是否崩溃 的布尔值
+### isCrashed 返回一个 渲染进程是否崩溃 的布尔值
 
-> .setUserAgent(userAgent) 重新设置用户代理
+### loadURL
+加载 webview 中的 url，url 必须包含协议前缀，例如 http:// 或 file://
 
-> .getUserAgent() 返回用户代理名字，返回类型：String
+```js
+<webview>.loadURL(url[, options])
+url URL
+options Object (可选)
+httpReferrer String - 一个http类型的url.
+userAgent String -用于发起请求的用户代理.
+extraHeaders String - 额外的headers,用 "\n"分隔.
+```
 
-> .insertCSS(css) 插入css
+### insertCSS(css) 插入css
 
 ```js
 webview.insertCSS(`
@@ -155,67 +164,6 @@ webview.insertCSS(`
 `)
 ```
 
-> .undo() 在page中编辑执行 undo 命令
-
-> .redo() 在page中编辑执行 redo 命令
-
-> .cut() 在page中编辑执行 cut 命令
-
-> .copy() 在page中编辑执行 copy 命令
-
-> .paste() 在page中编辑执行 paste 命令
-
-> .pasteAndMatchStyle() 在page中编辑执行 pasteAndMatchStyle 命令
-
-> .delete() 在page中编辑执行 delete 命令
-
-> .selectAll() 在page中编辑执行 selectAll 命令
-
-> .unselect() 在page中编辑执行 unselect 命令
-
-> .replace(text) 在page中编辑执行 replace 命令
-
-> .replaceMisspelling(text) 在page中编辑执行 replaceMisspelling 命令
-
-> .insertText(text) 插入文本
-
-> .openDevTools() 为 guest page 打开开发工具调试窗口
-
-> .closeDevTools() 为 guest page 关闭开发工具调试窗口
-
-> .isDevToolsOpened() 返回一个 guest page 是否打开了开发工具调试窗口的布尔值
-
-> .isDevToolsFocused() 返回一个 guest page 是否聚焦了开发工具调试窗口的布尔值
-
-> .inspectElement(x, y) 开始检查 guest page 在 (x, y) 位置的元素
-
-> .inspectServiceWorker() 在 guest page 中为服务人员打开开发工具
-
-> .setAudioMuted(muted) muted Boolean 设置 guest page 流畅(muted)
-
-> .isAudioMuted() 返回一个 guest page 是否流畅的布尔值
-
-> .print([options]) 打印输出 webview 的 web page. 类似 webContents.print([options]).
-
-> .printToPDF(options, callback) 以pdf格式打印输出 webview 的 web page. 类似 webContents.printToPDF(options, callback).
-
-> .send(channel[, arg1][, arg2][, ...]) 通过 channel 向渲染进程发出异步消息，你也可以发送任意的参数。 渲染进程通过ipcRenderer 模块监听 channel 事件来控制消息.
-
-> .sendInputEvent(event) 向 page 发送输入事件.
-
-> .getWebContents() 返回和这个 webview 相关的 WebContents.
-
-### loadURL
-加载 webview 中的 url，url 必须包含协议前缀，例如 http:// 或 file://.
-```js
-<webview>.loadURL(url[, options])
-url URL
-options Object (可选)
-httpReferrer String - 一个http类型的url.
-userAgent String -用于发起请求的用户代理.
-extraHeaders String - 额外的headers,用 "\n"分隔.
-```
-
 ### executeJavaScript
 评估 code ，如果 userGesture 值为 true ，它将在这个page里面创建用户手势. HTML APIs ，如 requestFullScreen,它需要用户响应，那么将自动通过这个参数优化.
 ```js
@@ -226,11 +174,66 @@ callback Function (可选) - 回调函数.
 result
 
 webview.executeJavaScript(`
-  setTimeout(()=>{
-      console.log('粉丝数：');
-  }, 2000);
+  setTimeout(() => {
+    console.log('粉丝数：')
+  }, 2000)
 `)
 ```
+
+### setUserAgent(userAgent) 重新设置用户代理
+
+### getUserAgent 返回用户代理名字，返回类型：String
+
+
+### undo 在page中编辑执行 undo 命令
+
+### redo 在page中编辑执行 redo 命令
+
+### cut 在page中编辑执行 cut 命令
+
+### copy 在page中编辑执行 copy 命令
+
+### paste 在page中编辑执行 paste 命令
+
+### pasteAndMatchStyle 在page中编辑执行 pasteAndMatchStyle 命令
+
+### delete 在page中编辑执行 delete 命令
+
+### selectAll 在page中编辑执行 selectAll 命令
+
+### unselect 在page中编辑执行 unselect 命令
+
+### replace(text) 在page中编辑执行 replace 命令
+
+### replaceMisspelling(text) 在page中编辑执行 replaceMisspelling 命令
+
+### insertText(text) 插入文本
+
+### openDevTools 为 guest page 打开开发工具调试窗口
+
+### closeDevTools 为 guest page 关闭开发工具调试窗口
+
+### isDevToolsOpened 返回一个 guest page 是否打开了开发工具调试窗口的布尔值
+
+### isDevToolsFocused 返回一个 guest page 是否聚焦了开发工具调试窗口的布尔值
+
+### inspectElement(x, y) 开始检查 guest page 在 (x, y) 位置的元素
+
+### inspectServiceWorker 在 guest page 中为服务人员打开开发工具
+
+### setAudioMuted(muted) muted Boolean 设置 guest page 流畅(muted)
+
+### isAudioMuted 返回一个 guest page 是否流畅的布尔值
+
+### print([options]) 打印输出 webview 的 web page. 类似 webContents.print([options]).
+
+### printToPDF(options, callback) 以pdf格式打印输出 webview 的 web page. 类似 webContents.printToPDF(options, callback).
+
+### send(channel[, arg1][, arg2][, ...]) 通过 channel 向渲染进程发出异步消息，你也可以发送任意的参数。 渲染进程通过ipcRenderer 模块监听 channel 事件来控制消息.
+
+### sendInputEvent(event) 向 page 发送输入事件.
+
+### getWebContents 返回和这个 webview 相关的 WebContents.
 
 ### findInPage
 发起一个请求来寻找页面中的所有匹配 text 的地方并且返回一个 Integer来表示这个请求用的请求Id. 这个请求结果可以通过订阅found-in-page 事件来取得.
@@ -273,7 +276,8 @@ isMainFrame Boolean
 
 ### 在加载失败或取消是触发
 > did-fail-load
-Returns
+
+> 返回值
 
 errorCode Integer
 errorDescription String
@@ -482,7 +486,7 @@ version String
 ## 案例
 
 ### Loading
-
+使用场景用于解决，多Tab切换实现，频繁操作禁用，加载失败的问题
 ```js
 <webview id="foo" src="https://www.github.com/" style="display:inline-block; width:640px; height:480px"></webview>
 <div class="indicator"></div>
@@ -500,7 +504,7 @@ webview.addEventListener('did-start-loading', loadstart)
 webview.addEventListener('did-stop-loading', loadstop)
 ```
 
-### 缓存
+### 缓存处理
 默认memory cache
 
 ```js
@@ -615,7 +619,10 @@ fetchPreload().then(init)
 -code String
 -userGesture Boolean (可选) - 默认为 false
 
-Returns Promise<any> - A promise that resolves with the result of the executed code or is rejected if the result of the code is a rejected promise.
+
+> 返回值 Promise
+
+<any> - A promise that resolves with the result of the executed code or is rejected if the result of the code is a rejected promise.
 
 这个方法更多的意思是：执行某段JavaScript代码，并且返回Promise，preload属性注入js代码，executeJavaScript()更多的是执行某一段代码，例如执行在webview代码执行前通过preload注入的js方法，并且可以对返回做一定的操作
 
@@ -645,9 +652,6 @@ mInsertCSS() {
     }
   `)
 },
-```
-
-```js
 ```
 
 [Electron webview完全指南](http://www.ayqy.net/blog/electron-webview%E5%AE%8C%E5%85%A8%E6%8C%87%E5%8D%97/)
@@ -701,12 +705,4 @@ remote
     };
   })
   .catch((err) => console.log(err));
-```
-
-####
-```js
-```
-
-### Loading
-```js
 ```

@@ -2,6 +2,45 @@
 # 主进程
 
 # 相关功能
+
+## 开机自启
+
+```js
+// 是否开机自启
+export function getAutoStart(isAutoStart) {
+  const { openAtLogin } = app.getLoginItemSettings()
+  return openAtLogin
+}
+
+// 设置开机自启
+export function setAutoStart(isAutoStart) {
+  if (!app.isPackaged) {
+    // 开发环境
+    app.setLoginItemSettings({
+      openAtLogin: isAutoStart,
+      openAsHidden: false,
+      path: process.execPath,
+      args: [path.resolve(process.argv[1])]
+    })
+  } else {
+    // 打包环境
+    app.setLoginItemSettings({
+      openAtLogin: isAutoStart
+    })
+  }
+}
+```
+
+> 注意
+
+1. Windows调用相关功能会被杀毒软件监测，但之后出现一次
+1. Mac系统则不会出现这样的问题
+
+[如何加入开机启动项？auto-launch](https://newsn.net/say/node-auto-launch.html)
+
+[electron 写入注册表 实现开机自启动](https://blog.csdn.net/weixin_30563917/article/details/96177798?utm_medium=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-1.control&dist_request_id=&depth_1-utm_source=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-1.control)
+使用这种方式，依然会出现Window的问题，windows软件运行`HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Run`就会出现提示问题
+
 ## 协议唤起
 ![](https://raw.githubusercontent.com/oikonomopo/electron-deep-linking-mac-win/master/electron-deeplinking-osx-example.gif)
 ```js
@@ -250,6 +289,7 @@ createWindow () {
 
 # API
 
+
 ## autoUpdater
 ## BrowserWindow
 类让你有创建一个浏览器窗口的权力
@@ -289,7 +329,7 @@ win10支持.ico，mac支持.icns
 > 尺寸
 
 1. win系统
-
+```js
 16x16 (100% DPI scale)
 20x20 (125% DPI scale)
 24x24 (150% DPI scale)
@@ -299,11 +339,12 @@ win10支持.ico，mac支持.icns
 48x48 (150% DPI scale)
 64x64 (200% DPI scale)
 256x256
-
+```
 1. mac系统不会进行图标缩放
-
+```js
 1x 16*16
 2x 32*32
+```
 
 [tray托盘图标文件需要什么格式尺寸及位置？](https://newsn.net/say/electron-tray-ico.html)
 
@@ -322,67 +363,126 @@ tray.on('click', (event, bounds, position) => {
 
 > right-click 【macOSWindows】当该图标被右击时触发
 
-event KeyboardEvent
-bounds Rectangle - 系统托盘图标的边界。
-
+```js
+tray.on('right-click', (event, bounds, position) => {
+  console.log(event, bounds, position)
+})
+```
 
 > double-click 【macOSWindows】当该图标被双击时触发
 
-event KeyboardEvent
-bounds Rectangle - 系统托盘图标的边界。
+```js
+tray.on('double-click', (event, bounds) => {
+  console.log(event, bounds)
+})
+```
 
 > balloon-show 【Windows】当系统托盘图标气泡显示时，触发该事件
 
+```js
+tray.on('balloon-show', (event, bounds, position) => {
+  console.log(event, bounds, position)
+})
+```
 > balloon-click 【Windows】当系统托盘气泡被点击时，触发该事件
 
+```js
+tray.on('balloon-click', (event, bounds, position) => {
+  console.log(event, bounds, position)
+})
+```
 > balloon-closed 【Windows】当系统托盘气泡因为超时被关闭或者用户手动关闭时，触发该事件
 
+```js
+tray.on('balloon-closed', (event, bounds, position) => {
+  console.log(event, bounds, position)
+})
+```
 > drop 【macOS】当有任何拖动项拖到该任务栏图标上时，触发该事件
 
+```js
+tray.on('drop', (event, bounds, position) => {
+  console.log(event, bounds, position)
+})
+```
 > drop-files 【macOS】当有任何文件被拖到该任务栏图标上时，触发该事件
 
-event Event
+```js
+tray.on('drop-files', (event, files) => {
+  console.log(event, files)
+})
+```
 files String[] - 拖至任务栏图标上的文件的路径。
 
 > drop-text 【macOS】当有任何文字被拖到该任务栏图标上时，触发该事件
 
-event Event
+```js
+tray.on('drop-text', (event, text) => {
+  console.log(event, text)
+})
+```
 text String - 拖至任务栏图标上的文字内容。
 
 > drag-enter 【macOS】当有任何拖动操作进入（拖动未结束）该任务栏图标时，触发该事件
 
+```js
+tray.on('drag-enter', (event, bounds, position) => {
+  console.log(event, bounds, position)
+})
+```
 > drag-leave 【macOS】当有任何拖动操作离开该任务栏图标时，触发该事件
 
+```js
+tray.on('drag-leave', (event, bounds, position) => {
+  console.log(event, bounds, position)
+})
+```
 > drag-end 【macOS】当有任何拖动操作在托盘或其他地方结束时，触发该事件
 
-> mouse-up 【macOS】
+```js
+tray.on('drag-end', (event, bounds, position) => {
+  console.log(event, bounds, position)
+})
+```
+> mouse-up 【macOS】释放鼠标单击托盘图标时发出
 
-event KeyboardEvent
-position Point - 事件的位置信息。
-Emitted when the mouse is released from clicking the tray icon.
+```js
+tray.on('mouse-up', (event, position) => {
+  console.log(event, bounds, position)
+})
+```
+注意：如果您已使用设置托盘的上下文菜单，则不会发出此消息tray.setContext菜单，由于macOS级别的限制
+> mouse-down 【macOS】当鼠标单击托盘图标时发出
 
-Note: This will not be emitted if you have set a context menu for your Tray using tray.setContextMenu, as a result of macOS-level constraints.
-
-> mouse-down 【macOS】
-
-event KeyboardEvent
-position Point - 事件的位置信息。
-Emitted when the mouse clicks the tray icon.
+```js
+tray.on('mouse-down', (event, position) => {
+  console.log(event, bounds, position)
+})
+```
 
 > mouse-enter 【macOS】当鼠标进入该任务栏图标时，触发该事件
 
-event KeyboardEvent
-position Point - 事件的位置信息。
+```js
+tray.on('mouse-enter', (event, position) => {
+  console.log(event, bounds, position)
+})
+```
 
 > mouse-leave 【macOS】当鼠标离开该任务栏图标时，触发该事件
 
-event KeyboardEvent
-position Point - 事件的位置信息。
+```js
+tray.on('mouse-leave', (event, position) => {
+  console.log(event, bounds, position)
+})
+```
 
 > mouse-move 【macOSWindows】当鼠标在该任务栏图标上移动时，触发该事件
 
-event KeyboardEvent
-position Point - 事件的位置信息。
+```js
+tray.on('mouse-move', (event, position) => {
+  console.log(event, bounds, position)
+})
+```
 
 #### 实例
 
@@ -429,11 +529,37 @@ respectQuietTime Boolean (optional) - Do not display the balloon notification if
 
 > tray.isDestroyed()返回 Boolean -判断托盘图标是否被销毁
 
+### 平台限制：
+
+1. 在Linux上，如果支持，就使用应用程序指示器，否则将使用GtkStatusIcon。
+1. 在仅支持应用程序指标的Linux发行版中，必须安装libappindicator1才能使任务栏图标正常工作。
+1. 应用程序指标只有当它有一个上下文菜单时才会显示。
+1. 当在Linux上使用应用程序指标时，它的 click事件将被忽略
+1. On Linux in order for changes made to individual MenuItems to take effect, you have to call setContextMenu again. 例如：
+
 ### 相关功能
 
 #### 仿QQ实现托盘图标闪动
 
-
+```js
+tray = new Tray(`${__static}/trayTemplate.png`)
+// 启动闪烁
+ipcMain.on('startBlink', (sys, param) => {
+  var count = 0
+  var _switch_ = setInterval(() => {
+    if (count++ % 2 === 0) {
+      tray.setImage(`${__static}/trayTemplate.png`)
+    } else {
+      tray.setImage(`${__static}/icon_16x16.png`)
+    }
+  }, 500)
+})
+// 关闭闪烁
+ipcMain.on('doneBlink', (sys, param) => {
+  clearInterval(_switch_)
+  tray.setImage(`${__static}/trayTemplate.png`)
+})
+```
 
 
 
@@ -441,6 +567,225 @@ respectQuietTime Boolean (optional) - Do not display the balloon notification if
 
 # 多进程 MR
 ## nativeImage
+使用 PNG 或 JPG 文件创建托盘、dock和应用程序图标
+
+### 创建
+
+> String
+
+```js
+const { BrowserWindow, Tray } = require('electron')
+const appIcon = new Tray('/Users/somebody/images/icon.png')
+const win = new BrowserWindow({ icon: '/Users/somebody/images/window.png' })
+console.log(appIcon, win)
+```
+
+> NativeImage
+
+```js
+const { clipboard, Tray } = require('electron')
+const image = clipboard.readImage()
+const appIcon = new Tray(image)
+console.log(appIcon)
+```
+
+### 高分辨率
+
+```js
+images/
+├── icon.png
+├── icon@2x.png
+└── icon@3x.png
+
+const { Tray } = require('electron')
+const appIcon = new Tray('/Users/somebody/images/icon.png')
+console.log(appIcon)
+
+@1x
+@1.25x
+@1.33x
+@1.4x
+@1.5x
+@1.8x
+@2x
+@2.5x
+@3x
+@4x
+@5x
+```
+
+### 方法
+
+> nativeImage.createEmpty() 创建一个空的`NativeImage`实例。
+
+> nativeImage.createThumbnailFromPath(path, maxSize) macOSWindows
+path String - path to a file that we intend to construct a thumbnail out of.
+maxSize Size - the maximum width and height (positive numbers) the thumbnail returned can be. The Windows implementation will ignore maxSize.height and scale the height according to maxSize.width.
+Returns Promise<NativeImage> - fulfilled with the file's thumbnail preview image, which is a NativeImage.
+
+> nativeImage.createFromPath(path->String) 从位于 path 的文件创建新的 NativeImage 实例。 如果 path 不存在，，无法读取或不是有效图像，方法将返回空图像, 。
+
+```js
+const nativeImage = require('electron').nativeImage
+const image = nativeImage.createFromPath('/Users/somebody/images/icon.png')
+console.log(image)
+```
+
+> nativeImage.createFromBitmap(buffer, options) 返回的原始位图像素数据的缓冲区创建新的NativeImage实例。具体格式取决于平台。
+
+buffer Buffer
+选项 对象
+width Integer
+height Integer
+scaleFactor Double (optional) - Defaults to 1.0.
+返回 NativeImage
+
+> nativeImage.createFromBuffer(buffer[, options])
+
+buffer Buffer
+options Object (可选)
+width Integer (optional) - Required for bitmap buffers.
+height Integer (optional) - Required for bitmap buffers.
+scaleFactor Double (optional) - Defaults to 1.0.
+返回 NativeImage
+
+从 buffer 创建新的 NativeImage 实例。 Tries to decode as PNG or JPEG first.
+
+> nativeImage.createFromDataURL(dataURL)
+
+dataURL String
+返回 NativeImage
+
+从 dataURL 创建新的 NativeImage 实例。
+
+> nativeImage.createFromNamedImage(imageName[, hslShift]) macOS
+
+imageName String
+hslShift Number[] (optional)
+返回 NativeImage
+
+从映射到给定图像名称的 NSImage 创建一个 NativeImage 实例。 See System Icons for a list of possible values.
+
+使用以下规则将hslShift应用于图像:
+
+hsl_shift[0] (hue): The absolute hue value for the image - 0 and 1 map to 0 and 360 on the hue color wheel (red).
+hsl_shift[1] (saturation): A saturation shift for the image, with the following key values: 0 = remove all color. 0.5 = 保持不变。 1 = fully saturate the image.
+hsl_shift[2] (lightness): A lightness shift for the image, with the following key values: 0 = remove all lightness (make all pixels black). 0.5 = 保持不变。 1 = 全亮 (所有像素点设置为白色)。
+这意味着 [-1, 0, 1] 将使图像完全变白，[-1, 1, 0]将使图像完全变黑.
+
+In some cases, the NSImageName doesn't match its string representation; one example of this is NSFolderImageName, whose string representation would actually be NSFolder. Therefore, you'll need to determine the correct string representation for your image before passing it in. This can be done with the following:
+
+echo -e '#import <Cocoa/Cocoa.h>\nint main() { NSLog(@"%@", SYSTEM_IMAGE_NAME); }' | clang -otest -x objective-c -framework Cocoa - && ./test
+
+where SYSTEM_IMAGE_NAME should be replaced with any value from this list.
+
+类: NativeImage
+本机图像，如托盘、dock栏和应用图标。
+
+进程： Main, Renderer
+
+实例方法
+以下方法可用于 NativeImage 类的实例:
+
+> image.toPNG([options])
+
+options Object (可选)
+scaleFactor Double (optional) - Defaults to 1.0.
+返回 Buffer-一个包含图像 PNG 编码数据的 Buffer 。
+
+> image.toJPEG(quality)
+
+quality Integer - Between 0 - 100.
+返回 Buffer-一个包含图像 JPEG 编码数据的 Buffer 。
+
+> image.toBitmap([options])
+
+options Object (可选)
+scaleFactor Double (optional) - Defaults to 1.0.
+返回 Buffer-一个包含图像的原始位图像素数据副本的 Buffer 。
+
+> image.toDataURL([options])
+
+options Object (可选)
+scaleFactor Double (optional) - Defaults to 1.0.
+返回 String-图像的数据 URL。
+
+> image.getBitmap([options])
+
+options Object (可选)
+scaleFactor Double (optional) - Defaults to 1.0.
+返回 Buffer-一个包含图像原始位图像素数据的 Buffer 。
+
+The difference between getBitmap() and toBitmap() is that getBitmap() does not copy the bitmap data, so you have to use the returned Buffer immediately in current event loop tick; otherwise the data might be changed or destroyed.
+
+> image.getNativeHandle() macOS
+
+返回 Buffer-一个 Buffer , 它将 C 指针存储在图像的基础本机句柄上。 在 macOS 上, 将返回指向 NSImage 实例的指针。
+
+请注意, 返回的指针是指向基础本机映像而不是副本的弱指针, 因此 必须 确保关联的 nativeImage 实例保留在周围。
+
+> image.isEmpty()
+
+返回 Boolean-图像是否为空。
+
+> image.getSize([scaleFactor])
+
+scaleFactor Double (optional) - Defaults to 1.0.
+Returns Size.
+
+If scaleFactor is passed, this will return the size corresponding to the image representation most closely matching the passed value.
+
+> image.setTemplateImage(option)
+
+option Boolean
+将图像标记为模板图像。
+
+> image.isTemplateImage()
+
+返回 Boolean-图像是否为模板图像。
+
+> image.crop(rect)
+
+rect Rectangle -要裁剪的图像区域.
+返回 NativeImage-裁剪的图像。
+
+> image.resize(options)
+
+选项 对象
+width Integer (optional) - Defaults to the image's width.
+height Integer (可选) - 默认值为图片高度.
+quality String (optional) - The desired quality of the resize image. Possible values are good, better, or best. 默认值为best. 这些值表示期望的 质量/速度 的权衡。 They are translated into an algorithm-specific method that depends on the capabilities (CPU, GPU) of the underlying platform. It is possible for all three methods to be mapped to the same algorithm on a given platform.
+返回 NativeImage-裁剪的图像。
+
+如果只指定height或width，那么当前的长宽比将保留在缩放图像中。
+
+> image.getAspectRatio([scaleFactor])
+
+scaleFactor Double (optional) - Defaults to 1.0.
+返回 Float - 图像的长宽比.
+
+If scaleFactor is passed, this will return the aspect ratio corresponding to the image representation most closely matching the passed value.
+
+> image.getScaleFactors()
+
+Returns Float[] - An array of all scale factors corresponding to representations for a given nativeImage.
+
+> image.addRepresentation(options)
+
+选项 对象
+scaleFactor Double - The scale factor to add the image representation for.
+width Integer (可选) - 默认值为 0. Required if a bitmap buffer is specified as buffer.
+height Integer (可选) - 默认值为 0. Required if a bitmap buffer is specified as buffer.
+buffer Buffer (可选) - 包含原始图像数据的缓冲区.
+dataURL String (optional) - The data URL containing either a base 64 encoded PNG or JPEG image.
+Add an image representation for a specific scale factor. This can be used to explicitly add different scale factor representations to an image. This can be called on empty images.
+
+实例属性
+nativeImage.isMacTemplateImage macOS
+A Boolean property that determines whether the image is considered a template image.
+
+Please note that this property only has an effect on macOS.
+
 
 ```js
 ```

@@ -24,10 +24,10 @@
   <meta name="msapplication-TileImage" content="/_media//ms-icon-144x144.png">
   <meta name="theme-color" content="#ffffff"></head>
   <meta name="msapplication-TileColor" content="#ffffff">
-  <link rel="stylesheet" href="//unpkg.com/docsify/lib/themes/vue.css">
+  <!-- <link rel="stylesheet" href="//unpkg.com/docsify/lib/themes/vue.css"> -->
   <!-- theme-simple-dark -->
   <!-- https://jhildenbiddle.github.io/docsify-themeable/#/themes?id=simple-dark -->
-  <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify-themeable@0/dist/css/theme-simple-dark.css"> -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify-themeable@0/dist/css/theme-simple-dark.css">
   <style type="text/css">
     .markdown-section pre>code.lang-Mermaid{
       display: none;
@@ -112,8 +112,6 @@
   </style>
 </head>
 <body>
-  <!-- markmap is based on d3, so must load those files first. -->
-  <!-- https://github.com/up9cloud/docsify-mindmap -->
   <script src="//unpkg.com/d3@3/d3.min.js"></script>
   <script src="//unpkg.com/markmap@0.6.0/lib/d3-flextree.js"></script>
   <script src="//unpkg.com/markmap@0.6.0/lib/view.mindmap.js"></script>
@@ -225,16 +223,15 @@
   <script src="//unpkg.com/prismjs/components/prism-php.js"></script>
   <script src="//unpkg.com/docsify-pagination/dist/docsify-pagination.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/prismjs@1.22.0/components/prism-java.min.js"></script>
-
-
   <script type="text/javascript" src="//unpkg.com/mermaid/dist/mermaid.min.js"></script>
-
   <!-- CDN files for docsify-katex -->
-  <script src="//cdn.jsdelivr.net/npm/docsify-katex@latest/dist/docsify-katex.js"></script>
   <!-- or <script src="//cdn.jsdelivr.net/gh/upupming/docsify-katex@latest/dist/docsify-katex.js"></script> -->
-  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css"/>
+  <!-- <script src="//cdn.jsdelivr.net/npm/docsify-katex@latest/dist/docsify-katex.js"></script> -->
+  <!-- <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css"/> -->
   <script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
   <script src="//unpkg.com/docsify-mindmap/dist/docsify-mindmap.min.js"></script>
+  <!-- markmap is based on d3, so must load those files first. -->
+  <!-- https://github.com/up9cloud/docsify-mindmap -->
   <script type="text/javascript">
     var Common = {
       getItself: function(id) {

@@ -72,6 +72,11 @@
 | Chrome Extension Support                                                     | 快捷键             |           | 注意：Electron 不支持商店中的任意 Chrome 扩展，Electron 项目的目标不是与 Chrome 的扩展实现完全兼容 |
 
 
+## 第三方代码库
+
+
+[getmac](https://github.com/bevry/getmac '网卡物理地址')
+
 ```Mermaid
 graph TB
     api2 --> |IPC|api

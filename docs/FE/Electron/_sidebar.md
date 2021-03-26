@@ -1,5 +1,6 @@
 - [前端](/)
 	- [Electron](FE/Electron/)
+	- [主进程API](FE/Electron/Api.md)
 	- [主进程API](FE/Electron/ApiMain.md)
 	- [渲染进程API](FE/Electron/ApiRender.md)
 	- [API Page](FE/Electron/ApiPage.md)
