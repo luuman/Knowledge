@@ -129,7 +129,7 @@ webview.addEventListener('dom-ready', () => {
 加载 webview 中的 url，url 必须包含协议前缀，例如 http:// 或 file://
 
 ```js
-<webview>.loadURL(url[, options])
+webview.loadURL(url[, options])
 url URL
 options Object (可选)
 httpReferrer String - 一个http类型的url.
@@ -137,7 +137,7 @@ userAgent String -用于发起请求的用户代理.
 extraHeaders String - 额外的headers,用 "\n"分隔.
 ```
 
-### insertCSS(css) 插入css
+### insertCSS  [注入css](/FE/Electron/ApiPage?id=注入css)
 
 ```js
 webview.insertCSS(`
@@ -146,39 +146,26 @@ webview.insertCSS(`
     width: 100%;
     overflow-x: hidden;
   }
-  ::-webkit-scrollbar {
-    width: 0;
-    height: 0;
-  }
-  ::-webkit-scrollbar-button {
-    width: 0;
-    height: 0;
-  }
-  ::-webkit-scrollbar-button:start:increment,
-  ::-webkit-scrollbar-button:end:decrement {
-    display: none;
-  }
-  ::-webkit-scrollbar-corner {
-    display: block;
-  }
 `)
 ```
 
-### executeJavaScript
-评估 code ，如果 userGesture 值为 true ，它将在这个page里面创建用户手势. HTML APIs ，如 requestFullScreen,它需要用户响应，那么将自动通过这个参数优化.
+> 缺点
+
+1. 需要在Webview加载完成之后，才可以执行注入
+
+
+### executeJavaScript 代码注入
+
 ```js
-<webview>.executeJavaScript(code, userGesture, callback)
-code String
-userGesture Boolean - 默认 false.
-callback Function (可选) - 回调函数.
-result
-
-webview.executeJavaScript(`
-  setTimeout(() => {
-    console.log('粉丝数：')
-  }, 2000)
-`)
+// code String
+// userGesture Boolean - 默认 false 创建用户手势
+// callback Function (可选) - 回调函数.
+webview.executeJavaScript(code, userGesture, callback)
 ```
+
+> 缺点
+
+1. 需要在Webview加载完成之后，才可以执行注入
 
 ### setUserAgent(userAgent) 重新设置用户代理
 
@@ -238,7 +225,7 @@ webview.executeJavaScript(`
 ### findInPage
 发起一个请求来寻找页面中的所有匹配 text 的地方并且返回一个 Integer来表示这个请求用的请求Id. 这个请求结果可以通过订阅found-in-page 事件来取得.
 ```js
-<webview>.findInPage(text[, options])
+webview.findInPage(text[, options])
 text String - 搜索内容,不能为空.
 options Object (可选)
 forward Boolean - 向前或向后, 默认为 true.
@@ -250,8 +237,8 @@ medialCapitalAsWordStart Boolean - 当配合 wordStart的时候,接受一个文�
 ### stopFindInPage
 使用 action 停止 findInPage 请求.
 ```js
-<webview>.stopFindInPage(action)
-action String - 指定一个行为来接替停止 <webview>.findInPage 请求.
+webview.stopFindInPage(action)
+action String - 指定一个行为来接替停止 webview.findInPage 请求.
 clearSelection - 转变为一个普通的 selection.
 keepSelection - 清除 selection.
 activateSelection - 聚焦并点击 selection node.
@@ -393,7 +380,7 @@ webview.addEventListener('new-window', function(e) {
 url String
 当用户或page尝试开始导航时触发. 它能在 window.location 变化或者用户点击连接的时候触发.
 
-这个事件在以 APIS 编程方式开始导航时不会触发，例如 <webview>.loadURL 和 <webview>.back.
+这个事件在以 APIS 编程方式开始导航时不会触发，例如 webview.loadURL 和 webview.back.
 
 在页面内部导航跳转也将不回触发这个事件，例如点击锚链接或更新 window.location.hash.使用 did-navigate-in-page 来实现页内跳转事件.
 
@@ -520,27 +507,121 @@ webview.reloadIgnoringCache()
 
 ### 代码注入
 
+#### 前置
+##### 固定注入
+
 ```js
-// openWeb
-const webview = this.$refs.webview
-let preloadFile
-if (process.env.NODE_ENV === 'production') {
-  // 生产环境获取本地js
-  preloadFile = `file://\${global.__static}/preload.js`
-} else {
-  // 可以获取本地js
-  preloadFile = 'file://' + require('path').resolve('static/preload.js')
+mounted() {
+  const webview = this.$refs.webview
+  webview.addEventListener('dom-ready', (e) => {
+    webview.insertCSS(`
+      .customer-panel {
+        display: relative;
+      }
+    `)
+    webview.executeJavaScript(`
+      setTimeout(() => {
+        console.log('粉丝数：')
+      }, 2000)
+    `)
+  })
 }
+```
+
+> 通过execute
+
+```js
+通过executeJavaScript()方法，在webview页面中执行js代码，并且向electron渲染进程返回Promise
+webview.executeJavaScript(code[, userGesture])
+-code String
+-userGesture Boolean (可选) - 默认为 false
+
+
+> 返回值 Promise
+
+<any> - A promise that resolves with the result of the executed code or is rejected if the result of the code is a rejected promise.
+
+这个方法更多的意思是：执行某段JavaScript代码，并且返回Promise，preload属性注入js代码，executeJavaScript()更多的是执行某一段代码，例如执行在webview代码执行前通过preload注入的js方法，并且可以对返回做一定的操作
+
+this.$refs.webview.executeJavaScript(`__webViewFunction.getPhoneNumberList()`).then(result => {
+  this.phoneNumberList = result || []
+  // 查询缓存
+  if (this.checkAllInCache(this.phoneNumberList)) {
+    // 所有需要查询电话号码都在缓存
+    console.log('allCache' + this.phoneNumberList)
+  }
+})
+```
+
+#### 后置（通信机制）
+
+##### 原理
+
+```js
+// 设置脚本属性地址
 webview.setAttribute('preload', preloadFile)
+```
+
+```Mermaid
+graph TB
+  subgraph PC [PC]
+  params --> Login1(params参数)
+  callback --> Login1(callback回调)
+  Login1(IpcEle.Login)
+  LogOut1(IpcEle.LogOut)
+  goView1(IpcEle.goView)
+  end
+  subgraph preload [注入JS - window.IpcEle]
+  Login1 --> Login
+  LogOut1 --> LogOut
+  goView1 --> goView
+  ipcRenderer(ipcRenderer.send)
+  ipcRenderer1(ipcRenderer.on)
+  ipcRenderer --> |Login|message
+  Login(Login) --> |sendToHost: params|ipcRenderer
+  ipcRenderer1 --> |on: callback|Login
+  Login --> |on: callback|callback
+  end
+  subgraph WebView [WebView]
+  message(ipc-message) --> |event.channel|IPCName(IPCName)
+  IPCName --> |IPCName 等于 Login|Login2(Login 方法)
+  IPCName --> |IPCName 等于 LogOut|LogOut2(LogOut 方法)
+  IPCName --> |IPCName 等于 goView|goView2(goView 方法)
+  send(webview.send) --> |LoginDon|ipcRenderer1
+  Login2 --> |callback, params|send
+  LogOut2 --> send
+  goView2 --> send
+  end
+```
+
+> 基本方式
+
+```js
+// webviews接收器
+const webview = this.$refs.webview
+// 注入脚本
+openWeb(webview) {
+  let preloadFile
+  if (!process.env.WEBPACK_DEV_SERVER_URL) {
+    preloadFile = this.preloadFile
+  } else {
+    preloadFile = 'file://' + require('path').resolve('public/webviews.js')
+  }
+  console.log(process.env.NODE_ENV, preloadFile)
+  webview.setAttribute('preload', preloadFile)
+}
+// 发送回调信息
 webview.send('ping', message)
 
 // MS 接收消息
 webview.addEventListener('ipc-message', (event) => {
-  // message
+  // 监听消息名称
   console.log(event.channel)
 })
+```
 
-// webviews.js
+```js
+// webviews.js注入
 console.log('webviews')
 const { ipcRenderer } = require('electron')
 // 监听ping 发送pong
@@ -550,11 +631,22 @@ ipcRenderer.on('ping', (event, msg) => {
 })
 ```
 
-> 思路
+##### preload
+
+##### 使用本地打包preload
+```js
+// 主进程 public/webviews.js
+ipcMain.on('webviewFile', (event, callback) => {
+  event.sender.send('webviewFile-reply', `file://${__static}/webviews.js`)
+})
+```
+
+##### 本地生成preload
 
 通过区分开发环境，直接获取本地文件，打包环境使用fs本地缓存来实现file资源获取。
 
 ```js
+// 主进程
 ipcMain.on('webviewFile', (event, callback) => {
   console.log('webviewFile is open')
   const updaterCacheDirName = Pkg.name
@@ -580,78 +672,36 @@ ipcMain.on('webviewFile', (event, callback) => {
 })
 ```
 
-> 加载远程preload方法
+##### 加载远程preload
 
 ```js
-const {remote} = require('electron');
-const path = require('path');
-const fs = require('fs');
+const {remote} = require('electron')
+const path = require('path')
+const fs = require('fs')
 
 // preload的本地缓存路径
 // 注意，这里必须是remote.app.getPath的路径，不能为__dirname路径，__dirname打包后的路径不可读写了
-const preloadCachePath = path.join(remote.app.getPath('appData'), './preload/remote.webview.preload.js');
+const preloadCachePath = path.join(remote.app.getPath('appData'), './preload/remote.webview.preload.js')
 
 function fetchPreload() {
-    return fetch('./preload/webview.preload.js').then(res => res.text()).then(content => {
-        if (!fs.existsSync(path.dirname(preloadCachePath))) {
-            fs.mkdirSync(path.dirname(preloadCachePath))
-        }
-        fs.writeFileSync(preloadCachePath, content);
-        console.log('fetch remote webview.preload ready', preloadCachePath);
-    })
+  return fetch('./preload/webview.preload.js').then(res => res.text()).then(content => {
+    if (!fs.existsSync(path.dirname(preloadCachePath))) {
+      fs.mkdirSync(path.dirname(preloadCachePath))
+    }
+    fs.writeFileSync(preloadCachePath, content)
+    console.log('fetch remote webview.preload ready', preloadCachePath)
+  })
 }
 
 function createWebview() {
-    var webview = document.createElement('webview');
-    webview.src = url;
-    webview.preload = `file://${preloadCachePath}`;
-    return webview;
+  var webview = document.createElement('webview')
+  webview.src = url
+  webview.preload = `file://${preloadCachePath}`
+  return webview
 }
 
 // init内开始渲染，并可调用createWebview创建webview
 fetchPreload().then(init)
-```
-> 通过execute
-
-```js
-通过executeJavaScript()方法，在webview页面中执行js代码，并且向electron渲染进程返回Promise
-<webview>.executeJavaScript(code[, userGesture])
--code String
--userGesture Boolean (可选) - 默认为 false
-
-
-> 返回值 Promise
-
-<any> - A promise that resolves with the result of the executed code or is rejected if the result of the code is a rejected promise.
-
-这个方法更多的意思是：执行某段JavaScript代码，并且返回Promise，preload属性注入js代码，executeJavaScript()更多的是执行某一段代码，例如执行在webview代码执行前通过preload注入的js方法，并且可以对返回做一定的操作
-
-this.$refs.webview.executeJavaScript(`__webViewFunction.getPhoneNumberList()`).then(result => {
-  this.phoneNumberList = result || []
-  // 查询缓存
-  if (this.checkAllInCache(this.phoneNumberList)) {
-    // 所有需要查询电话号码都在缓存
-    console.log('allCache' + this.phoneNumberList)
-  }
-})
-```
-
-### 注入css
-
-```js
-mounted() {
-  const webview = this.$refs.webview
-  webview.addEventListener('dom-ready', (e) => {
-    this.mInsertCSS()
-  })
-}
-mInsertCSS() {
-  webview.insertCSS(`
-    .customer-panel {
-      display: relative;
-    }
-  `)
-},
 ```
 
 [Electron webview完全指南](http://www.ayqy.net/blog/electron-webview%E5%AE%8C%E5%85%A8%E6%8C%87%E5%8D%97/)
