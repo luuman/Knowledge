@@ -89,7 +89,7 @@ win样式丑陋可以拖拽、mac内嵌页面不可拖拽
 ```js
 var webview = document.getElementById('webview')
 webview.addEventListener('dom-ready', () => {
-  webview.openDevTools()
+	webview.openDevTools()
 })
 ```
 
@@ -141,11 +141,11 @@ extraHeaders String - 额外的headers,用 "\n"分隔.
 
 ```js
 webview.insertCSS(`
-  body {
-    background: red !important;
-    width: 100%;
-    overflow-x: hidden;
-  }
+	body {
+		background: red !important;
+		width: 100%;
+		overflow-x: hidden;
+	}
 `)
 ```
 
@@ -336,7 +336,7 @@ sourceId String
 下面示例代码将所有信息输出到内置控制台，没有考虑到输出等级和其他属性。
 ```js
 webview.addEventListener('console-message', function(e) {
-  console.log('Guest page logged a message:', e.message);
+	console.log('Guest page logged a message:', e.message);
 });
 ```
 
@@ -352,8 +352,8 @@ selectionArea Object (optional) - 整合第一个匹配域.
 
 ```js
 webview.addEventListener('found-in-page', function(e) {
-  if (e.result.finalUpdate)
-    webview.stopFindInPage("keepSelection");
+	if (e.result.finalUpdate)
+		webview.stopFindInPage("keepSelection");
 });
 
 const rquestId = webview.findInPage("test");
@@ -370,7 +370,7 @@ options Object - 参数应该被用作创建新的 BrowserWindow.
 下面示例代码在系统默认浏览器中打开了一个新的url.
 ```js
 webview.addEventListener('new-window', function(e) {
-  require('electron').shell.openExternal(e.url);
+	require('electron').shell.openExternal(e.url);
 });
 ```
 
@@ -407,7 +407,7 @@ url String
 
 ```js
 webview.addEventListener('close', function() {
-  webview.src = 'about:blank';
+	webview.src = 'about:blank';
 });
 ```
 
@@ -422,14 +422,14 @@ args Array
 ```js
 // In embedder page.
 webview.addEventListener('ipc-message', function(event) {
-  console.log(event.channel);
-  // Prints "pong"
+	console.log(event.channel);
+	// Prints "pong"
 });
 webview.send('ping');
 // In guest page.
 var ipcRenderer = require('electron').ipcRenderer;
 ipcRenderer.on('ping', function() {
-  ipcRenderer.sendToHost('pong');
+	ipcRenderer.sendToHost('pong');
 });
 ```
 
@@ -482,10 +482,10 @@ var webview = document.getElementById('foo')
 var indicator = document.querySelector('.indicator')
 
 var loadstart = function() {
-  indicator.innerText = 'loading...'
+	indicator.innerText = 'loading...'
 }
 var loadstop = function() {
-  indicator.innerText = ''
+	indicator.innerText = ''
 }
 webview.addEventListener('did-start-loading', loadstart)
 webview.addEventListener('did-stop-loading', loadstop)
@@ -497,7 +497,7 @@ webview.addEventListener('did-stop-loading', loadstop)
 ```js
 // 已禁用
 webview.getWebContents().session.clearCache(() => {
-  webview.reload()
+	webview.reload()
 )
 // 缓存刷新
 webview.reload()
@@ -512,31 +512,29 @@ webview.reloadIgnoringCache()
 
 ```js
 mounted() {
-  const webview = this.$refs.webview
-  webview.addEventListener('dom-ready', (e) => {
-    webview.insertCSS(`
-      .customer-panel {
-        display: relative;
-      }
-    `)
-    webview.executeJavaScript(`
-      setTimeout(() => {
-        console.log('粉丝数：')
-      }, 2000)
-    `)
-  })
+	const webview = this.$refs.webview
+	webview.addEventListener('dom-ready', (e) => {
+		webview.insertCSS(`
+			.customer-panel {
+				display: relative;
+			}
+		`)
+		webview.executeJavaScript(`
+			setTimeout(() => {
+				console.log('粉丝数：')
+			}, 2000)
+		`)
+	})
 }
 ```
 
 > 通过execute
+通过executeJavaScript()方法，在webview页面中执行js代码，并且向electron渲染进程返回Promise
 
 ```js
-通过executeJavaScript()方法，在webview页面中执行js代码，并且向electron渲染进程返回Promise
 webview.executeJavaScript(code[, userGesture])
 -code String
 -userGesture Boolean (可选) - 默认为 false
-
-
 > 返回值 Promise
 
 <any> - A promise that resolves with the result of the executed code or is rejected if the result of the code is a rejected promise.
@@ -544,12 +542,12 @@ webview.executeJavaScript(code[, userGesture])
 这个方法更多的意思是：执行某段JavaScript代码，并且返回Promise，preload属性注入js代码，executeJavaScript()更多的是执行某一段代码，例如执行在webview代码执行前通过preload注入的js方法，并且可以对返回做一定的操作
 
 this.$refs.webview.executeJavaScript(`__webViewFunction.getPhoneNumberList()`).then(result => {
-  this.phoneNumberList = result || []
-  // 查询缓存
-  if (this.checkAllInCache(this.phoneNumberList)) {
-    // 所有需要查询电话号码都在缓存
-    console.log('allCache' + this.phoneNumberList)
-  }
+	this.phoneNumberList = result || []
+	// 查询缓存
+	if (this.checkAllInCache(this.phoneNumberList)) {
+		// 所有需要查询电话号码都在缓存
+		console.log('allCache' + this.phoneNumberList)
+	}
 })
 ```
 
@@ -564,70 +562,118 @@ webview.setAttribute('preload', preloadFile)
 
 ```Mermaid
 graph TB
-  subgraph PC [PC]
-  params --> Login1(params参数)
-  callback --> Login1(callback回调)
-  Login1(IpcEle.Login)
-  LogOut1(IpcEle.LogOut)
-  goView1(IpcEle.goView)
-  end
-  subgraph preload [注入JS - window.IpcEle]
-  Login1 --> Login
-  LogOut1 --> LogOut
-  goView1 --> goView
-  ipcRenderer(ipcRenderer.send)
-  ipcRenderer1(ipcRenderer.on)
-  ipcRenderer --> |Login|message
-  Login(Login) --> |sendToHost: params|ipcRenderer
-  ipcRenderer1 --> |on: callback|Login
-  Login --> |on: callback|callback
-  end
-  subgraph WebView [WebView]
-  message(ipc-message) --> |event.channel|IPCName(IPCName)
-  IPCName --> |IPCName 等于 Login|Login2(Login 方法)
-  IPCName --> |IPCName 等于 LogOut|LogOut2(LogOut 方法)
-  IPCName --> |IPCName 等于 goView|goView2(goView 方法)
-  send(webview.send) --> |LoginDon|ipcRenderer1
-  Login2 --> |callback, params|send
-  LogOut2 --> send
-  goView2 --> send
-  end
+	subgraph PC [PC]
+	params --> Login1(params参数)
+	callback --> Login1(callback回调)
+	Login1(IpcEle.Login)
+	LogOut1(IpcEle.LogOut)
+	goView1(IpcEle.goView)
+	end
+	subgraph preload [注入JS - window.IpcEle]
+	Login1 --> Login
+	LogOut1 --> LogOut
+	goView1 --> goView
+	ipcRenderer(ipcRenderer.send)
+	ipcRenderer1(ipcRenderer.on)
+	ipcRenderer --> |Login|message
+	Login(Login) --> |sendToHost: params|ipcRenderer
+	ipcRenderer1 --> |on: callback|Login
+	Login --> |on: callback|callback
+	end
+	subgraph WebView [WebView]
+	message(ipc-message) --> |event.channel|IPCName(IPCName)
+	IPCName --> |IPCName 等于 Login|Login2(Login 方法)
+	IPCName --> |IPCName 等于 LogOut|LogOut2(LogOut 方法)
+	IPCName --> |IPCName 等于 goView|goView2(goView 方法)
+	send(webview.send) --> |LoginDon|ipcRenderer1
+	Login2 --> |callback, params|send
+	LogOut2 --> send
+	goView2 --> send
+	end
 ```
 
 > 基本方式
 
 ```js
-// webviews接收器
+/*
+	webviews.vue 接收器
+*/
 const webview = this.$refs.webview
 // 注入脚本
-openWeb(webview) {
-  let preloadFile
-  if (!process.env.WEBPACK_DEV_SERVER_URL) {
-    preloadFile = this.preloadFile
-  } else {
-    preloadFile = 'file://' + require('path').resolve('public/webviews.js')
-  }
-  console.log(process.env.NODE_ENV, preloadFile)
-  webview.setAttribute('preload', preloadFile)
-}
+setPreload(webview) {
+	let preloadFile
+	if (!process.env.WEBPACK_DEV_SERVER_URL) {
+		preloadFile = this.preloadFile
+	} else {
+		preloadFile = 'file://' + require('path').resolve('public/webviews.js')
+	}
+	console.log(process.env.NODE_ENV, preloadFile)
+	webview.setAttribute('preload', preloadFile)
+},
+// 事件监听
+Events(webview) {
+	// 渲染完毕
+	webview.addEventListener('dom-ready', () => {
+		console.log('did-stop-ready...')
+		if (process.env.NODE_ENV === 'development') webview.openDevTools()
+	})
+  // 停止失败
+	webview.addEventListener('did-fail-load', () => {
+		console.log('did-fail-load...')
+	})
+  // 停止加载
+	webview.addEventListener('did-stop-loading', () => {
+		console.log('did-stop-loading...')
+	})
+  // 监听console
+	webview.addEventListener('console-message', function(e) {
+		console.log('Guest page logged a message:', e.message)
+	})
+	// 打开新url
+	webview.addEventListener('new-window', function(e) {
+		require('electron').shell.openExternal(e.url)
+	})
+},
+// MS接收消息
+ipcMessage(webview) {
+	webview.addEventListener('ipc-message', (event) => {
+		function sendIpc(IPCName, params) {
+			webview.send(IPCName + 'Don', params)
+		}
+		// 监听消息名称
+		const IPCName = event.channel
+		console.log(event.channel)
+		switch (IPCName) {
+			case 'Login':
+				this.goLogin(...event.args).then(() => {
+					sendIpc(IPCName, params)
+				})
+				break
+			case 'LogOut':
+				this.FedLogOut(event.args[0])
+				break
+			default:
+				console.log('ipc-message', IPCName, event.args)
+				break
+		}
+	})
+},
 // 发送回调信息
-webview.send('ping', message)
-
-// MS 接收消息
-webview.addEventListener('ipc-message', (event) => {
-  // 监听消息名称
-  console.log(event.channel)
-})
+Send() {
+	webview.send('ping', message)
+},
 ```
 
 ```js
-// webviews.js注入
+/*
+	webviews.js 代码注入
+*/
 console.log('webviews')
 const { ipcRenderer } = require('electron')
 // 监听ping 发送pong
 ipcRenderer.on('ping', (event, msg) => {
-  console.log(msg)
-  ipcRenderer.sendToHost('pong')
+	console.log(msg)
+	ipcRenderer.sendToHost('pong')
 })
 ```
 
@@ -637,7 +683,7 @@ ipcRenderer.on('ping', (event, msg) => {
 ```js
 // 主进程 public/webviews.js
 ipcMain.on('webviewFile', (event, callback) => {
-  event.sender.send('webviewFile-reply', `file://${__static}/webviews.js`)
+	event.sender.send('webviewFile-reply', `file://${__static}/webviews.js`)
 })
 ```
 
@@ -648,27 +694,27 @@ ipcMain.on('webviewFile', (event, callback) => {
 ```js
 // 主进程
 ipcMain.on('webviewFile', (event, callback) => {
-  console.log('webviewFile is open')
-  const updaterCacheDirName = Pkg.name
-  const updatePendingPath = path.join(autoUpdater.app.baseCachePath, updaterCacheDirName, 'webView')
-  const webviews = `
-    console.log('webviews')
-    const { ipcRenderer } = require('electron')
-    ipcRenderer.on('ping', (event, msg) => {
-      console.log(msg)
-      ipcRenderer.sendToHost('pong')
-    })
-  `
-  // 重新创建文件夹
-  fs.emptyDir(updatePendingPath, err => {
-    console.log(err)
-    fs.writeFile(`${updatePendingPath}/webviews.js`, webviews, 'utf-8', (err) => {
-      if (!err) {
-        console.log('write success!')
-        event.sender.send('webviewFile-reply', `file://${updatePendingPath}/webviews.js`)
-      }
-    })
-  })
+	console.log('webviewFile is open')
+	const updaterCacheDirName = Pkg.name
+	const updatePendingPath = path.join(autoUpdater.app.baseCachePath, updaterCacheDirName, 'webView')
+	const webviews = `
+		console.log('webviews')
+		const { ipcRenderer } = require('electron')
+		ipcRenderer.on('ping', (event, msg) => {
+			console.log(msg)
+			ipcRenderer.sendToHost('pong')
+		})
+	`
+	// 重新创建文件夹
+	fs.emptyDir(updatePendingPath, err => {
+		console.log(err)
+		fs.writeFile(`${updatePendingPath}/webviews.js`, webviews, 'utf-8', (err) => {
+			if (!err) {
+				console.log('write success!')
+				event.sender.send('webviewFile-reply', `file://${updatePendingPath}/webviews.js`)
+			}
+		})
+	})
 })
 ```
 
@@ -684,20 +730,20 @@ const fs = require('fs')
 const preloadCachePath = path.join(remote.app.getPath('appData'), './preload/remote.webview.preload.js')
 
 function fetchPreload() {
-  return fetch('./preload/webview.preload.js').then(res => res.text()).then(content => {
-    if (!fs.existsSync(path.dirname(preloadCachePath))) {
-      fs.mkdirSync(path.dirname(preloadCachePath))
-    }
-    fs.writeFileSync(preloadCachePath, content)
-    console.log('fetch remote webview.preload ready', preloadCachePath)
-  })
+	return fetch('./preload/webview.preload.js').then(res => res.text()).then(content => {
+		if (!fs.existsSync(path.dirname(preloadCachePath))) {
+			fs.mkdirSync(path.dirname(preloadCachePath))
+		}
+		fs.writeFileSync(preloadCachePath, content)
+		console.log('fetch remote webview.preload ready', preloadCachePath)
+	})
 }
 
 function createWebview() {
-  var webview = document.createElement('webview')
-  webview.src = url
-  webview.preload = `file://${preloadCachePath}`
-  return webview
+	var webview = document.createElement('webview')
+	webview.src = url
+	webview.preload = `file://${preloadCachePath}`
+	return webview
 }
 
 // init内开始渲染，并可调用createWebview创建webview
@@ -706,6 +752,254 @@ fetchPreload().then(init)
 
 [Electron webview完全指南](http://www.ayqy.net/blog/electron-webview%E5%AE%8C%E5%85%A8%E6%8C%87%E5%8D%97/)
 
+# window.open
+创建并开启新窗口，多次调用仅有一个同一`frameName`窗口。
+
+## 创建
+
+```js
+window.open(url[, frameName][, features])
+```
+
+```js
+// winOpen
+url: 网址
+frameName: 命名
+features: 字符串参数，逗号分隔
+return BrowserWindowProxy 类的实例
+
+window.open('http://www.baidu.com', 'oauth', 'frame=true, width=700, transparent=')
+transparent： 空：false，有值：true
+nodeIntegration
+```
+
+## 实例
+
+> winOpen.blur() 子窗口的失去焦点
+
+> winOpen.close() 强行关闭子窗口，忽略卸载事件
+
+> winOpen.closed 在子窗口关闭之后恢复正常
+
+> winOpen.eval(code) code String评估子窗口的代码
+
+> winOpen.focus() 子窗口获得焦点(让其显示在最前)
+
+> winOpen.postMessage(message, targetOrigin)
+
+## 通信
+
+> 父到子
+
+```js
+postMessage(message, targetOrigin)
+message: 消息
+targetOrigin: 地址
+
+winOpen.postMessage("The user is 'bob' and the password is 'secret'", 'https://open.weixin.qq.com/')
+
+// 接收
+window.addEventListener('message', (event) => {
+  alert(event.data)
+}, false)
+```
+
+1. event.data表示接收到的消息
+1. event.origin表示postMessage的发送来源，包括协议，域名和端口
+1. event.source表示发送消息的窗口对象的引用; 我们可以用这个引用来建立两个不同来源的窗口之间的双向通信。
+
+> 子到父
+
+```js
+window.addEventListener('message', (event) => {
+  alert(event.data)
+}, false)
+
+winOpen.eval (`window.opener.postMessage('dsdfasdf', 'http://localhost:8081')`);
+```
+
+## 监听开启新窗口
+```js
+// 主窗口 -> 创建窗口
+mainWindow.webContents.on('new-window', (event, url, frameName, disposition, options, additionalFeatures) => {
+  if (frameName === 'oauth') {
+    // open window as modal
+    event.preventDefault()
+    // 将所有可枚举属性的值从一个或多个源对象分配到目标对象
+    Object.assign(options, {
+      modal: true,
+      // parent: this.win,
+      width: 100,
+      height: 100
+    })
+    event.newGuest = new BrowserWindow(options)
+    event.newGuest.loadURL(url)
+    event.newGuest.webContents.openDevTools({ mode: 'detach' })
+    // 监听路由跳转
+    event.newGuest.webContents.on('will-navigate', (event, url) => {
+      setTimeout(() => {
+        win.webContents.send('winoauth')
+      }, 1000)
+    })
+  }
+})
+```
+
+### 模态窗口
+
+```js
+// 主窗口
+const mainWindow = new BrowserWindow({
+  width: 800,
+  height: 600,
+  webPreferences: {
+    nativeWindowOpen: true
+  }
+})
+mainWindow.webContents.on('new-window', (event, url, frameName, disposition, options, additionalFeatures) => {
+  if (frameName === 'modal') {
+    // open window as modal
+    event.preventDefault()
+    Object.assign(options, {
+      modal: true,
+      parent: mainWindow,
+      width: 100,
+      height: 100
+    })
+    event.newGuest = new BrowserWindow(options)
+    event.newGuest.webContents.on('close', () => {
+      console.log('newGuest closed!')
+      // 关闭 childId
+      if (childId) childId.close()
+    })
+  }
+})
+```
+### 自定义模态窗口
+
+```js
+// 主窗口
+const win = appManager.windowManager.mainWindow.win
+win.webContents.on('new-window', (event, url, frameName, disposition, options, additionalFeatures) => {
+  let childId = ''
+  if (frameName === 'login') {
+    childId = new BrowserWindow({
+      modal: true,
+      parent: win,
+      width: 1,
+      height: 1
+    })
+  }
+  if (frameName === 'oauth') {
+    // open window as modal
+    event.preventDefault()
+    Object.assign(options, {
+      modal: true,
+      width: 1000,
+      height: 1000
+    })
+    event.newGuest = new BrowserWindow(options)
+    event.newGuest.loadURL(url)
+    event.newGuest.webContents.openDevTools({ mode: 'detach' })
+    event.newGuest.webContents.on('will-navigate', (event, url) => {
+      setTimeout(() => {
+        win.webContents.send('winoauth')
+      }, 1000)
+    })
+    event.newGuest.webContents.on('close', () => {
+      console.log('newGuest closed!')
+      if (childId) childId.close()
+    })
+  }
+})
+```
+
+### 自定义模态窗口
+控制显示，启动窗口需要时间
+通过这种方式添加本地页面页面显示 但是效果不好 启动时间过长
+[electron程序，如何设置模态窗口（父子窗口）？](https://newsn.net/say/electron-modal.html)
+
+```js
+newWindow (appManager) {
+  const win = appManager.windowManager.mainWindow.win
+  let winOpen = ''
+  ipcMain.on('close', () => {
+    console.log(winOpen.hide())
+  })
+  win.webContents.on('new-window', (event, url, frameName, disposition, options, additionalFeatures) => {
+    event.preventDefault()
+    Object.assign(options, {
+      modal: true,
+      webPreferences: {
+        nodeIntegration: frameName === 'Info'
+      },
+      resizable: false,
+      show: false,
+      // x: '100',
+      // y: '100',
+      // maxwidth: options.maxwidth,
+      // maxheight: options.maxheight,
+      parent: frameName === 'Info' ? win : ''
+    })
+    event.newGuest = new BrowserWindow(options)
+    winOpen = event.newGuest
+    console.log(url)
+    // if (frameName === 'Info') url = process.env.WEBPACK_DEV_SERVER_URL + url
+    event.newGuest.loadURL(url)
+    event.newGuest.webContents.openDevTools({ mode: 'detach' })
+    event.newGuest.on('ready-to-show', () => {
+      event.newGuest.show()
+    })
+    // event.newGuest.webContents.on('will-navigate', (event, url) => {
+    //   // console.log('event', event.sender.history, url)
+    //   setTimeout(() => {
+    //     win.webContents.send('winoauth')
+    //   }, 1000)
+    // })
+  })
+}
+```
+
+> event
+
+```js
+{
+  preventDefault
+  sendReply
+  sender
+  webContents
+}
+```
+> url
+
+> frameName 框架名
+
+> disposition
+
+new-window
+> options参数
+
+```js
+{
+  frame: 'true',
+  width: 1000,
+  height: 500,
+  webPreferences: {
+    nodeIntegration: false,
+    webSecurity: false,
+    webviewTag: true,
+    transparent: true,
+    nodeIntegrationInSubFrames: false,
+    openerId: 1
+  },
+  transparent: '',
+  title: 'oauth',
+  show: true
+}
+```
+> additionalFeatures补充特性
+[]
+
 # File对象
 为了让用户能够通过HTML5的file API直接操作本地文件，DOM的File接口提供了对本地文件的抽象。Electron在File接口中增加了一个path属性，它是文件在系统中的真实路径。
 
@@ -713,23 +1007,23 @@ fetchPreload().then(init)
 
 ```js
 <div id="holder">
-  Drag your file here
+	Drag your file here
 </div>
 
 <script>
-  var holder = document.getElementById('holder')
-  holder.ondragover = function () {
-    return false
-  }
-  holder.ondragleave = holder.ondragend = function () {
-    return false
-  }
-  holder.ondrop = function (e) {
-    e.preventDefault()
-    var file = e.dataTransfer.files[0]
-    console.log('File you dragged here is', file.path)
-    return false
-  }
+	var holder = document.getElementById('holder')
+	holder.ondragover = function () {
+		return false
+	}
+	holder.ondragleave = holder.ondragend = function () {
+		return false
+	}
+	holder.ondrop = function (e) {
+		e.preventDefault()
+		var file = e.dataTransfer.files[0]
+		console.log('File you dragged here is', file.path)
+		return false
+	}
 </script>
 ```
 
@@ -737,22 +1031,22 @@ fetchPreload().then(init)
 
 ```js
 remote
-  .getCurrentWindow()
-  .capturePage({ x: 0, y: 0, width: window.innerWidth, height: window.innerHeight })
-  .then((res: NativeImage) => {
-    const image = new Image()
-    // base64
-    image.src = res.toDataURL()
-    image.onload = () => {
-      const canvas = document.createElement('canvas')
-      // 不加这两句图片会被放大
-      canvas.width = image.naturalWidth
-      canvas.height = image.naturalHeight
-      canvas.style.width = `${canvas.width / window.devicePixelRatio}px`
-      canvas.style.height = `${canvas.height / window.devicePixelRatio}px`
-      // canvas正常可用
-      canvas.getContext('2d')!.drawImage(image, 0, 0)
-    };
-  })
-  .catch((err) => console.log(err));
+	.getCurrentWindow()
+	.capturePage({ x: 0, y: 0, width: window.innerWidth, height: window.innerHeight })
+	.then((res: NativeImage) => {
+		const image = new Image()
+		// base64
+		image.src = res.toDataURL()
+		image.onload = () => {
+			const canvas = document.createElement('canvas')
+			// 不加这两句图片会被放大
+			canvas.width = image.naturalWidth
+			canvas.height = image.naturalHeight
+			canvas.style.width = `${canvas.width / window.devicePixelRatio}px`
+			canvas.style.height = `${canvas.height / window.devicePixelRatio}px`
+			// canvas正常可用
+			canvas.getContext('2d')!.drawImage(image, 0, 0)
+		};
+	})
+	.catch((err) => console.log(err));
 ```

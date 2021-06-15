@@ -13,6 +13,7 @@
 	  - [Uniapp](/FE/WeChat/Uniapp)
   - [Vue](/FE/Vue/)
   - [Electron](/FE/Electron/)
+  - [node](/FE/node/)
   - [NPM](/FE/NPM/)
   - [小功能](/FE/Tool/)
 - [算法](/Algorithm/)
