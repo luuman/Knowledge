@@ -13,6 +13,38 @@ Undefined、Null、Boolean、Number、String、symbol
 原始数据类型直接存储在栈(stack)中的简单数据段，占据空间小、大小固定，属于被频繁使用数据，所以放入栈中存储；
 引用数据类型存储在堆(heap)中的对象,占据空间大、大小不固定,如果存储在栈中，将会影响程序运行的性能；引用数据类型在栈中存储了指针，该指针指向堆中该实体的起始地址。当解释器寻找引用值时，会首先检索其
 在栈中的地址，取得地址后从堆中获得实体
+### === ==
+`===` 严格相等，会比较两个值的类型和值
+`==`  抽象相等，比较时，会先进行类型转换，然后再比较值
+
+#### === 类型判断
+如果Type(x)和Type(y)不同，返回false
+如果Type(x)和Type(y)相同
+如果Type(x)是Undefined，返回true
+如果Type(x)是Null，返回true
+如果Type(x)是String，当且仅当x,y字符序列完全相同（长度相同，每个位置上的字符也相同）时返回true，否则返回false
+如果Type(x)是Boolean，如果x,y都是true或x,y都是false返回true，否则返回false
+如果Type(x)是Symbol，如果x,y是相同的Symbol值，返回true,否则返回false
+如果Type(x)是Number类型
+如果x是NaN，返回false
+如果y是NaN，返回false
+如果x的数字值和y相等，返回true
+如果x是+0，y是-0，返回true
+如果x是-0，y是+0，返回true
+其他返回false
+
+#### ==
+如果Type(x)和Type(y)相同，返回x===y的结果
+如果Type(x)和Type(y)不同
+如果x是null，y是undefined，返回true
+如果x是undefined，y是null，返回true
+如果Type(x)是Number，Type(y)是String，返回 x==ToNumber(y) 的结果
+如果Type(x)是String，Type(y)是Number，返回 ToNumber(x)==y 的结果
+如果Type(x)是Boolean，返回 ToNumber(x)==y 的结果
+如果Type(y)是Boolean，返回 x==ToNumber(y) 的结果
+如果Type(x)是String或Number或Symbol中的一种并且Type(y)是Object，返回 x==ToPrimitive(y) 的结果
+如果Type(x)是Object并且Type(y)是String或Number或Symbol中的一种，返回 ToPrimitive(x)==y 的结果
+其他返回false
 
 ### new
 1、创建一个空对象，并且 this 变量引用该对象，同时还继承了该函数的原型。
@@ -2065,22 +2097,6 @@ plugins: [
 减少需要编译的模块 webpack.DllPlugin + webpack.DllRefrencePlugin webpack.DllPlugin可以把依赖打包成dll库，供其它模块使用。
 
 
-
-
-
-
-
-## node
-### require(一个路径)
-require会先去找index2.js文件，没有就去找.json文件，再没有就找node文件，如果这些都没有，它会认为index2是一个文件夹，如果找到了这个文件夹，require还会去找这个文件夹里面是否有package.json，如果没有就加载失败，如果有，就找package.json里的main(),就加载里面的index.js/index.json/index.node,如果没有，也是失败。
-
-### require模块名称
-如：require('http')
-现在核心模块中查找，是否有名字一样的模块，如果有，则直接加载该核心模块
-2)如果核心模块中没有该模块，就很认为是一个第三方模块（自定义模块）, 先会去当前js文件所在的目录下找node_modules文件夹,当前目录没有，会去当前执行的文件的父目录里面寻找
-
-
-
 ## 设计模式
 ### 设计模式：单例，工厂，发布订阅
 
@@ -3037,23 +3053,26 @@ npm install --arch=ia32 --platform=win32 electron
 
 在执行 cleanupDeps 函数的时候，会首先遍历 deps，移除对 dep.subs 数组中 Wathcer 的订阅，然后把 newDepIds 和 depIds 交换，newDeps 和 deps 交换，并把 newDepIds 和 newDeps 清空。
 
+### Electron性能优化
+[如何提升 electron 应用的启动速度](http://quickapp.vivo.com.cn/how-to-improve-electron-app-startup-speed/)
+性能分析
+1. 主进程 v8-inspect-profiler 进行性能监测
+1. 渲染进程 Vue项目性能优化
+1. 性能钩子计时(perf_hook)，new date（performance-now）
+1. 拆分代码，先加载渲染进程的入口文件，再同时渲染 IDE 和加载插件进程（加载插件的文件）
+任务配置
+1. 任务分配优先级
+1. 可以调用 window.requestIdleCallback() 方法，在浏览器的空闲时段内执行。
+1. 延迟加载模块`require('xxx')`, `import`必须放于文件顶部，提前加载。
+1. 骨架屏、窗口池（提高窗口创建速度）、
+代码优化
+1. 减少不必要的依赖模块，v8-compile-cache 模块缓存
+1. 减少磁盘 IO
+1. 减少同步 ipc 和 remote（对象泄露）
+1. 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+## http
 
 ### 说一下http和https
 
@@ -3593,37 +3612,481 @@ Pragma: 似乎和Cache-Control差不多，用于旧的浏览器。
 Server: 服务器信息。 
 Vary: WEB服务器用该头部的内容告诉 Cache 服务器，在什么条件下才能用本响应所返回的对象响应后续的请求。假如源WEB服务器在接到第一个请求消息时，其响应消息的头部为：Content-Encoding: gzip; Vary: Content-Encoding那么 Cache 服务器会分析后续请求消息的头部，检查其 Accept-Encoding，是否跟先前响应的 Vary 头部值一致，即是否使用相同的内容编码方法，这样就可以防止 Cache 服务器用自己 Cache 里面压缩后的实体响应给不具备解压能力的浏览器。
 
+## Ajax
 
+### ajax
+XMLHttpRequest（XHR
+```
+const xhr = new XMLHttpRequest();
+xhr.open('GET', '/foo');
+xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+xhr.addEventListener('progress', (event) => {
+    const { lengthComputable, loaded, total } = event;
+    if (lengthComputable) {
+        console.log(`Downloaded ${loaded} of ${total} (${(loaded / total * 100).toFixed(2)}%)`);
+    } else {
+        console.log(`Downloaded ${loaded}`);
+    }
+});
+xhr.send();
+```
 
-
-
-## axios
-[项目中如何使用axios](https://www.jianshu.com/p/1b316b414390)
-
-自定义拦截处理，超时限制。
-
+#### 暂停
+xhr.abort
 ### axios
 axios 是一个基于Promise 用于浏览器和 nodejs 的 HTTP 客户端，本质上也是对原生XHR的封装，只不过它是Promise的实现版本，符合最新的ES规范，它本身具有以下特征
+
+1.从浏览器中创建 XMLHttpRequest
+2.支持 Promise API
+3.客户端支持防止CSRF
+4.提供了一些并发请求的接口（重要，方便了很多的操作）
+5.从 node.js 创建 http 请求
+6.拦截请求和响应
+7.转换请求和响应数据
+8.取消请求
+9.自动转换JSON数据
+#### 暂停
+
+
+[项目中如何使用axios](https://www.jianshu.com/p/1b316b414390)
 
 new cancelToken 取消请求cancel()
 [axios取消接口请求](https://www.cnblogs.com/ysk123/p/11544634.html)
 
 ### fetch
-fetch号称是ajax的替代品，原生js,它的API是基于Promise设计的，旧版本的浏览器不支持Promise
+fetch不是ajax的进一步封装，而是原生js，没有使用XMLHttpRequest对象,它的API是基于Promise设计的，旧版本的浏览器不支持Promise
+
+1. fetch只对网络请求报错，对400，500都当做成功的请求，服务器返回 400，500 错误码时并不会 reject，只有网络错误这些导致请求不能完成时，fetch 才会被 reject。
+2. fetch默认不会带cookie，需要添加配置项： fetch(url, {credentials: 'include'})
+3. fetch不支持abort，不支持超时控制，使用setTimeout及Promise.reject的实现的超时控制并不能阻止请求过程继续在后台运行，造成了流量的浪费
+4. fetch没有办法原生监测请求的进度，而XHR可以
+#### 暂停
+```
+const controller = new AbortController();
+const { signal } = controller;
+fetch('/foo', { signal }).then(...);
+signal.onabort = () => { ... };
+controller.abort();
+```
 
 ### ajax、axios、fetch之间优缺点重点对比
 [ajax、axios、fetch之间优缺点重点对比](https://zhuanlan.zhihu.com/p/58062212)
 [ajax和axios、fetch的区别](https://www.jianshu.com/p/8bc48f8fde75)
 
-Asynchronous Javascript And XML”（异步 JavaScript 和 XML 从原生的XHR到jquery ajax，再到现在的axios和fetch。
-JQuery ajax 是对原生XHR的封装
-
-axios 是一个基于Promise封装 用于浏览器和 nodejs 的 HTTP 客户端，可以进行数据拦截、超时限制
-
-fetch基于promise设计的
-fetch还不支持超时控制
-fetch默认不会带cookie
-fetchtch只对网络请求报错，对400，500都当做成功的请求，需要封装去处理
-
+总结：axios既提供了并发的封装，也没有fetch的各种问题，而且体积也较小，当之无愧现在最应该选用的请求的方式。
 ## typescript
+
+
+
+
+## node
+### require(一个路径)
+require会先去找index2.js文件，没有就去找.json文件，再没有就找node文件，如果这些都没有，它会认为index2是一个文件夹，如果找到了这个文件夹，require还会去找这个文件夹里面是否有package.json，如果没有就加载失败，如果有，就找package.json里的main(),就加载里面的index.js/index.json/index.node,如果没有，也是失败。
+
+### require模块名称
+如：require('http')
+现在核心模块中查找，是否有名字一样的模块，如果有，则直接加载该核心模块
+2)如果核心模块中没有该模块，就很认为是一个第三方模块（自定义模块）, 先会去当前js文件所在的目录下找node_modules文件夹,当前目录没有，会去当前执行的文件的父目录里面寻找
+### Node.js 与 JavaScript 有什么不同?
+
+### 什么时候用 Node.js？
+Node.js 是异步的、事件驱动的、非阻塞的和单线程的，使得它成为开发下面应用程序的完美候选：
+
+1. 实时应用程序，如聊天和提供实时更新的应用程序
+1. 将视频或其他多媒体内容流式传输给大量观众的流式应用程序
+1. 其他 I/O 密集型应用程序，如协作平台
+1. 遵循微服务架构的网络后端
+然而，Node.js 的特性使得它对于其他类型的应用程序来说不是一个理想的选择。执行 CPU 密集型任务的应用程序（如复杂的数学计算）在使用 CPU 时表现不佳，因为 Node.js 是单线程的。
+
+### EventEmitter 做了什么？
+Node.js 中任何对象发出的事件都是 EventEmitter 类的实例，就像 http 模块。
+所有 EventEmitter 类都可以使用 eventEmitter.on() 函数将事件侦听器附加到事件。然后一旦捕捉到这样的事件，就会同步地逐个调用它的侦听器。
+
+const events = require("events");const eventEmitter = new events.EventEmitter();const eventListener = function(){  console.log("event triggered");}eventEmitter.on("emitted", eventListener);eventEmitter.emit("emitted");
+
+### 事件循环是什么?
+node启动会初始化事件队列（event loop），先加入先执行，执行完一次队列，再次循环遍历看有没有新事件加入队列。
+执行中的事件叫IO事件， setlmmediate在当前队列中立即执行，setTimout/setInterval把执行定时到下一个队列， process. nextTick在当前队列执行完，下次遍历前执行。所以总体顺序是：IO事件→ setImmediate→ setTimeout/setInterval→ process. nextTick。
+单线程的 Node.js 必须是非阻塞的，以防止线程阻塞在需要很长时间才能完成的任务上，事件循环负责实现这种非阻塞行为，它使用应用程序线程调度挂起的任务。
+Node.js 在任务完成时通过回调来处理异步函数返回的响应。与创建任务的事件类似，任务完成后也会发出一个事件。Node.js 将需要处理的事件添加到事件队列。
+事件循环对事件队列中的事件进行迭代，并安排何时执行其关联的回调函数。
+
+1. 定时器：本阶段执行已经被 setTimeout() 和 setInterval() 的调度回调函数。
+1. 待定回调：执行延迟到下一个循环迭代的 I/O 回调。
+1. idle, prepare：仅系统内部使用。
+1. 轮询：检索新的 I/O 事件;执行与 I/O 相关的回调（几乎所有情况下，除了关闭的回调函数，那些由计时器和 setImmediate() 调度的之外），其余情况 node 将在适当的时候在此阻塞。
+1. 检测：setImmediate() 回调函数在这里执行。
+1. 关闭的回调函数：一些关闭的回调函数，如：socket.on('close', ...)
+
+### 说说线程与进程的区别。
+1. 一个程序至少有一个进程，一个进程至少有一个线程
+1. 线程的划分尺度小于进程，使得多线程程序的并发性高。
+1. 进程在执行过程中拥有独立的内存单元，而多个线程共享内存，极大地提高了程序的运行效率。
+1. 线程在执行过程中与进程有区别。每个独立的线程都有程序运行的入口、顺序执行序列和程序的出口。但是线程不能够独立执行，必须依存在应用程序中，由应用程序提供多个线程执行控制。
+1. 从逻辑角度来看，多线程的意义在于一个应用程序中，有多个执行部分可以同时执行。但操作系统并没有将多个线程看作多个独立的应用来实现进程的调度、管理和资源分配。这是进程和线程的主要区别。
+
+### 流是什么?
+Stream 流是从源读取或写入数据并将其传输到连续流目标的管道。有四种类型：
+1. 可读
+1. 可写的
+1. 可读写
+1. 先写入，再读出来
+每个流也是一个 EventEmitter。这意味着流对象可以在流上没有数据、流上有可用数据或流中的数据在程序刷新时发出事件。
+
+const fs = require("fs");const readableStream = fs.createReadStream("test.txt");let content = "";readableStream.on("data", (chunk) => {  content += chunk;});readableStream.on("end", () => {  console.log(content);});
+
+### readFile 和 createReadStream 函数有什么区别？
+1. readFile 函数异步读取文件的全部内容，并存储在内存中，然后再传递给用户。
+1. createReadStream 使用一个可读的流，逐块读取文件，而不是全部存储在内存中。
+1. 与 readFile 相比，createReadStream 使用更少的内存和更快的速度来优化文件读取操作。如果文件相当大，用户不必等待很长时间直到读取整个内容，因为读取时会先向用户发送小块内容。
+1. const fs = require("fs");fs.readFile("test.txt", (err, content) => {  console.log(content);});
+
+### 如何处理 Node.js 中未捕获的异常？
+我们可以在进程级别捕获应用程序中未捕获的异常。为此将侦听器附加到 process 全局对象：
+process.on("uncaughtException", (err) => {  console.log("exception caught: ", err);});
+
+### Node.js 能否充分利用多核处理器？
+（默认的）Node.js 应用程序总是单线程的，即使在多核处理器上运行，应用程序也能只使用一个处理器。
+但是 Node.js 的核心模块之一 Cluster 支持 Node.js 应用程序开启多核，允许我们创建多个工作进程，这些进程可以在多个内核上并行运行，并共享一个端口来侦听事件。
+每个进程使用 IPC 与主线程通信，并根据需要将服务器句柄传递给其他进程。主进程可以侦听端口本身并以循环方式将每个新连接传递给子进程，也可以将端口分配给子进程以便子进程侦听请求。
+### 反应堆设计模式是什么？
+反应堆设计模式是，Node.js 将回调函数（处理程序）附加到每个 I/O 操作，然后创建请求时将处理程序提交给解复用器。
+解复用器收集应用程序中发出的每个 I/O 请求，并将它们作为队列中的事件进行排队。这个队列就是我们所说的事件队列。将事件排队后，解复用器返回应用程序线程的控制。
+同时，事件循环遍历事件队列中的每个事件，并调用附加的回调来处理事件响应。
+这就是 Node.js 中所使用的反应堆模式。
+
+### 单线程与多线程网络后端相比有哪些好处？
+尽管 Node.js 是单线程的，但是大多数用于后端开发的编程语言都提供多线程来处理应用程序操作。
+为什么单线程有利于后端开发？
+开发人员更容易实现应用程序。我们的应用程序在生产过程中不会突然遇到意外的竞争条件。
+单线程应用程序易于扩展。
+它们可以毫不延迟地在一个时刻收到的大量用户请求提供服务。相比之下，当流量较大时，多线程后端必须等待线程池中的线程释放，才能为用户请求提供服务。利用 Node.js 的非阻塞特性，用户请求不会在单个线程上挂起太长时间（只有在操作不是 CPU 密集型时）。
+
+### REPL 是什么？
+REPL 代表 Read Eval Print Loop，是一个虚拟环境，可以在其中轻松地运行编程语言。Node.js 带有一个内置的 REPL 来运行 JavaScript 代码，类似于我们在浏览器中用来运行 JavaScript 代码的控制台。
+要启动 Node.js REPL，只需在命令行上运行 node，然后写一行 JavaScript 代码，就可以在下一行看到它的输出。
+
+### process.nextTick 和 setImmediate 有什么区别？
+传递给 setImmediate 函数的回调将在事件队列上的下一次迭代中执行。
+另一方面，回调传递给 process.nextTick 在下一次迭代之前以及程序中当前运行的操作完成之后执行。在应用程序启动时，开始遍历事件队列之前调用它的回调。
+因此，回调 process.nextTick 总是在 setImmediate 之前调用。
+下面代码段：
+setImmediate(() => {  console.log("first");})process.nextTick(() => {  console.log("second");})console.log("third");
+将按顺序输出：
+thirdsecondfirst
+### stub 是什么?
+测试应用程序时使用 stub，模拟给定组件或模块的行为，你可以将精力集中在要测试的代码部分。通过使用 stub 代替与测试无关的组件，不必担心外部组件会影响结果。
+例如，如果正在测试的组件在预期测试的部分之前有一个文件读取操作，则可以使用 stub 来模拟该行为并返回模拟内容，而不用实际读取文件。
+在 Node.js 中，我们使用像 Sinon 这样的库来实现（译者注，Sinon 在测试中替换某部分代码，减少测试项编写的复杂度 https://sinonjs.org）。
+
+### 为什么在 express 中分离“应用程序”和“服务器”是一种好的做法？
+通过在 Express 中分离应用程序和服务器，可以将 API 实现与网络相关配置分开。在不执行网络调用的情况下执行 API 测试，保证了更快的测试执行和更好的代码覆盖度量。
+要实现这种分离，应该在单独的文件中声明 API 和 server，对应 app.js 和 server.js：
+// app.jsconst express = require("express");const app = express();app.use("/", index);app.use("/contact", contact);app.use("/user", user);module.exports = app;// server.jsconst http = require("http");const app = require("/app");app.set('port', process.env.PORT);const http = http.createServer(app);
+
+### 什么是 yarn 和 npm？为什么要用 yarn 代替 npm 呢？
+npm 是与 Node.js 自带的默认包管理器，它有一个大型的公共库和私有库，存储在 npm registry 的数据库中（译者注，官方默认中心库 http://registry.npmjs.org/，国内淘宝镜像 http://registry.npm.taobao.org/），用户可以通过 npm 命令行访问该数据库。在 npm 的帮助下，用户可以轻松管理项目中的依赖项。
+
+yarn 也是一个包管理器，为了解决 npm 的一些缺点。yarn 依赖 npm 注册中心为用户提供对包访问。yarn 底层结构基于 npm，如果从 npm 迁移到 yarn，项目结构和工作流不需要大改。
+就像之前提到的，在某些情况下，yarn 提供了比 npm 更好的功能。与 npm 不同的是，它会缓存下载的每个包，不必重新下载。
+
+### 你了解 Node. js吗？
+Node. js是一个基于 Chrome v8引擎的服务器端 JavaScript运行环境；Node. js是一个事件驱动、非阻塞式I/O的模型，轻量而又高效；Node. js的包管理器npm是全球最大的开源库生态系统。
+### Node. js的使用场景是什么？
+高并发、实时聊天、实时消息推送、客户端逻辑强大的SPA（单页面应用程序）。
+### 为什么要用 Node. js？
+原因如下。
+（1）简单， Node. js用 JavaScript、JSON进行编码，简单好学。
+（2）功能强大，非阻塞式I/O，在较慢的网络环境中，可以分块传输数据，事件驱动，擅长高并发访问。
+（3）轻量级， Node. js本身既是代码又是服务器，前后端使用同一语言。
+（4）可扩展，可以轻松应对多实例、多服务器架构，同时有海量的第三方应用组件。
+### Node. js有哪些全局对象？
+global、 process, console、 module和 exports。
+### process有哪些常用方法？
+process.stdin、 process.stdout、 process.stderr、process.on、 process.env、 process.argv、 process.arch、process.platform、 process.exit
+### console有哪些常用方法？
+console.log/console. info、console.error/console.warning、console.time/console.timeEnd 、console.trace、console .table。
+### Node.js有哪些定时功能？
+setTimeout/clearTimeout, setInterval/clearInterval、 setImmediate/clearImmediate、 process. nextTick。
+
+### 如何应用 Node. js中的 Buffer？
+Buffer是用来处理二进制数据的，比如图片、MP3、数据库文件等。Buffer支持各种编码解码、二进制字符串互转。
+### Node. js中的异步和同步如何理解？
+Node.js是单线程的，异步是通过一次次的循环事件队列来实现的。同步则是阻塞式的IO，这在高并发环境中会是一个很大的性能问题，所以同步一般只在基础框架启动时使用，用来加载配置文件、初始化程序等。
+### 通过哪些方法可以进行异步流程的控制？
+通过以下方法可以进行异步流程的控制。
+（1）多层嵌套回调。
+（2）为每一个回调写单独的函数，函数里边再回调。
+（3）用第三方框架，如 async、q、 promise等。
+### 通过哪些常用方法可以防止程序崩溃？
+通过以下方法可以防止程序崩溃。
+（1） try-catch-finally。
+（2） EventEmitter/Stream error事件处理。
+（3） domain统一控制。
+（4） jshint静态检查。
+（5） jasmine/mocha单元测试。
+### 怎样调试 Node. js程序？
+用node-- debug app. js和 node-inspector。
+### Node .js的网络模块都有哪些？
+Node. js全面支持各种网络服务器和客户端，包括TCP、HTP/ HTTPS、TCP 、UDP、DNS、tls/ssl等。
+### Noe.js是怎样支持 HTTPS、tls的？
+主要通过以下几个步骤支持。
+（1）使用 openssl生成公钥、私钥。
+（2）服务器或客户端使用HTTPS替代HTTP。
+（3）服务器或客户端加载公钥、私钥证书。
+16、什么是 Node. js？
+Node. js是一个 JavaScript的运行环境，是一个服务器端的“ JavaScript解释器”，用于方便高效地搭建一些响应速度快、易于扩展的网络应用。它采用事件驱动、异步编程方式，为网络服务而设计。
+### Node. js的优缺点是什么？
+优点如下：
+（1） Node. js是基于事件驱动和无阻塞的，非常适合处理并发请求，因此构建在 Node. js的代理服务器相比其他技术实现的服务器要好一点。
+（2）与 Node. js代理服务器交互的客户端代码由 JavaScript语言编写，客户端与服务端都采用一种语言编写。
+缺点如下：
+（1） Node .js是一个相对新的开源项目，不太稳定，变化速度快。
+（2）不适合CPU密集型应用，如果有长时间运行的计算（比如大循环），将会导致CPU时间片不能释放，使得后续I/O无法发起。
+### npm是什么？
+npm是 Node. js中管理和分发包的工具，可用于安装、卸载、发布、查看包等。
+### npm的好处是什么？
+通过ηpm，可以安装和管理项目的依赖，还可以指明依赖项的具体版本号。
+### Node. js中导入模块和导入 JavaScript文件在写法上有什么区别？
+在 Node. js中要导入模块，直接使用名字导入即可，如下所示：
+var express = require（"express"）；
+要导入 JavaScript文件，需要使用文件的路径，如下所示：
+
+var demo = require（"./demo.js"）；
+### npm的作用是什么？
+
+npm是同 Node .js一起安装的包管理工具，能解决 Node. js代码部署上的很多问题。常见的使用场景有以下几种。
+
+（1）允许用户从npm服务器下载别人编写的第三方包到本地。
+
+（2）允许用户从npm服务器下载并安装别人编写的命令行程序到本地。
+
+（3）允许用户将自己编写的包或命令行程序上传到npm服务器供别人使用。
+
+### 什么是 EventEmitter？
+
+EventEmitter是 Node. js中一个实现观察者模式的类，主要功能是订阅和发布消息，用于解决多模块交互而产生的模块之间的耦合问题.
+
+### 如何实现一个 EventEmitter？
+
+可通过3步实现 EventEmitter定义一个子类，通过寄生组合式继承，继承 EventEmitter
+
+父类，代码如下。
+
+var Util= require('util' ); var EventEmitter= require ('events' ) .EventEmitter；function  IcktEmitter () {    EventEmitter .apply(this, arguments)}Util.inherits(IcktEmitter, EventEmitter);
+
+var ie = new IcktEmitter ( ) ;   ie.on('icketang'， function（data）{       console.log('接收到消息'，data )})ie.emit（' icketang'，'来自有课网的消息'）；
+### EventEmitter有哪些典型应用？
+
+有以下应用。
+
+（1）在模块间传递消息。
+
+（2）在回调函数内外传递消息。
+
+（3）处理流数据，因为流是在 EventEmitter的基础上实现的。
+
+（4）运用观察者模式收发消息的相关应用。
+
+### 如何捕获 EventEmitter的错误事件？
+
+当发布error消息的时候，如果没有注册该事件，应用程序会抛出错误并中断执行。所以要监听error事件，代码如下。
+
+var ie= new IcktEmitter ( ); ie .on（'error '， function（err）{ conso1e.1og ( '接收到错误的信息'，err )})ie.emit（' error'，'来自ie1的错误消息'）；
+### Node. js中的流是什么？
+
+流(Stream)是基于 EventEmitter的数据管理模式，由各种不同的抽象接口组成，主要包括可写、可读、可读写、可转换等类型。
+
+### 使用流有什么好处？
+
+流是非阻塞式数据处理模式，可以提升效率，节省内存，有助于处理管道且可扩展等。
+
+28、流有哪些典型应用？
+
+流在文件读写、网络请求、数据转换、音频、视频等方面有很广泛的应用。
+
+### 如何捕获流的错误事件？
+
+监听error事件，方法与订阅 EventEmitter的error事件相似。
+
+### 有哪些常用 Stream流？分别什么时候使用？
+
+Readable流为可读流，在作为输入数据源时使用；Writable流为可写流，在作为输岀源时使用；Duplex流为可读写流，它作为输岀源被写入，同时又作为输入源被后面的流读出。
+
+Transform流和 Duplex流一样，都是双向流，区别是 Transfrom流只需要实现一个函数 _transfrom( chunk, encoding, callback)；而 Duplex流需要分别实现_read(size )函数和_write( chunk, encoding, callback ）函数。
+
+### 如何实现一个 Writable流？
+
+实现 Writable流分成3步
+
+（1）引入 Writable模块。
+
+（2）继承 Writable模块。
+
+（3）实现 _write(chunk, encoding, callback )写入函数。
+
+代码如下。
+
+//引入 Writable模块var Writable= require（'stream'）.Writable；var Util = require（'util'）；//继承 Writable模块function IcktWritable( ) {  Writable. apply(this, arguments ) ;}Util.inherits ( IcktWritable, Writable ) ;//实现 write函数IcktWritable. prototype. _write = function ( data, encoding, callback ) {      console.log ('被写入的数据是：' ，data. toString ( ) )callback ( )}var iw= new IcktWritable ( ) ；for (var i=0；i< 5 ；i++ ) {iw. write（'有课网'+i，'utf8"）}iw,end('学技能就上有课网' )；
+### 内置的fs模块架构由哪几部分组成？
+
+fs模块主要由下面几部分组成。
+1. POSIX文件 Wrapper，对应操作系统的原生文件操作。
+1. 文件流，fs. createReadStream和 fs.createWriteStrean。
+1. 同步文件读写， fs.readFileSync和fs.writeFileSync。
+1. 异步文件读写， fs.readFile和fs.writeFile。
+
+### 读写一个文件有多少种方法？
+1. POSIX式底层读写。
+1. 流式读写。
+1. 同步文件读写。
+1. 异步文件读写。
+
+### 如何读取JSON配置文件？
+
+主要有两种方式。第一种是利用 Node. js内置的 require（ data.json！）机制，直接得到 Javascript对象；
+
+第二种是读入文件内容，然后用JSON. parse（ content）转换成 JavaScript对象。
+
+二者的区别是，对于第一种方式，如果多个模块都加载了同一个JSON文件，那么其中一个改变了 JavaScript对象，其他也跟着改变，这是由 Node.js模块的缓存机制造成的，缓存中只有一个 JavaScript模块对象；
+
+第二种方式则可以随意改变加载后的JavaScript变量，而且各模块互不影响，因为它们都是独立的，存储的是多个 JavaScript对象。
+
+### fs.watch和 fs.watchFile有什么区别？
+二者主要用来监听文件变动，fs.watch利用操作系统原生机制来监听，可能不适用网络文件系统；fs. watchFile则定期检查文件状态变更，适用于网络文件系统，但是与fs.watch相比有些慢，因为它不采用实时机制。
+
+### 为什么需要子进程？
+
+Node. js是异步非阻塞的，这对高并发非常有效。可是我们还有其他一些常用的需求，比如和操作系统 shell命令交互，调用可执行文件，创建子进程，进行阻塞式访问或高CPU计算等，子进程就是为满足这些需求而产生的。顾名思义，子进程就是把 Node. js阻塞的工作交给子进程去做。
+
+### exec、 execFile、 spawn和fork都是做什么用的？
+1. 它们的作用分别如下。
+1. exec可以用操作系统原生的方式执行各种命令，如管道 cat ab. txt |  grep hello。
+1. execFile用于执行一个文件。
+1. spawn负责在流式和操作系统之间进行交互。
+1. fork负责在两个 Node. js程序（ JavaScript）之间进行交互。
+
+### 如何实现一个简单的命令行交互程序？
+
+var cp = require (' child process )；//执行指令var child= cp .spawn（'echo', ['hello, ''] )；// child.stdout是输入流， process. stdout是输出流//子进程的输出流作为当前程序的输入流，然后重定向到当前程序的控制器输出child. stdout. pipe（process. stdout）
+
+### 两个 Node. js程序之间如何交互？
+
+通过fork实现父子程序之间的交互。子程序用 process.on、 process. send访问父程序，父程序用 child.on、 child.send访问子程序。
+
+关于 parent. JS的示例代码如下。
+
+var cp = require (' child_process' ) ; var child= cp.fork ('./child. js' );child .on（'message'， function（msg）{ console.1og（'子程序发送的数据：'，msg )})child.send ( '来自父程序发送的数据' )
+关于 child .js的示例代码如下。
+
+process .on ( 'message' , function（msg）{conso1e.1og ( '父程序发送的数据: ' , msg )process.send ( '来自子程序发送的数据' )
+### 如何让一个 JavaScript文件变得像 Linux命令一样可执行？
+
+具体步骤如下。
+
+（1）在文件头部加入#！/ bin/sh
+
+如 icketang40.js#！/bin/shecho'有课网— 技能学习就上有课网；
+（2）用 chmod命令把名为 icketang40的 JavaScript文件改为可执行文件。
+
+chmod + x  icketang40.js
+（3）进入文件目录，在命令行输入 icketang40.js就相当于执行 node icketang40.js
+
+$ ./icketang40.js
+执行结果。
+
+### 子进程和进程的 stdin、 stdout、 stderror是样的吗？
+
+概念都是一样的。stdin、 stdout、 stderror分别是输入、输出、错误。三者都是流。区别是在父进程里，子进程的 stdout是输入流， stdin是输出流。
+
+### async都有哪些常用方法？分别怎么用？
+
+async是一个 JavaScript类库，它的目的是解决 JavaScript中异常流程难以控制的问题。async不仅在 Node. js里适用，还可以用在浏览器中。其常用方法和用法如下。
+
+具体代码如下所示。
+
+var async = require（'async '）；var date = Date .now ( )；
+（1） async. parallel：并行执行完多个函数后，调用结束函数。不用等到前一个函数。执行完再执行下一个函数。
+
+async .parallel ( [     function ( callback ) {        setTimeout (function () {console. log（'process one'， Date. now ( ) - date)callback（null, 'msg one'）}，2000)}，function ( callback ){setTimeout ( function () {console. log（'process tow'， Date .now ( ) - date )callback ( null, 'msg tow' )}，1000)}]， function（err, result）{  console. log（err, result, 'done ')})
+（2） async.series：串行执行完多个函数后，调用结束函数。前面一个函数执行完之后，就会立即执行下一个函数。
+
+async .series ( [function ( callback ) {setTimeout ( function () {console. log ( 'process one ', Date. now ( ) - date )callback ( null, ' msg one'  )}，2000 )},function ( callback )  {setTimeout ( function () {console. log ( 'process tow'， Date. now ( ) - date )callback ( null, 'msg tow ' )}，1000 )   }] ， function (err, result ) {console. log（err, result, 'done'）})
+（3） async. waterfall：依次执行多个函数，前一个函数的执行结果作为后一个函数执行时的参数。
+
+async .waterfall ( [function ( callback ) {setTimeout ( function () {console. log（'process one, Date. now（）- date）callback（null, 'msg one'）}，2000）},function（argl, callback）{ setTimeout （function（）{console. log（'process tow, Date. now  ( ) - date, argl )callback（null, 'msg tow'）}，1000)}] , function（err, result）{console. log（err, result, 'done '）})
+### express项目的目录大致是什么结构的？
+
+首先，执行安装 express的指令：npm install express-generator-g。
+
+然后，通过 express指令创建项目：express icketang。
+
+创建的项目目录结构如下。
+
+./app.js  应用核心配置文件（入口文件）
+
+./bin  存放启动项目的脚本文件
+
+./ package.json  存储项目的信息及模块依赖
+
+./public 静态文件（css、js、img等）
+
+./routes 路由文件（MVC中的 contro1ler）
+
+./views 页面文件（jade模板）
+
+### express常用函数有哪些？
+1. express .Router—路由组件
+1. app.get—路由定向。
+1. app. configure——配置。
+1. app.set一设定参数。
+1. app.use——使用中间件。
+
+### express中如何获取路由的参数？
+/users/：name
+使用 req.params.name来获取；使用req.body.username来获得表单传入参数 username；express的路由支持常用通配符有？、+、*、( )。
+
+### express  response有哪些常用方法？
+1. res.download( )，弹出文件下载。
+1. res.end ( )，结束响应。
+1. res.json( )，返回json。
+1. res.jsonp( )，返回 jsonp。
+1. res.redirect ( )，重定向请求。
+1. res.render ( )，渲染模板。
+1. res.send ( )，返回多种形式数据。
+1. res.sendFile  ( )，返回文件。
+1. res.sendStatus( )，返回状态。
+
+### mongodb有哪些常用优化措施？
+1. 优化预读。
+1. 禁用NUMA。
+1. 不要记录访问时间等。
+### Redis的主要特点是什么？
+1. Redis支持数据的持久化，可以将内存中的数据保存在磁盘中，重启的时候可以再次加载和使用。
+1. Redis不仅支持简单的键-值类型的数据，同时还提供list、set、zset、hash等数据结构的存储。
+1. Redis支持数据的备份，即主-从模式的数据备份。
+### Nginx和 Apache有什么区别？
+
+1. Nginx是轻量级的，同样的Web服务在 nginx中会占用更少的内存和资源。Nginx抗并发，处理请求的方式是异步非阻塞的，负载能力比 Apache高很多，而 Apache则是阻塞型的。
+1. 在高并发下 Nginx能保持低资源、低消耗、高性能，并且处理静态文件比 Apache好。 
+1. Nginx的设计高度模块化，编写模块相对简单，配置简洁。作为负載均衡服务器，支持7层负载均衡，是一个反向代理服务器。
+1. 社区活跃，各种高性能模块出品迅速。Apache的 rewrite比 Nginx强大，模块丰富。Apache发展得更为成熟，Bug很少,更加稳定。
+1. Apache对PHP的支持比较简单， Nginx需要配合其他后端使用。Apache处理动态请求有优势，拥有丰富的特性、成熟的技术和开发社区。
+
+
+### 你知道哪些 Node.js核心模块？
+EventEmitter 、Stream、FS、Net和全局对象等。
+
+### 说说 MySQL和 MongoDB的区别。
+1.  MySQL是传统的关系型数据库， MongoDB则是非关系型数据库。
+1. MongoDB以BSON结构进行存储，在存储海量数据方面有着很明显的优势。
+1. 与传统关系型数据库相比， NoSQL有着非常显著的性能和扩展性优势。
+1. 与传统的关系型数据库（如与 MySQL）相比， MongoDB的优点如下。
+1. 弱一致性（最终一致），更能保证用户的访问速度。
+1. 使用文档结构的存储方式，能够更便捷地获取数据。
+
+### 谈谈栈和堆的区别。
+1. 栈（ stack）区由编译器自动分配和释放，存放函数的参数值、局部变量的值等。
+1. 堆（heap）区一般由程序员分配和释放，若程序员不释放，程序结束时可能由OS回收。
+1. 堆（数据结构）可以被看成一棵树，如堆排序。栈（数据结构）是一种先进后出的数据结构。
 

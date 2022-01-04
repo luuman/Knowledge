@@ -433,54 +433,135 @@ set thePath to alias "Macintosh HD:Users:luuman:Downloads:Book:JavaScript高级�
 
 
 
-
+```applescript
+```
 # 系统操作
 ## 应用操作
 ### 应用选择
+```applescript
 tell application "Google Chrome"
-    <コマンド>
+  <操作代码>>
 end tell
+```
+
 
 ### 启动程序
+```applescript
 tell application "Google Chrome"
-    activate
+  activate
 end tell
+```
 
 ### 退出申请
-quit 退出应用程序
-
+```applescript
 tell application "Google Chrome"
-    quit
+  quit
 end tell
+```
+### 应用命令
+
+#### 打开文件夹
+```applescript
+-- 打开文件夹
+tell application "Finder"
+  open folder "Macintosh HD:Users:taro:Desktop"
+end tell
+```
+
+## 选择系统事件
+如果您在警报中选择允许，迁移将正常运行。
+如果仍然出现错误，请在“系统偏好设置”中选择“安全和隐私”并在“辅助功能”中添加该应用程序以解决它。
+
+```applescript
+tell application "System Events"
+  <操作代码>>
+end tell
+```
+
+```applescript
+tell application "System Events"
+  tell process "Finder"
+    -- do something with the GUI
+  end tell
+end tell
+```
+
+```applescript
+tell application "Finder"
+  tell application "System Events"
+    -- do something with the GUI
+  end tell
+end tell
+```
 
 ### 按键输入
-tell application "System Events"您可以使用keystroke或key code命令选择系统事件并控制键输入
-
-如果要输入特殊键（例如空格键），key code请使用该命令。
-
+```applescript
+# 您可以使用keystroke或key code命令选择系统事件并控制键输入
 tell application "System Events"
-    -- スペースキー入力
-    key code 49
+```
+
+> 输入特殊键
+
+```applescript
+tell application "System Events"
+  -- 输入空格键
+  key code 49
 end tell
 
--- コマンドキーを押しながらc（コピー）
+-- command + C
 keystroke "c" using command down
--- コントロールキー、シフトキーを押しながらスペース
+-- control + shift + 空格
 key code 49 using {control down, shift down}
+```
 
-打开 Finder 并打开新选项卡（输入“command + T”）的脚本如下。
 
+> 打开 Finder 并打开新选项卡（输入“command + T”）的脚本如下。
+
+```applescript
 tell application "Finder"
-    activate
-    tell application "System Events"
-        keystroke "t" using command down
-    end tell
+  activate
+  tell application "System Events"
+    keystroke "t" using command down
+  end tell
 end tell
-
-## Code
+```
 ### key codes
 <svg id="s" viewBox="0 0 800 498"><g fill="#222"><rect x="132.9" y="339.3" width="40.1" height="40.1" rx="2.5" fill="#222"></rect><rect x="186.8" y="339.4" width="40.1" height="40.1" rx="2.5"></rect><rect x="240.6" y="339.4" width="40.1" height="40.1" rx="2.5"></rect><rect x="294.5" y="339.4" width="40.1" height="40.1" rx="2.5"></rect><rect x="348.4" y="339.4" width="40.1" height="40.1" rx="2.5"></rect><rect x="402.3" y="339.4" width="40.1" height="40.1" rx="2.5"></rect><rect x="456.2" y="339.4" width="40.1" height="40.1" rx="2.5"></rect><rect x="510" y="339.4" width="40.1" height="40.1" rx="2.5"></rect><rect x="563.9" y="339.4" width="40.1" height="40.1" rx="2.5"></rect><rect x="617.8" y="339.4" width="40.1" height="40.1" rx="2.5"></rect><rect x="3.8" y="339.4" width="115.3" height="40.1" rx="2.5"></rect><rect x="671.7" y="339.4" width="115.3" height="40.1" rx="2.5"></rect><rect x="313.4" y="39.9" width="40.3" height="35.2" rx="2.5"></rect><rect x="375.3" y="39.9" width="40.3" height="35.2" rx="2.5"></rect><rect x="437.2" y="39.9" width="40.3" height="35.2" rx="2.5"></rect><rect x="499.1" y="39.9" width="40.3" height="35.2" rx="2.5"></rect><rect x="561" y="39.9" width="40.3" height="35.2" rx="2.5"></rect><rect x="623" y="39.9" width="40.3" height="35.2" rx="2.5"></rect><rect x="684.9" y="39.9" width="40.3" height="35.2" rx="2.5"></rect><rect x="746.8" y="39.9" width="40.3" height="35.2" rx="2.5"></rect><rect x="65.7" y="39.9" width="40.3" height="35.2" rx="2.5"></rect></g><g fill="#222"><rect x="127.6" y="39.9" width="40.3" height="35.2" rx="2.5" fill="#222"></rect><rect x="189.5" y="39.9" width="40.3" height="35.2" rx="2.5"></rect><rect x="202.4" y="46.6" width="6.5" height="5.2" rx="0" stroke="#fff" stroke-width=".5"></rect><rect x="211" y="45.3" width="5.9" height="6.4" rx="0" stroke="#fff" stroke-width=".5"></rect></g><g fill="#222"><rect x="251.4" y="39.9" width="40.3" height="35.2" rx="2.5"></rect><g stroke="#fff" stroke-linecap="square" stroke-width=".5"><rect x="263.8" y="44.7" width="2.8" height="2.8"></rect><rect x="268" y="44.7" width="2.8" height="2.8"></rect><rect x="272.3" y="44.7" width="2.8" height="2.8"></rect><rect x="276.5" y="44.7" width="2.8" height="2.8"></rect><rect x="263.8" y="49" width="2.8" height="2.8"></rect><rect x="268" y="49" width="2.8" height="2.8"></rect><rect x="272.3" y="49" width="2.8" height="2.8"></rect><rect x="276.5" y="49" width="2.8" height="2.8"></rect></g></g><g fill="none" stroke="#222" stroke-width=".5"><rect x="63.2" y="4.7" width="45.3" height="73" rx="2.5"></rect><g stroke="#fff"><circle cx="85.8" cy="48.8" r="1.7"></circle><path d="m85.8 46.1v-.5"></path><path d="m85.8 51.95v-.5"></path><path d="m88.97 48.8h-.5"></path><path d="m83.16 48.78h-.5"></path><path d="m83.9 46.9-.37-.4"></path><path d="m88 51-.37-.37"></path><path d="m88 46.5-.374.4"></path><path d="m83.9 50.65-.374.37"></path><path d="m147.7 54.4v-1.4"></path><circle cx="147.7" cy="50" r="2.3"></circle><path d="m147.7 46.86v-1.4"></path><path d="m152.2 49.96h-1.4"></path><path d="m144.6 49.96h-1.4"></path><path d="m145.5 47.77-.98-1"></path><path d="m150.88 53.1-1-1"></path><path d="m150.88 46.8-.98.98"></path><path d="m145.5 52.1-.98.98"></path></g><rect x="125" y="4.7" width="45.3" height="73" rx="2.5"></rect><rect x="187" y="4.7" width="45.3" height="73" rx="2.5"></rect><rect x="248.9" y="4.7" width="45.3" height="73" rx="2.5"></rect><rect x="130.4" y="316.8" width="45.1" height="65.2" rx="2.5"></rect><rect x="184.2" y="316.8" width="45.1" height="65.2" rx="2.5"></rect><rect x="238.1" y="316.8" width="45.1" height="65.2" rx="2.5"></rect><rect x="292" y="316.8" width="45.1" height="65.2" rx="2.5"></rect><rect x="345.9" y="316.8" width="45.1" height="65.2" rx="2.5"></rect><rect x="399.8" y="316.8" width="45.1" height="65.2" rx="2.5"></rect><rect x="453.7" y="316.8" width="45.1" height="65.2" rx="2.5"></rect><rect x="507.6" y="316.8" width="45.1" height="65.2" rx="2.5"></rect><rect x="561.4" y="316.8" width="45.1" height="65.2" rx="2.5"></rect><rect x="615.3" y="316.8" width="45.1" height="65.2" rx="2.5"></rect><rect x="1.3" y="316.8" width="120.4" height="65.2" rx="2.5"></rect><rect x="669.2" y="316.8" width="120.4" height="65.2" rx="2.5"></rect><rect x="310.8" y="17.3" width="45.3" height="60.4" rx="2.5"></rect><rect x="372.8" y="17.3" width="45.3" height="60.4" rx="2.5"></rect><rect x="434.7" y="17.3" width="45.3" height="60.4" rx="2.5"></rect><rect x="496.6" y="17.3" width="45.3" height="60.4" rx="2.5"></rect><rect x="558.5" y="17.3" width="45.3" height="60.4" rx="2.5"></rect><rect x="620.4" y="17.3" width="45.3" height="60.4" rx="2.5"></rect><rect x="682.4" y="17.3" width="45.3" height="60.4" rx="2.5"></rect><rect x="744.3" y="17.3" width="45.3" height="60.4" rx="2.5"></rect><rect x="1.3" y="17.3" width="45.3" height="60.4" rx="2.5"></rect><rect x="1.3" y="88.8" width="45.1" height="65.2" rx="2.5"></rect><rect x="55.3" y="88.6" width="45.1" height="65.2" rx="2.5"></rect><rect x="109.4" y="88.6" width="45.1" height="65.2" rx="2.5"></rect><rect x="163.5" y="88.6" width="45.1" height="65.2" rx="2.5"></rect><rect x="217.5" y="88.6" width="45.1" height="65.2" rx="2.5"></rect><rect x="271.6" y="88.6" width="45.1" height="65.2" rx="2.5"></rect><rect x="325.7" y="88.4" width="45.2" height="65.3" rx="2.5"></rect><rect x="379.9" y="88.6" width="45.1" height="65.2" rx="2.5"></rect><rect x="433.9" y="88.6" width="45.1" height="65.2" rx="2.5"></rect><rect x="488" y="88.6" width="45.1" height="65.2" rx="2.5"></rect><rect x="542" y="88.6" width="45.1" height="65.2" rx="2.5"></rect><rect x="596.2" y="88.9" width="45.1" height="65.2" rx="2.5"></rect><rect x="650.2" y="88.9" width="45.1" height="65.2" rx="2.5"></rect><rect x="704.3" y="88.9" width="85.3" height="65.2" rx="2.5"></rect><rect x="95.5" y="164.8" width="45.1" height="65.2" rx="2.5"></rect><rect x="149.5" y="164.8" width="45.1" height="65.2" rx="2.5"></rect><rect x="203.6" y="164.8" width="45.1" height="65.2" rx="2.5"></rect><rect x="257.7" y="164.8" width="45.1" height="65.2" rx="2.5"></rect><rect x="311.8" y="164.8" width="45.1" height="65.2" rx="2.5"></rect><rect x="365.9" y="164.8" width="45.1" height="65.2" rx="2.5"></rect><rect x="419.9" y="164.8" width="45.1" height="65.2" rx="2.5"></rect><rect x="474" y="164.8" width="45.1" height="65.2" rx="2.5"></rect><rect x="528.1" y="164.8" width="45.1" height="65.2" rx="2.5"></rect><rect x="582.2" y="164.8" width="45.1" height="65.2" rx="2.5"></rect><rect x="636.3" y="164.8" width="45.1" height="65.2" rx="2.5"></rect><rect x="690.3" y="164.8" width="45.1" height="65.2" rx="2.5"></rect><rect x="744.4" y="164.8" width="45.1" height="65.2" rx="2.5"></rect><rect x="1.3" y="164.8" width="85.3" height="65.2" rx="2.5"></rect><rect x="1.2" y="392.8" width="41.8" height="60.4" rx="2.3"></rect><rect x="51" y="392.8" width="65.2" height="65.2" rx="2.5"></rect><rect x="124.3" y="392.8" width="65.2" height="65.2" rx="2.5"></rect><rect x="197.6" y="392.8" width="85.3" height="65.2" rx="2.5"></rect><rect x="587.8" y="392.8" width="65.2" height="65.2" rx="2.5"></rect><rect x="494.5" y="392.8" width="85.3" height="65.2" rx="2.5"></rect><rect x="290.9" y="392.8" width="195.6" height="65.2" rx="2.5"></rect><rect x="107.1" y="240.8" width="45.1" height="65.2" rx="2.5"></rect><rect x="160.4" y="240.8" width="45.1" height="65.2" rx="2.5"></rect><rect x="213.6" y="240.8" width="45.1" height="65.2" rx="2.5"></rect><rect x="266.9" y="240.8" width="45.1" height="65.2" rx="2.5"></rect><rect x="320" y="240.8" width="45.1" height="65.2" rx="2.5"></rect><rect x="373.3" y="240.8" width="45.1" height="65.2" rx="2.5"></rect><rect x="426.6" y="240.8" width="45.1" height="65.2" rx="2.5"></rect><rect x="479.8" y="240.8" width="45.1" height="65.2" rx="2.5"></rect><rect x="533" y="240.8" width="45.1" height="65.2" rx="2.5"></rect><rect x="586.3" y="240.8" width="45.1" height="65.2" rx="2.5"></rect><rect x="639.5" y="240.8" width="45.1" height="65.2" rx="2.5"></rect><path d="m3.758 240.8h92.773c1.389 0 2.5 1.1 2.5 2.5v60.177c0 1.389-1.1 2.5-2.5 2.5h-92.773c-1.389 0-2.5-1.1-2.5-2.5v-60.177c0-1.389 1.1-2.5 2.5-2.5z"></path><rect x="692.7" y="240.8" width="96.8" height="65" rx="2.5"></rect><rect x="707.8" y="386.7" width="44.3" height="54" rx="2.5"></rect><rect x="707.8" y="443.2" width="44.3" height="54" rx="2.5"></rect><rect x="661" y="403.9" width="44.3" height="54" rx="2.5"></rect><rect x="754.5" y="403.9" width="44.3" height="54" rx="2.5"></rect></g><g fill="#222"><rect x="696" y="263.5" width="89.4" height="38.9" rx="2.4"></rect><rect x="709.7" y="409" width="39.3" height="29.5" rx="2.6"></rect><rect x="709.7" y="446.2" width="39.3" height="29.5" rx="2.4"></rect><rect x="756.4" y="426.5" width="39.3" height="29.5" rx="2.4"></rect><rect x="663" y="426.5" width="39.3" height="29.5" rx="2.4"></rect><rect x="3.8" y="39.9" width="40.1" height="35.2" rx="2.4"></rect><rect x="3.8" y="111.3" width="40.1" height="40.1" rx="2.5"></rect><rect x="57.8" y="111.2" width="40.1" height="40.1" rx="2.5"></rect><rect x="111.9" y="111.2" width="40.1" height="40.1" rx="2.5"></rect><rect x="166" y="111.2" width="40.1" height="40.1" rx="2.5"></rect><rect x="220" y="111.2" width="40.1" height="40.1" rx="2.5"></rect><rect x="274.1" y="111.2" width="40.1" height="40.1" rx="2.5"></rect><rect x="328.2" y="111.5" width="40.2" height="40.2" rx="2.5"></rect><rect x="382.4" y="111.2" width="40.1" height="40.1" rx="2.5"></rect><rect x="436.5" y="111.2" width="40.1" height="40.1" rx="2.5"></rect><rect x="490.5" y="111.2" width="40.1" height="40.1" rx="2.5"></rect><rect x="544.6" y="111.2" width="40.1" height="40.1" rx="2.5"></rect><rect x="598.7" y="111.4" width="40.1" height="40.1" rx="2.5"></rect><rect x="652.7" y="111.4" width="40.1" height="40.1" rx="2.5"></rect><rect x="706.8" y="111.4" width="80.2" height="40.1" rx="2.5"></rect><rect x="98" y="187.4" width="40.1" height="40.1" rx="2.5"></rect><rect x="152" y="187.4" width="40.1" height="40.1" rx="2.5"></rect><rect x="206.1" y="187.4" width="40.1" height="40.1" rx="2.5"></rect><rect x="260.2" y="187.4" width="40.1" height="40.1" rx="2.5"></rect><rect x="314.3" y="187.4" width="40.1" height="40.1" rx="2.5"></rect><rect x="368.4" y="187.4" width="40.1" height="40.1" rx="2.5"></rect><rect x="422.4" y="187.4" width="40.1" height="40.1" rx="2.5"></rect><rect x="476.5" y="187.4" width="40.1" height="40.1" rx="2.5"></rect><rect x="530.6" y="187.4" width="40.1" height="40.1" rx="2.5"></rect><rect x="584.7" y="187.4" width="40.1" height="40.1" rx="2.5"></rect><rect x="638.8" y="187.4" width="40.1" height="40.1" rx="2.5"></rect><rect x="692.9" y="187.4" width="40.1" height="40.1" rx="2.5"></rect><rect x="746.9" y="187.4" width="40" height="40" rx="2.4"></rect><rect x="3.8" y="187.4" width="80.2" height="40.1" rx="2.5"></rect><rect x="3.6" y="413.7" width="37.2" height="37.2" rx="2.3"></rect><rect x="53.6" y="415.3" width="60.2" height="40.1" rx="2.5"></rect><rect x="126.8" y="415.3" width="60.2" height="40.1" rx="2.5"></rect><rect x="200" y="415.3" width="80.2" height="40.1" rx="2.5"></rect><rect x="590.3" y="415.3" width="60.2" height="40.1" rx="2.5"></rect><rect x="497" y="415.3" width="80.2" height="40.1" rx="2.5"></rect><rect x="293.4" y="415.3" width="190.6" height="40.1" rx="2.5"></rect><rect x="109.7" y="263.4" width="40.1" height="40.1" rx="2.5"></rect><rect x="162.9" y="263.4" width="40.1" height="40.1" rx="2.5"></rect><rect x="216.1" y="263.4" width="40.1" height="40.1" rx="2.5"></rect><rect x="269.4" y="263.4" width="40.1" height="40.1" rx="2.5"></rect><rect x="322.6" y="263.4" width="40.1" height="40.1" rx="2.5"></rect><rect x="375.8" y="263.4" width="40.1" height="40.1" rx="2.5"></rect><rect x="429" y="263.4" width="40.1" height="40.1" rx="2.5"></rect><rect x="482.3" y="263.4" width="40.1" height="40.1" rx="2.5"></rect><rect x="535.5" y="263.4" width="40.1" height="40.1" rx="2.5"></rect><rect x="588.8" y="263.4" width="40.1" height="40.1" rx="2.5"></rect><rect x="642" y="263.4" width="40.1" height="40.1" rx="2.5"></rect><rect x="3.8" y="263.4" width="92.3" height="40.1" rx="2.5"></rect><rect x="696.8" y="262.8" width="89.4" height="38.9" rx="2.4"></rect><rect x="710.2" y="408.5" width="39.3" height="29.5" rx="2.6"></rect><rect x="710.2" y="445.6" width="39.3" height="29.5" rx="2.4"></rect><rect x="756.95" y="425.99" width="39.3" height="29.5" rx="2.4"></rect><rect x="663.5" y="426" width="39.3" height="29.5" rx="2.4"></rect></g><g fill="#fff"><path d="m734.15 427.9-4.2-9.2948-4.2 9.3"></path><path d="m734.15 455.7-4.2 9.2948-4.2-9.3"></path><path d="m771.66 436.76 9.9 3.98-9.9 3.98"></path><path d="m688.1 444.7-9.9-3.98 9.9-3.98"></path></g><g font-size="3.6px"><text x="3.9" y="26.5"><tspan x="3.9" y="26.5">key code</tspan></text><text x="65.9" y="14.5"><tspan x="65.9" y="14.5">key code</tspan></text><text x="65.8" y="26.8"><tspan x="65.8" y="26.8">key code</tspan></text><text x="127.8" y="26.5"><tspan x="127.8" y="26.5">key code</tspan></text><text x="127.8" y="14.5"><tspan x="127.8" y="14.5">key code</tspan></text><text x="189.7" y="14.5"><tspan x="189.7" y="14.5">key code</tspan></text><text x="189.7" y="26.5"><tspan x="189.7" y="26.5">key code</tspan></text><text x="251.6" y="26.5"><tspan x="251.6" y="26.5">key code</tspan></text><text x="252.5" y="14.5"><tspan x="252.5" y="14.5">key code</tspan></text><text x="313.5" y="26.5"><tspan x="313.5" y="26.5">key code</tspan></text><text x="375.4" y="26.5"><tspan x="375.4" y="26.5">key code</tspan></text><text x="437.4" y="26.5"><tspan x="437.4" y="26.5">key code</tspan></text><text x="499.3" y="26.5"><tspan x="499.3" y="26.5">key code</tspan></text><text x="562.1" y="26.5"><tspan x="562.1" y="26.5">key code</tspan></text><text x="623.2" y="26.5"><tspan x="623.2" y="26.5">key code</tspan></text><text x="685" y="26.5"><tspan x="685" y="26.5">key code</tspan></text><text x="747.9" y="26.7"><tspan x="747.9" y="26.7">key code</tspan></text><text x="727.9" y="98.1"><tspan x="727.9" y="98.1">key code</tspan></text><text x="652.9" y="98.3"><tspan x="652.9" y="98.3">key code</tspan></text><text x="598.8" y="98.3"><tspan x="598.8" y="98.3">key code</tspan></text><text x="544.8" y="97.8"><tspan x="544.8" y="97.8">key code</tspan></text><text x="490.7" y="97.8"><tspan x="490.7" y="97.8">key code</tspan></text><text x="436.6" y="97.8"><tspan x="436.6" y="97.8">key code</tspan></text><text x="382.5" y="97.8"><tspan x="382.5" y="97.8">key code</tspan></text><text x="328.4" y="97.9"><tspan x="328.4" y="97.9">key code</tspan></text><text x="274.3" y="97.8"><tspan x="274.3" y="97.8">key code</tspan></text><text x="221.1" y="98"><tspan x="221.1" y="98">key code</tspan></text><text x="166.2" y="97.8"><tspan x="166.2" y="97.8">key code</tspan></text><text x="112.1" y="97.8"><tspan x="112.1" y="97.8">key code</tspan></text><text x="58" y="97.8"><tspan x="58" y="97.8">key code</tspan></text><text x="3.9" y="98"><tspan x="3.9" y="98">key code</tspan></text><text x="24" y="174"><tspan x="24" y="174">key code</tspan></text><text x="98.1" y="174.3"><tspan x="98.1" y="174.3">key code</tspan></text><text x="152.2" y="174"><tspan x="152.2" y="174">key code</tspan></text><text x="206.3" y="174.3"><tspan x="206.3" y="174.3">key code</tspan></text><text x="260.4" y="174"><tspan x="260.5" y="174">key code</tspan></text><text x="314.4" y="174.3"><tspan x="314.4" y="174.3">key code</tspan></text><text x="368.5" y="174"><tspan x="368.5" y="174">key code</tspan></text><text x="422.6" y="174"><tspan x="422.6" y="174">key code</tspan></text><text x="476.7" y="174"><tspan x="476.7" y="174">key code</tspan></text><text x="531.7" y="174"><tspan x="531.7" y="174">key code</tspan></text><text x="584.9" y="174"><tspan x="584.9" y="174">key code</tspan></text><text x="639" y="174"><tspan x="639" y="174">key code</tspan></text><text x="693" y="174"><tspan x="693" y="174">key code</tspan></text><text x="747" y="174.3"><tspan x="747" y="174.3">key code</tspan></text><text x="747.7" y="250.2"><tspan x="747.7" y="250.2">key code</tspan></text><text x="698.7" y="250.2"><tspan x="698.7" y="250.2">key code</tspan></text><text x="642.2" y="250"><tspan x="642.2" y="250">key code</tspan></text><text x="589.9" y="250.2"><tspan x="589.9" y="250.2">key code</tspan></text><text x="535.7" y="250"><tspan x="535.7" y="250">key code</tspan></text><text x="482.5" y="250"><tspan x="482.5" y="250">key code</tspan></text><text x="429.3" y="250"><tspan x="429.3" y="250">key code</tspan></text><text x="376" y="250.2"><tspan x="376" y="250.2">key code</tspan></text><text x="322.8" y="250"><tspan x="322.8" y="250">key code</tspan></text><text x="269.6" y="250"><tspan x="269.6" y="250">key code</tspan></text><text x="216.3" y="250.2"><tspan x="216.3" y="250.2">key code</tspan></text><text x="164" y="250.2"><tspan x="164" y="250.2">key code</tspan></text><text x="109.8" y="250"><tspan x="109.8" y="250">key code</tspan></text><text x="30" y="250"><tspan x="30" y="250">key code</tspan></text><text x="41.5" y="326"><tspan x="41.5" y="326">key code</tspan></text><text x="133" y="326"><tspan x="133" y="326">key code</tspan></text><text x="186.9" y="326.2"><tspan x="186.9" y="326.2">key code</tspan></text><text x="240.8" y="326"><tspan x="240.8" y="326">key code</tspan></text><text x="294.7" y="326"><tspan x="294.7" y="326">key code</tspan></text><text x="349.5" y="326.2"><tspan x="349.5" y="326.2">key code</tspan></text><text x="402.5" y="326"><tspan x="402.5" y="326">key code</tspan></text><text x="456.3" y="326"><tspan x="456.3" y="326">key code</tspan></text><text x="510.2" y="326"><tspan x="510.2" y="326">key code</tspan></text><text x="564" y="326.2"><tspan x="564" y="326.2">key code</tspan></text><text x="618" y="326.2"><tspan x="618" y="326.2">key code</tspan></text><text x="709.5" y="326"><tspan x="709.5" y="326">key code</tspan></text><text x="710.4" y="395.8"><tspan x="710.4" y="395.8">key code</tspan></text><text x="663.7" y="413"><tspan x="663.7" y="413">key code</tspan></text><text x="757" y="413"><tspan x="757" y="413">key code</tspan></text><text x="710.4" y="489.2"><tspan x="710.4" y="489.2">key codes</tspan></text><text x="601.4" y="402"><tspan x="601.4" y="402">key code</tspan></text><text x="517.3" y="402"><tspan x="517.3" y="402">key code</tspan></text><text x="368.8" y="402"><tspan x="368.8" y="402">key code</tspan></text><text x="220.3" y="402"><tspan x="220.3" y="402">key code</tspan></text><text x="137" y="402"><tspan x="137" y="402">key code</tspan></text><text x="63.8" y="402"><tspan x="63.8" y="402">key code</tspan></text><text x="3.7" y="401.5"><tspan x="3.7" y="401.5">key code</tspan></text></g><g fill="#fff" font-family="sans-serif"><g font-size="14.6px" text-anchor="middle"><text x="23.9" y="66.9"><tspan x="23.9" y="66.9" font-size="13.2px" text-align="center">esc</tspan></text><text x="85.8" y="69.1"><tspan x="85.8" y="69.1" text-align="center">F1</tspan></text><text x="147.7" y="69.1"><tspan x="147.7" y="69.1" text-align="center">F2</tspan></text><text x="209.5" y="69.1"><tspan x="209.5" y="69.1" text-align="center">F3</tspan></text><text x="271.3" y="69.1"><tspan x="271.3" y="69.1" text-align="center">F4</tspan></text><text x="333.4" y="69.1"><tspan x="333.4" y="69.1" text-align="center">F5</tspan></text><text x="395.1" y="69.1"><tspan x="395.1" y="69.1" text-align="center">F6</tspan></text><text x="457.2" y="69.1"><tspan x="457.2" y="69.1" text-align="center">F7</tspan></text><text x="519" y="69.1"><tspan x="519" y="69.1" text-align="center">F8</tspan></text><text x="581" y="69.1"><tspan x="581" y="69.1" text-align="center">F9</tspan></text><text x="642.8" y="69.1"><tspan x="642.8" y="69.1" text-align="center">F10</tspan></text><text x="705" y="69.1"><tspan x="705" y="69.1" text-align="center">F11</tspan></text><text x="766.9" y="69.1"><tspan x="766.9" y="69.1" text-align="center">F12</tspan></text><text x="23.8" y="128.7"><tspan x="23.8" y="128.7" text-align="center">~</tspan><tspan x="23.8" y="147" text-align="center">`</tspan></text><text x="77.8" y="127.6"><tspan x="77.8" y="127.6" text-align="center">!</tspan><tspan x="77.8" y="145.9" text-align="center">1</tspan></text><text x="132" y="127.6"><tspan x="132" y="127.6" text-align="center">@</tspan><tspan x="132" y="145.9" text-align="center">2</tspan></text><text x="186" y="127.6"><tspan x="186" y="127.6" text-align="center">#</tspan><tspan x="186" y="145.9" text-align="center">3</tspan></text><text x="240.2" y="127.6"><tspan x="240.2" y="127.6" text-align="center">$</tspan><tspan x="240.2" y="145.9" text-align="center">4</tspan></text><text x="294.2" y="127.6"><tspan x="294.2" y="127.6" text-align="center">%</tspan><tspan x="294.2" y="145.9" text-align="center">5</tspan></text><text x="348.3" y="127.6"><tspan x="348.3" y="127.6" text-align="center">^</tspan><tspan x="348.3" y="145.9" text-align="center">6</tspan></text><text x="402.2" y="127.6"><tspan x="402.2" y="127.6" text-align="center">&amp;</tspan><tspan x="402.2" y="145.9" text-align="center">7</tspan></text><text x="456.5" y="127.6"><tspan x="456.5" y="127.6" text-align="center">*</tspan><tspan x="456.5" y="145.9" text-align="center">8</tspan></text><text x="510.6" y="127.6"><tspan x="510.6" y="127.6" text-align="center">(</tspan><tspan x="510.6" y="145.9" text-align="center">9</tspan></text><text x="564.7" y="127.6"><tspan x="564.7" y="127.6" text-align="center">)</tspan><tspan x="564.7" y="145.9" text-align="center">0</tspan></text><text x="618.7" y="123.2"><tspan x="618.7" y="123.2" text-align="center">_</tspan><tspan x="618.7" y="141.6" text-align="center">-</tspan></text><text x="672.8" y="127"><tspan x="672.8" y="127" text-align="center">+</tspan><tspan x="672.8" y="145.3" text-align="center">=</tspan></text></g><text x="777" y="144" font-size="3.6px"><tspan x="777" y="144" fill="#fff" font-size="13.2px" text-align="end" text-anchor="end">delete</tspan></text><g text-anchor="middle"><text x="766.9" y="202.3" font-size="14.6px"><tspan x="766.9" y="202.3" text-align="center">|</tspan><tspan x="766.9" y="220.6" text-align="center">\</tspan></text><text x="712.9" y="202.9" font-size="13.2px"><tspan x="712.9" y="202.9" text-align="center">}</tspan><tspan x="712.9" y="219.6" text-align="center">]</tspan></text><text x="658.8" y="202.9" font-size="13.2px"><tspan x="658.8" y="202.9" text-align="center">{</tspan><tspan x="658.8" y="219.6" text-align="center">[</tspan></text></g><g font-size="3.6px" fill="#fff"><text x="604.2" y="213.5"><tspan x="604.2" y="213.5" font-size="16.7px" text-align="center" text-anchor="middle">P</tspan></text><text x="550.7" y="213.5"><tspan x="550.7" y="213.5" font-size="16.7px" text-align="center" text-anchor="middle">O</tspan></text><text x="496.6" y="213.5"><tspan x="496.6" y="213.5" font-size="16.7px" text-align="center" text-anchor="middle">I</tspan></text><text x="442.5" y="213.4"><tspan x="442.5" y="213.4" font-size="16.7px" text-align="center" text-anchor="middle">U</tspan></text><text x="388.4" y="213.5"><tspan x="388.4" y="213.5" font-size="16.7px" text-align="center" text-anchor="middle">Y</tspan></text><text x="334.3" y="213.5"><tspan x="334.3" y="213.5" font-size="16.7px" text-align="center" text-anchor="middle">T</tspan></text><text x="279.7" y="213.5"><tspan x="279.7" y="213.5" font-size="16.7px" text-align="center" text-anchor="middle">R</tspan></text><text x="225.9" y="213.5"><tspan x="225.9" y="213.5" font-size="16.7px" text-align="center" text-anchor="middle">E</tspan></text><text x="172" y="213.5"><tspan x="172" y="213.5" font-size="16.7px" text-align="center" text-anchor="middle">W</tspan></text><text x="118" y="212.6"><tspan x="118" y="212.6" font-size="16.7px" text-align="center" text-anchor="middle">Q</tspan></text><text x="11.9" y="297.4"><tspan x="11.9" y="297.4" font-size="13.2px">caps lock</tspan></text><text x="12.7" y="220"><tspan x="12.7" y="220" font-size="13.2px">tab</tspan></text><text x="13.8" y="371.7"><tspan x="13.8" y="371.7" font-size="13.2px">shift</tspan></text><text x="10.1" y="445.3"><tspan x="10.1" y="445.3" font-size="13.2px">fn</tspan></text><text x="83.9" y="449.1"><tspan x="83.9" y="449.1" font-size="13.2px" text-align="center" text-anchor="middle">control</tspan></text><text x="157.1" y="449.1"><tspan x="157.1" y="449.1" font-size="13.2px" text-align="center" text-anchor="middle">option</tspan></text><text x="240.4" y="449.1"><tspan x="240.4" y="449.1" font-size="13.2px" text-align="center" text-anchor="middle">command</tspan></text><text x="537.4" y="449.1"><tspan x="537.4" y="449.1" font-size="13.2px" text-align="center" text-anchor="middle">command</tspan></text><text x="620.6" y="449.1"><tspan x="620.6" y="449.1" font-size="13.2px" text-align="center" text-anchor="middle">option</tspan></text></g></g><text x="44.2" y="29.7" fill="#000" font-size="3.6px"><tspan x="44.2" y="29.7" font-size="10.7px" stroke-width=".2" text-align="end" text-anchor="end">53</tspan></text><g fill="#fff" font-family="sans-serif"><text x="776.5" y="275.5" font-size="3.6px"><tspan x="776.5" y="275.5" font-size="10.7px" text-align="end" text-anchor="end">enter</tspan></text><text x="776.5" y="294.1" font-size="12px"><tspan x="776.5" y="294.1" font-size="12px" text-align="end" text-anchor="end">return</tspan></text><text x="777" y="371.6" font-size="12px"><tspan x="777" y="371.6" font-size="13.2px" text-align="end" text-anchor="end">shift</tspan></text><g font-size="3.6px"><text x="129.7" y="289.5"><tspan x="129.7" y="289.5" font-size="16.7px" text-align="center" text-anchor="middle">A</tspan></text><text x="182.9" y="289.5"><tspan x="182.9" y="289.5" font-size="16.7px" text-align="center" text-anchor="middle">S</tspan></text><text x="235.9" y="289.5"><tspan x="235.9" y="289.5" font-size="16.7px" text-align="center" text-anchor="middle">D</tspan></text><text x="289" y="289.5"><tspan x="289" y="289.5" font-size="16.7px" text-align="center" text-anchor="middle">F</tspan></text><text x="342.9" y="289.5"><tspan x="342.9" y="289.5" font-size="16.7px" text-align="center" text-anchor="middle">G</tspan></text><text x="395.9" y="289.5"><tspan x="395.9" y="289.5" font-size="16.7px" text-align="center" text-anchor="middle">H</tspan></text><text x="450.4" y="287.8"><tspan x="450.4" y="287.8" font-size="16.7px" text-align="center" text-anchor="middle">J</tspan></text><text x="501.4" y="289.5"><tspan x="501.4" y="289.5" font-size="16.7px" text-align="center" text-anchor="middle">K</tspan></text><text x="554.8" y="289.5"><tspan x="554.8" y="289.5" font-size="16.7px" text-align="center" text-anchor="middle">L</tspan></text></g><g font-size="13.2px" text-anchor="middle"><text x="609" y="277.8"><tspan x="609" y="277.8" text-align="center">:</tspan><tspan x="609" y="294.4" text-align="center">;</tspan></text><text x="662" y="283"><tspan x="662" y="283" text-align="center">"</tspan><tspan x="662" y="299.7" text-align="center">'</tspan></text><text x="637.9" y="355.4"><tspan x="637.9" y="355.4" text-align="center">?</tspan><tspan x="637.9" y="372" text-align="center">/</tspan></text><text x="584" y="354.95"><tspan x="584" y="354.95" text-align="center">&gt;</tspan><tspan x="584" y="371.6" text-align="center">.</tspan></text><text x="530.1" y="354.2"><tspan x="530.1" y="354.2" text-align="center">&lt;</tspan><tspan x="530.1" y="370.8" text-align="center">,</tspan></text></g><g font-size="3.6px" fill="#fff"><text x="476.2" y="365.5"><tspan x="476.2" y="365.5" font-size="16.7px" text-align="center" text-anchor="middle">M</tspan></text><text x="422.4" y="365.5"><tspan x="422.4" y="365.5" font-size="16.7px" text-align="center" text-anchor="middle">N</tspan></text><text x="368.2" y="365.5"><tspan x="368.2" y="365.5" font-size="16.7px" text-align="center" text-anchor="middle">B</tspan></text><text x="314.6" y="365.5"><tspan x="314.6" y="365.5" font-size="16.7px" text-align="center" text-anchor="middle">V</tspan></text><text x="260.7" y="365.5"><tspan x="260.7" y="365.5" font-size="16.7px" text-align="center" text-anchor="middle">C</tspan></text><text x="206.8" y="365.5"><tspan x="206.8" y="365.5" font-size="16.7px" text-align="center" text-anchor="middle">X</tspan></text><text x="152.9" y="365.5"><tspan x="152.9" y="365.5" font-size="16.7px" text-align="center" text-anchor="middle">Z</tspan></text></g></g><g font-size="10.7px" stroke-width=".2"><text x="106.3" y="17.6"><tspan x="106.3" y="17.6" text-align="end" text-anchor="end">107</tspan></text><text x="106.3" y="29.9"><tspan x="106.3" y="29.9" text-align="end" text-anchor="end">122</tspan></text><text x="168.1" y="17.6"><tspan x="168.1" y="17.6" text-align="end" text-anchor="end">113</tspan></text><text x="168" y="29.7"><tspan x="168" y="29.7" text-align="end" text-anchor="end">120</tspan></text><text x="230" y="17.6"><tspan x="230" y="17.7" text-align="end" text-anchor="end">160</tspan></text><text x="230" y="29.7"><tspan x="230" y="29.7" text-align="end" text-anchor="end">99</tspan></text><text x="292.2" y="17.6"><tspan x="292.2" y="17.6" text-align="end" text-anchor="end">131</tspan></text><text x="291.9" y="29.7"><tspan x="291.9" y="29.7" text-align="end" text-anchor="end">118</tspan></text><text x="353.8" y="29.7"><tspan x="353.8" y="29.7" text-align="end" text-anchor="end">96</tspan></text><text x="415.9" y="29.7"><tspan x="415.9" y="29.7" text-align="end" text-anchor="end">97</tspan></text><text x="477.8" y="29.7"><tspan x="477.8" y="29.7" text-align="end" text-anchor="end">98</tspan></text><text x="539.6" y="29.7"><tspan x="539.6" y="29.7" text-align="end" text-anchor="end">100</tspan></text><text x="602.6" y="29.7"><tspan x="602.6" y="29.7" text-align="end" text-anchor="end">101</tspan></text><text x="663.4" y="29.7"><tspan x="663.4" y="29.7" text-align="end" text-anchor="end">109</tspan></text><text x="725.4" y="29.7"><tspan x="725.4" y="29.7" text-align="end" text-anchor="end">103</tspan></text><text x="788.6" y="29.7"><tspan x="788.6" y="29.7" text-align="end" text-anchor="end">111</tspan></text><text x="775.5" y="101.4"><tspan x="775.5" y="101.4" text-align="end" text-anchor="end">51</tspan></text><text x="693.2" y="101.5"><tspan x="693.2" y="101.5" text-align="end" text-anchor="end">24</tspan></text><text x="639" y="101.5"><tspan x="639" y="101.5" text-align="end" text-anchor="end">27</tspan></text><text x="585" y="101.4"><tspan x="585" y="101.4" text-align="end" text-anchor="end">29</tspan></text><text x="531" y="101.4"><tspan x="531" y="101.4" text-align="end" text-anchor="end">25</tspan></text><text x="476.8" y="101.4"><tspan x="476.8" y="101.4" text-align="end" text-anchor="end">28</tspan></text><text x="422.6" y="101.4"><tspan x="422.6" y="101.4" text-align="end" text-anchor="end">26</tspan></text><text x="368.8" y="101.4"><tspan x="368.8" y="101.4" text-align="end" text-anchor="end">22</tspan></text><text x="314.6" y="101.4"><tspan x="314.6" y="101.4" text-align="end" text-anchor="end">23</tspan></text><text x="260.4" y="101.4"><tspan x="260.4" y="101.4" text-align="end" text-anchor="end">21</tspan></text><text x="206.4" y="101.4"><tspan x="206.4" y="101.4" text-align="end" text-anchor="end">20</tspan></text><text x="152.4" y="101.4"><tspan x="152.4" y="101.4" text-align="end" text-anchor="end">19</tspan></text><text x="98.2" y="101.4"><tspan x="98.2" y="101.4" text-align="end" text-anchor="end">18</tspan></text><text x="44" y="101.4"><tspan x="44" y="101.4" text-align="end" text-anchor="end">50</tspan></text><text x="51.2" y="177.2"><tspan x="51.2" y="177.2">48</tspan></text><text x="149.7" y="177.2"><tspan x="138.4" y="177.2" text-align="end" text-anchor="end">12</tspan></text><text x="203.6" y="177.2"><tspan x="192.2" y="177.2" text-align="end" text-anchor="end">13</tspan></text><text x="257.9" y="177.2"><tspan x="246.5" y="177.2" text-align="end" text-anchor="end">14</tspan></text><text x="311.9" y="177.2"><tspan x="300.6" y="177.2" text-align="end" text-anchor="end">15</tspan></text><text x="366" y="177.2"><tspan x="354.8" y="177.2" text-align="end" text-anchor="end">17</tspan></text><text x="420" y="177.2"><tspan x="408.7" y="177.2" text-align="end" text-anchor="end">16</tspan></text><text x="474.4" y="177.2"><tspan x="463" y="177.2" text-align="end" text-anchor="end">32</tspan></text><text x="528.4" y="177.2"><tspan x="517" y="177.2" text-align="end" text-anchor="end">34</tspan></text><text x="581.5" y="177.2"><tspan x="570.2" y="177.2" text-align="end" text-anchor="end">31</tspan></text><text x="636.5" y="177.2"><tspan x="625.2" y="177.2" text-align="end" text-anchor="end">35</tspan></text><text x="690.5" y="177.2"><tspan x="679.2" y="177.2" text-align="end" text-anchor="end">33</tspan></text><text x="744.5" y="177.2"><tspan x="733.2" y="177.2" text-align="end" text-anchor="end">30</tspan></text><text x="798.9" y="177.2"><tspan x="787.5" y="177.2" text-align="end" text-anchor="end">42</tspan></text><text x="795.4" y="253.3"><tspan x="784" y="253.3" text-align="end" text-anchor="end">36</tspan></text><text x="746.3" y="253.3"><tspan x="735" y="253.3" text-align="end" text-anchor="end">76</tspan></text><text x="693.7" y="253.3"><tspan x="682.4" y="253.3" text-align="end" text-anchor="end">39</tspan></text><text x="639.7" y="253.3"><tspan x="628.3" y="253.3" text-align="end" text-anchor="end">41</tspan></text><text x="587.4" y="253.3"><tspan x="576" y="253.3" text-align="end" text-anchor="end">37</tspan></text><text x="534" y="253.3"><tspan x="522.6" y="253.3" text-align="end" text-anchor="end">40</tspan></text><text x="480.8" y="253.3"><tspan x="469.4" y="253.3" text-align="end" text-anchor="end">38</tspan></text><text x="427.7" y="253.3"><tspan x="416.3" y="253.3" text-align="end" text-anchor="end">4</tspan></text><text x="374.4" y="253.3"><tspan x="363" y="253.3" text-align="end" text-anchor="end">5</tspan></text><text x="321" y="253.3"><tspan x="309.7" y="253.3" text-align="end" text-anchor="end">3</tspan></text><text x="268" y="253.3"><tspan x="256.8" y="253.3" text-align="end" text-anchor="end">2</tspan></text><text x="213.8" y="253.3"><tspan x="202.5" y="253.3" text-align="end" text-anchor="end">1</tspan></text><text x="161.3" y="253.3"><tspan x="150" y="253.3" text-align="end" text-anchor="end">0</tspan></text><text x="68.3" y="253.3"><tspan x="57" y="253.3">57</tspan></text><text x="79.9" y="329.2"><tspan x="68.5" y="329.2">57</tspan></text><text x="184.5" y="329.2"><tspan x="173.2" y="329.2" text-align="end" text-anchor="end">6</tspan></text><text x="238.6" y="329.2"><tspan x="227.2" y="329.2" text-align="end" text-anchor="end">7</tspan></text><text x="292.3" y="329.2"><tspan x="281" y="329.2" text-align="end" text-anchor="end">8</tspan></text><text x="346.2" y="329.2"><tspan x="334.9" y="329.2" text-align="end" text-anchor="end">9</tspan></text><text x="399.3" y="329.2"><tspan x="388" y="329.2" text-align="end" text-anchor="end">11</tspan></text><text x="454" y="329.2"><tspan x="442.8" y="329.2" text-align="end" text-anchor="end">45</tspan></text><text x="507.8" y="329.2"><tspan x="496.5" y="329.2" text-align="end" text-anchor="end">46</tspan></text><text x="561.8" y="329.2"><tspan x="550.4" y="329.2" text-align="end" text-anchor="end">43</tspan></text><text x="615.8" y="329.2"><tspan x="604.4" y="329.2" text-align="end" text-anchor="end">47</tspan></text><text x="669.7" y="329.2"><tspan x="658.3" y="329.2" text-align="end" text-anchor="end">44</tspan></text><text x="747.8" y="329.2"><tspan x="736.5" y="329.2">60</tspan></text><text x="779.6" y="398.9"><tspan x="749.8" y="398.9" text-align="end" text-anchor="end">126</tspan></text><text x="826.6" y="416.1"><tspan x="796.7" y="416.1" text-align="end" text-anchor="end">124</tspan></text><text x="733" y="416"><tspan x="703.1" y="416" text-align="end" text-anchor="end">123</tspan></text><text x="779.8" y="492.4"><tspan x="750" y="492.4" text-align="end" text-anchor="end">125</tspan></text><text x="658.3" y="405.2"><tspan x="628.4" y="405.2">61</tspan></text><text x="574.2" y="405.2"><tspan x="544.3" y="405.2">55</tspan></text><text x="425.5" y="405.2"><tspan x="395.6" y="405.2">49</tspan></text><text x="277.2" y="405.2"><tspan x="247.3" y="405.2">55</tspan></text><text x="193.9" y="405.2"><tspan x="164" y="405.2">58</tspan></text><text x="120.7" y="405.2"><tspan x="90.8" y="405.2">59</tspan></text><text x="82.9" y="404.5"><tspan x="41" y="404.5" text-align="end" text-anchor="end">63</tspan></text></g></svg>
 
+## Google Chrome
+
+### 选择
+```applescript
+tell application "Google Chrome"
+  ...
+end tell
+```
+### 打开一个新窗口
+
+```applescript
+tell application "Google Chrome"
+  make new window
+end tell
+```
+### 在选项卡中打开的 URL
+```applescript
+tell application "Google Chrome"
+	tell window 1 to make new tab with properties {URL:"https://design-spice.com"}
+end tell
+```
+### 网址打开
+如果窗口为0，则打开窗口进行访问，如果有窗口，则打开新选项卡中指定的URL。
+```applescript
+tell application "Google Chrome"
+	open location "https://design-spice.com"
+end tell
+```
+### 重新加载
+```applescript
+tell application "Google Chrome"
+	reload active tab of window 1
+end tell
+```
 
 # 案例
 
@@ -507,8 +588,517 @@ say "Wi-Fi连接成功"
 ```
 
 
+## 自动朗读小说（）
+```applescript
+tell application "Safari"
+	activate
+	make new document with properties {URL:"https://www.hetushu.com/book/3378/2482541.html"} --打开校园网
+	delay 3 -- 暂停 3 秒
+	tell document 1
+		set changeValue to do JavaScript "
+			var htmlText = '';
+			document.querySelectorAll('#content div').forEach(item => {
+				htmlText += item.innerHTML
+			});
+			htmlText = htmlText.replace(/<[^>]+>(.*?)<[^>]+>/g,'')
+			htmlText
+		"
+		say changeValue
+	end tell
+	delay 1
+	close document 1
+end tell
+say "朗读完毕"
+```
+
+## 自动朗读小说（页数自动增加 弹窗提示）
+
+```applescript
+# 页数
+set numPage to 2482557
+
+on Dialog(numPage)
+	display dialog "播放完毕：" with title "接下来开始播放：" & numPage buttons {"No", "Yes"} default button "Yes"
+	if button returned of result = "Yes" then
+		get numPage
+		set numPage to numPage + 1
+		openSafari(numPage)
+	else if button returned of result = "No" then
+		get "NO"
+	end if
+end Dialog
+
+on openSafari(pageNum)
+	tell application "Safari"
+		activate
+		make new document with properties {URL:"https://www.hetushu.com/book/3378/" & pageNum & ".html"} --打开校园网
+		delay 3 -- 暂停 1 秒
+		tell document 1
+			set changeValue to do JavaScript "
+        var htmlText = '';
+        document.querySelectorAll('#content div').forEach(item => {
+          htmlText += item.innerHTML
+        });
+        htmlText = htmlText.replace(/<[^>]+>(.*?)<[^>]+>/g,'')
+        htmlText
+      "
+			say changeValue
+		end tell
+		delay 1
+		close document 1
+	end tell
+	say "朗读完毕"
+	Dialog(pageNum)
+	# 函数结束
+end openSafari
+
+openSafari(numPage)
+```
+
+## 计算器
+### 查看关于
+
+```applescript
+# 需要打开计算器
+tell application "Calculator"
+	activate
+	tell application "System Events"
+		tell process "Calculator"
+			entire contents
+		end tell
+	end tell
+end tell
+```
+
+```applescript
+{
+  window 1 of application process "Calculator"of application "System Events",
+  image 1 of window 1 of application process "Calculator"of application "System Events",
+  static text "计算器"of window 1 of application process "Calculator"of application "System Events",
+  static text "版本 10.14 (123)"of window 1 of application process "Calculator"of application "System Events",
+  scroll area 1 of window 1 of application process "Calculator"of application "System Events",
+  static text "Copyright © 2000–2018 Apple Inc.保留一切权利。"of scroll area 1 of window 1 of application process "Calculator"of application "System Events",
+  button 1 of window 1 of application process "Calculator"of application "System Events",
+  button 2 of window 1 of application process "Calculator"of application "System Events",
+  button 3 of window 1 of application process "Calculator"of application "System Events",
+  static text 3 of window 1 of application process "Calculator"of application "System Events",
+  window 2 of application process "Calculator"of application "System Events",
+  group 1 of window 2 of application process "Calculator"of application "System Events",
+  static text "789"of group 1 of window 2 of application process "Calculator"of application "System Events",
+  group 2 of window 2 of application process "Calculator"of application "System Events",
+  button 1 of group 2 of window 2 of application process "Calculator"of application "System Events",
+  button 2 of group 2 of window 2 of application process "Calculator"of application "System Events",
+  button 3 of group 2 of window 2 of application process "Calculator"of application "System Events",
+  button 4 of group 2 of window 2 of application process "Calculator"of application "System Events",
+  button 5 of group 2 of window 2 of application process "Calculator"of application "System Events",
+  button 6 of group 2 of window 2 of application process "Calculator"of application "System Events",
+  button 7 of group 2 of window 2 of application process "Calculator"of application "System Events",
+  button 8 of group 2 of window 2 of application process "Calculator"of application "System Events",
+  button 9 of group 2 of window 2 of application process "Calculator"of application "System Events",
+  button 10 of group 2 of window 2 of application process "Calculator"of application "System Events",
+  button 11 of group 2 of window 2 of application process "Calculator"of application "System Events",
+  button 12 of group 2 of window 2 of application process "Calculator"of application "System Events",
+  button 13 of group 2 of window 2 of application process "Calculator"of application "System Events",
+  button 14 of group 2 of window 2 of application process "Calculator"of application "System Events",
+  button 15 of group 2 of window 2 of application process "Calculator"of application "System Events",
+  button 16 of group 2 of window 2 of application process "Calculator"of application "System Events",
+  button "清除"of group 2 of window 2 of application process "Calculator"of application "System Events",
+  button 18 of group 2 of window 2 of application process "Calculator"of application "System Events",
+  button 19 of group 2 of window 2 of application process "Calculator"of application "System Events",
+  button 1 of window 2 of application process "Calculator"of application "System Events",
+  button 2 of window 2 of application process "Calculator"of application "System Events",
+  button 3 of window 2 of application process "Calculator"of application "System Events",
+  static text 1 of window 2 of application process "Calculator"of application "System Events",
+  menu bar 1 of application process "Calculator"of application "System Events",
+  menu bar item "Apple"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu "Apple"of menu bar item "Apple"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "关于本机"of menu "Apple"of menu bar item "Apple"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "系统信息…"of menu "Apple"of menu bar item "Apple"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item 3 of menu "Apple"of menu bar item "Apple"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "系统偏好设置…，1 项更新"of menu "Apple"of menu bar item "Apple"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "App Store…，7 项更新"of menu "Apple"of menu bar item "Apple"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item 6 of menu "Apple"of menu bar item "Apple"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "最近使用的项目"of menu "Apple"of menu bar item "Apple"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu "最近使用的项目"of menu item "最近使用的项目"of menu "Apple"of menu bar item "Apple"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "应用程序"of menu "最近使用的项目"of menu item "最近使用的项目"of menu "Apple"of menu bar item "Apple"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "钉钉.app"of menu "最近使用的项目"of menu item "最近使用的项目"of menu "Apple"of menu bar item "Apple"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "在访达中显示“钉钉.app”"of menu "最近使用的项目"of menu item "最近使用的项目"of menu "Apple"of menu bar item "Apple"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "计算器.app"of menu "最近使用的项目"of menu item "最近使用的项目"of menu "Apple"of menu bar item "Apple"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "在访达中显示“计算器.app”"of menu "最近使用的项目"of menu item "最近使用的项目"of menu "Apple"of menu bar item "Apple"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "文本编辑.app"of menu "最近使用的项目"of menu item "最近使用的项目"of menu "Apple"of menu bar item "Apple"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "在访达中显示“文本编辑.app”"of menu "最近使用的项目"of menu item "最近使用的项目"of menu "Apple"of menu bar item "Apple"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "系统偏好设置.app"of menu "最近使用的项目"of menu item "最近使用的项目"of menu "Apple"of menu bar item "Apple"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "在访达中显示“系统偏好设置.app”"of menu "最近使用的项目"of menu item "最近使用的项目"of menu "Apple"of menu bar item "Apple"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "预览.app"of menu "最近使用的项目"of menu item "最近使用的项目"of menu "Apple"of menu bar item "Apple"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "在访达中显示“预览.app”"of menu "最近使用的项目"of menu item "最近使用的项目"of menu "Apple"of menu bar item "Apple"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "CleanMyMac X.app"of menu "最近使用的项目"of menu item "最近使用的项目"of menu "Apple"of menu bar item "Apple"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "在访达中显示“CleanMyMac X.app”"of menu "最近使用的项目"of menu item "最近使用的项目"of menu "Apple"of menu bar item "Apple"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "Google Chrome.app"of menu "最近使用的项目"of menu item "最近使用的项目"of menu "Apple"of menu bar item "Apple"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "在访达中显示“Google Chrome.app”"of menu "最近使用的项目"of menu item "最近使用的项目"of menu "Apple"of menu bar item "Apple"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "Merchant.app"of menu "最近使用的项目"of menu item "最近使用的项目"of menu "Apple"of menu bar item "Apple"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "在访达中显示“Merchant.app”"of menu "最近使用的项目"of menu item "最近使用的项目"of menu "Apple"of menu bar item "Apple"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "Safari 浏览器.app"of menu "最近使用的项目"of menu item "最近使用的项目"of menu "Apple"of menu bar item "Apple"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "在访达中显示“Safari 浏览器.app”"of menu "最近使用的项目"of menu item "最近使用的项目"of menu "Apple"of menu bar item "Apple"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "SourceTree.app"of menu "最近使用的项目"of menu item "最近使用的项目"of menu "Apple"of menu bar item "Apple"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "在访达中显示“SourceTree.app”"of menu "最近使用的项目"of menu item "最近使用的项目"of menu "Apple"of menu bar item "Apple"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item 22 of menu "最近使用的项目"of menu item "最近使用的项目"of menu "Apple"of menu bar item "Apple"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "文稿"of menu "最近使用的项目"of menu item "最近使用的项目"of menu "Apple"of menu bar item "Apple"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "未命名 2.scpt"of menu "最近使用的项目"of menu item "最近使用的项目"of menu "Apple"of menu bar item "Apple"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "在访达中显示“未命名 2.scpt”"of menu "最近使用的项目"of menu item "最近使用的项目"of menu "Apple"of menu bar item "Apple"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "DOC"of menu "最近使用的项目"of menu item "最近使用的项目"of menu "Apple"of menu bar item "Apple"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "在访达中显示“DOC”"of menu "最近使用的项目"of menu item "最近使用的项目"of menu "Apple"of menu bar item "Apple"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "dress.reworlder.com"of menu "最近使用的项目"of menu item "最近使用的项目"of menu "Apple"of menu bar item "Apple"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "在访达中显示“dress.reworlder.com”"of menu "最近使用的项目"of menu item "最近使用的项目"of menu "Apple"of menu bar item "Apple"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "electron-demo"of menu "最近使用的项目"of menu item "最近使用的项目"of menu "Apple"of menu bar item "Apple"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "在访达中显示“electron-demo”"of menu "最近使用的项目"of menu item "最近使用的项目"of menu "Apple"of menu bar item "Apple"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "game.reworlder.com"of menu "最近使用的项目"of menu item "最近使用的项目"of menu "Apple"of menu bar item "Apple"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "在访达中显示“game.reworlder.com”"of menu "最近使用的项目"of menu item "最近使用的项目"of menu "Apple"of menu bar item "Apple"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "geektime-electron"of menu "最近使用的项目"of menu item "最近使用的项目"of menu "Apple"of menu bar item "Apple"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "在访达中显示“geektime-electron”"of menu "最近使用的项目"of menu item "最近使用的项目"of menu "Apple"of menu bar item "Apple"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "Info.plist"of menu "最近使用的项目"of menu item "最近使用的项目"of menu "Apple"of menu bar item "Apple"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "在访达中显示“Info.plist”"of menu "最近使用的项目"of menu item "最近使用的项目"of menu "Apple"of menu bar item "Apple"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "JavaScript高级程序设计（第4版）.pdf"of menu "最近使用的项目"of menu item "最近使用的项目"of menu "Apple"of menu bar item "Apple"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "在访达中显示“JavaScript高级程序设计（第4版）.pdf”"of menu "最近使用的项目"of menu item "最近使用的项目"of menu "Apple"of menu bar item "Apple"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "MQTTX"of menu "最近使用的项目"of menu item "最近使用的项目"of menu "Apple"of menu bar item "Apple"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "在访达中显示“MQTTX”"of menu "最近使用的项目"of menu item "最近使用的项目"of menu "Apple"of menu bar item "Apple"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "reword"of menu "最近使用的项目"of menu item "最近使用的项目"of menu "Apple"of menu bar item "Apple"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "在访达中显示“reword”"of menu "最近使用的项目"of menu item "最近使用的项目"of menu "Apple"of menu bar item "Apple"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item 44 of menu "最近使用的项目"of menu item "最近使用的项目"of menu "Apple"of menu bar item "Apple"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "服务器"of menu "最近使用的项目"of menu item "最近使用的项目"of menu "Apple"of menu bar item "Apple"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "192.168.1.11"of menu "最近使用的项目"of menu item "最近使用的项目"of menu "Apple"of menu bar item "Apple"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "192.168.99.233"of menu "最近使用的项目"of menu item "最近使用的项目"of menu "Apple"of menu bar item "Apple"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "luuman.synology.me"of menu "最近使用的项目"of menu item "最近使用的项目"of menu "Apple"of menu bar item "Apple"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "luuman.synology.me"of menu "最近使用的项目"of menu item "最近使用的项目"of menu "Apple"of menu bar item "Apple"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "luuman.synology.me"of menu "最近使用的项目"of menu item "最近使用的项目"of menu "Apple"of menu bar item "Apple"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "luuman@192.168.99.233"of menu "最近使用的项目"of menu item "最近使用的项目"of menu "Apple"of menu bar item "Apple"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "luuman@192.168.99.233"of menu "最近使用的项目"of menu item "最近使用的项目"of menu "Apple"of menu bar item "Apple"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "luuman@192.168.99.233:20"of menu "最近使用的项目"of menu item "最近使用的项目"of menu "Apple"of menu bar item "Apple"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "photo"of menu "最近使用的项目"of menu item "最近使用的项目"of menu "Apple"of menu bar item "Apple"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "Web"of menu "最近使用的项目"of menu item "最近使用的项目"of menu "Apple"of menu bar item "Apple"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item 56 of menu "最近使用的项目"of menu item "最近使用的项目"of menu "Apple"of menu bar item "Apple"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "清除菜单"of menu "最近使用的项目"of menu item "最近使用的项目"of menu "Apple"of menu bar item "Apple"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item 8 of menu "Apple"of menu bar item "Apple"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "强制退出…"of menu "Apple"of menu bar item "Apple"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "强制退出“计算器”"of menu "Apple"of menu bar item "Apple"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item 11 of menu "Apple"of menu bar item "Apple"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "睡眠"of menu "Apple"of menu bar item "Apple"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "重新启动…"of menu "Apple"of menu bar item "Apple"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "重新启动"of menu "Apple"of menu bar item "Apple"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "关机…"of menu "Apple"of menu bar item "Apple"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "关机"of menu "Apple"of menu bar item "Apple"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item 17 of menu "Apple"of menu bar item "Apple"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "锁定屏幕"of menu "Apple"of menu bar item "Apple"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "退出登录“luuman”…"of menu "Apple"of menu bar item "Apple"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "退出登录“luuman”"of menu "Apple"of menu bar item "Apple"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu bar item "计算器"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu "计算器"of menu bar item "计算器"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "关于计算器"of menu "计算器"of menu bar item "计算器"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item 2 of menu "计算器"of menu bar item "计算器"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "隐藏计算器"of menu "计算器"of menu bar item "计算器"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "隐藏其他"of menu "计算器"of menu bar item "计算器"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "全部显示"of menu "计算器"of menu bar item "计算器"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item 6 of menu "计算器"of menu bar item "计算器"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "退出计算器"of menu "计算器"of menu bar item "计算器"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "退出并保留窗口"of menu "计算器"of menu bar item "计算器"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu bar item "文件"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu "文件"of menu bar item "文件"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "关闭"of menu "文件"of menu bar item "文件"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "全部关闭"of menu "文件"of menu bar item "文件"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "将记录存储为…"of menu "文件"of menu bar item "文件"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item 4 of menu "文件"of menu bar item "文件"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "页面设置…"of menu "文件"of menu bar item "文件"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "打印记录…"of menu "文件"of menu bar item "文件"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu bar item "编辑"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu "编辑"of menu bar item "编辑"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "撤销"of menu "编辑"of menu bar item "编辑"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "重做"of menu "编辑"of menu bar item "编辑"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item 3 of menu "编辑"of menu bar item "编辑"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "剪切"of menu "编辑"of menu bar item "编辑"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "拷贝"of menu "编辑"of menu bar item "编辑"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "粘贴"of menu "编辑"of menu bar item "编辑"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "清除"of menu "编辑"of menu bar item "编辑"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "全选"of menu "编辑"of menu bar item "编辑"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item 9 of menu "编辑"of menu bar item "编辑"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "开始听写"of menu "编辑"of menu bar item "编辑"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "表情与符号"of menu "编辑"of menu bar item "编辑"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu bar item "显示"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu "显示"of menu bar item "显示"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "基本"of menu "显示"of menu bar item "显示"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "科学型"of menu "显示"of menu bar item "显示"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "编程器"of menu "显示"of menu bar item "显示"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item 4 of menu "显示"of menu bar item "显示"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "显示千位数分隔符"of menu "显示"of menu bar item "显示"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item 6 of menu "显示"of menu bar item "显示"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "RPN 模式"of menu "显示"of menu bar item "显示"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item 8 of menu "显示"of menu bar item "显示"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "小数位数"of menu "显示"of menu bar item "显示"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu "小数位数"of menu item "小数位数"of menu "显示"of menu bar item "显示"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "0"of menu "小数位数"of menu item "小数位数"of menu "显示"of menu bar item "显示"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "1"of menu "小数位数"of menu item "小数位数"of menu "显示"of menu bar item "显示"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "2"of menu "小数位数"of menu item "小数位数"of menu "显示"of menu bar item "显示"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "3"of menu "小数位数"of menu item "小数位数"of menu "显示"of menu bar item "显示"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "4"of menu "小数位数"of menu item "小数位数"of menu "显示"of menu bar item "显示"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "5"of menu "小数位数"of menu item "小数位数"of menu "显示"of menu bar item "显示"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "6"of menu "小数位数"of menu item "小数位数"of menu "显示"of menu bar item "显示"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "7"of menu "小数位数"of menu item "小数位数"of menu "显示"of menu bar item "显示"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "8"of menu "小数位数"of menu item "小数位数"of menu "显示"of menu bar item "显示"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "9"of menu "小数位数"of menu item "小数位数"of menu "显示"of menu bar item "显示"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "10"of menu "小数位数"of menu item "小数位数"of menu "显示"of menu bar item "显示"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "11"of menu "小数位数"of menu item "小数位数"of menu "显示"of menu bar item "显示"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "12"of menu "小数位数"of menu item "小数位数"of menu "显示"of menu bar item "显示"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "13"of menu "小数位数"of menu item "小数位数"of menu "显示"of menu bar item "显示"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "14"of menu "小数位数"of menu item "小数位数"of menu "显示"of menu bar item "显示"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "15"of menu "小数位数"of menu item "小数位数"of menu "显示"of menu bar item "显示"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "进入全屏幕"of menu "显示"of menu bar item "显示"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu bar item "转换"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu "转换"of menu bar item "转换"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "最近的转换"of menu "转换"of menu bar item "转换"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu "最近的转换"of menu item "最近的转换"of menu "转换"of menu bar item "转换"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "清除菜单"of menu "最近的转换"of menu item "最近的转换"of menu "转换"of menu bar item "转换"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item 2 of menu "转换"of menu bar item "转换"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "功率…"of menu "转换"of menu bar item "转换"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "货币…"of menu "转换"of menu bar item "转换"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "面积…"of menu "转换"of menu bar item "转换"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "能量或功…"of menu "转换"of menu bar item "转换"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "时间…"of menu "转换"of menu bar item "转换"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "速度…"of menu "转换"of menu bar item "转换"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "体积…"of menu "转换"of menu bar item "转换"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "温度…"of menu "转换"of menu bar item "转换"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "压力…"of menu "转换"of menu bar item "转换"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "长度…"of menu "转换"of menu bar item "转换"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "重量和质量…"of menu "转换"of menu bar item "转换"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu bar item "语音"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu "语音"of menu bar item "语音"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "朗读所按按钮"of menu "语音"of menu bar item "语音"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "朗读结果"of menu "语音"of menu bar item "语音"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu bar item "窗口"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu "窗口"of menu bar item "窗口"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "最小化"of menu "窗口"of menu bar item "窗口"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "缩放"of menu "窗口"of menu bar item "窗口"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item 3 of menu "窗口"of menu bar item "窗口"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "显示记录"of menu "窗口"of menu bar item "窗口"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item 5 of menu "窗口"of menu bar item "窗口"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "前置全部窗口"of menu "窗口"of menu bar item "窗口"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu bar item "帮助"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu "帮助"of menu bar item "帮助"of menu bar 1 of application process "Calculator"of application "System Events",
+  menu item "计算器帮助"of menu "帮助"of menu bar item "帮助"of menu bar 1 of application process "Calculator"of application "System Events"
+}
+```
 
 
+### 查看关于
+
+```applescript
+# 点击计算器，打开计算器关于
+tell application "Calculator"
+	activate
+	tell application "System Events"
+		tell process "Calculator"
+        click menu item "关于计算器" of menu "计算器" of menu bar item "计算器" of menu bar 1
+    end tell
+	end tell
+end tell
+```
+
+### 点击按钮
+
+```applescript
+tell application "Calculator"
+	activate
+	tell application "System Events"
+		click button 7 of group 2 of window 1 of application process "Calculator"
+	end tell
+end tell
+```
+
+```applescript
+tell application "Calculator"
+	activate
+	tell application "System Events"
+		tell process "Calculator"
+			entire contents
+      # 9 - 2 =
+			click button 4 of group 2 of window 1
+			click button 7 of group 2 of window 1
+			click button 1 of group 2 of window 1
+			click button 2 of group 2 of window 1
+		end tell
+	end tell
+end tell
+```
+
+> 按钮的位置
+```applescript
+2
+=
+3
+9
+0
+1
+- 
+5
+*
+.
+4
+6
++
++/-
+8
+7
+AC
+/
+```
+
+
+
+
+## iTerm
+### 启动窗口输入内容
+
+```js
+tell application "iTerm"
+	# 创建新窗口
+	create window with default profile
+	# 在新窗口操作
+	tell current session of current window
+		write text "1"
+		write text "echo hello"
+	end tell
+end tell
+```
+
+### iTerm打开输入命令
+```applescript
+set theUrl to "http://localhost:3000"
+-- 开发目录
+set theFolder1 to "Macintosh HD:Users:luuman:Downloads:Book"
+-- 管理相关文件等的目录
+set theFolder2 to "Macintosh HD:Users:luuman:Downloads:Book"
+tell application "Finder"
+	activate
+	close every window
+	open folder theFolder1
+	tell application "System Events"
+		keystroke "t" using command down
+		delay 1
+		tell application "Finder" to set target of Finder window 1 to theFolder2
+	end tell
+end tell
+
+tell application "iTerm"
+	activate
+	close current window
+	if current window = missing value then
+	  create window with default profile
+	end if
+	set _path to "cd /Users/luuman/Downloads/Book"
+	set _current_session to current session of current window
+	tell _current_session
+		-- 在这里写下想操作的东西
+		split horizontally with default profile
+		-- 启动docker
+		write text _path
+		write text "docker-compose up"
+	end tell
+	tell last session of current tab of current window
+	write text _path
+	-- 启动vscode
+	write text "code ./ -r"
+	end tell
+end tell
+
+tell application "Google Chrome"
+	activate
+	open location theUrl
+end tell
+
+# tell application "Sourcetree" to run
+```
+
+## Terminal
+### Find Terminal Sessions with Applescript
+
+```applescript
+set question to display dialog ("Find Terminal Session:") default answer "" buttons {"Cancel", "Search Titles", "Also Search Contents"} default button 2
+set searchpat to text returned of question
+set searchtype to button returned of question
+
+if searchtype is equal to "Cancel" then return
+
+tell application "Terminal"
+	set winlist to every window
+	set winmatchlist to {}
+	set tabmatchlist to {}
+	set tabnamematchlist to {}
+	repeat with win in winlist
+		set ok to true
+		try
+			set tablist to every tab of win
+		on error errmsg
+			--display dialog name of win as string
+			set ok to false
+		end try
+		if ok then
+			repeat with t from 1 to count of tablist
+				if searchpat is in (custom title of tab t of win as string) then
+					set end of winmatchlist to win
+					set end of tabmatchlist to t
+					set parlist to paragraphs of (contents of tab t of win as text)
+					set parnum to (count of parlist)
+					repeat while (length of item parnum of parlist = 0) and (parnum > 0)
+						set parnum to parnum - 1
+					end repeat
+					set partext to item parnum of parlist
+					if length of parlist > 50 then
+						set partext to characters 1 thru 50 of partext
+					end if
+					set end of tabnamematchlist to (custom title of tab t of win as string) & "  |  " & partext & " ." & (id of win as string) & "." & t
+					--display dialog name of t as string
+				else if searchtype is equal to "Also Search Contents" then
+					if searchpat is in (contents of tab t of win as text) then
+						set end of winmatchlist to win
+						set end of tabmatchlist to t
+						set parlist to paragraphs of (contents of tab t of win as text)
+						set parnum to (count of parlist)
+						repeat while (length of item parnum of parlist = 0) and (parnum > 0)
+							set parnum to parnum - 1
+						end repeat
+						set partext to item parnum of parlist
+						if length of parlist > 50 then
+							set partext to characters 1 thru 50 of partext
+						end if
+						set end of tabnamematchlist to (custom title of tab t of win as string) & "  |  " & partext & " ." & (id of win as string) & "." & t
+					end if
+				end if
+			end repeat
+		end if
+	end repeat
+	if (count of tabmatchlist) = 1 then
+		--display dialog "one!"
+		set w to item 1 of winmatchlist
+		set t to item 1 of tabmatchlist
+		set selected tab of w to tab t of w
+		set index of w to 1
+		set frontmost of w to true
+		activate
+	else if (count of tabmatchlist) = 0 then
+		display dialog "No matches"
+	else
+		set whichtab to choose from list of tabnamematchlist with prompt "The following tabs match, please select one:"
+		if whichtab is not equal to false then
+			set AppleScript's text item delimiters to "."
+			set tmp to reverse of text items of (whichtab as string)
+			set w to (item 2 of tmp) as integer
+			set t to (item 1 of tmp) as integer
+			set selected tab of window id w to tab t of window id w
+			set index of window id w to 1
+			set frontmost of window id w to true
+		end if
+	end if
+end tell
+```
+
+## 计算器
 
 ```applescript
 ```

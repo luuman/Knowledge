@@ -566,4 +566,5 @@ npm install -g asar
 asar -V
 // 解压缩.asar文件在./里
 asar extract app.asar ./
+asar pack app app.asar
 ```

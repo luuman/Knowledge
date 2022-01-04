@@ -1,3 +1,6 @@
 - [前端](/)
 	- [JavaScript](FE/JavaScript/)
 	- [正则表达式](FE/JavaScript/regular/)
+	- [dexie](FE/JavaScript/DB/dexie)
+	- [indexeddb](FE/JavaScript/DB/indexeddb)
+	- [Array](FE/JavaScript/Array)
